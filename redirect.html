@@ -7,6 +7,7 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
      <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-database.js"></script>
 
     <script>
       // Your web app's Firebase configuration
@@ -23,15 +24,41 @@
       };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
+      var database = firebase.database();
     </script>
   </head>
   <body>
     <h1>Welcome to the login page</h1>
     <p id="display">Content</p>
+    <div id="grocerylist"></div>
     <script>
+      function renderList(groceries)
+      {
+        console.log(groceries);
+        let html = "";
+        for (const item in groceries)
+        {
+          console.log(item);
+          html += "<div>";
+          html += `<h2>${item}</h2>`;
+          html += "<ul>";
+          for (const ingredient in groceries[item])
+          {
+            html += `<li>${ingredient} ${groceries[item][ingredient]}</li>`;
+          }
+          html += "</ul></div>";
+        }
+        console.log(html);
+        $("#grocerylist").html(html);
+      }
+
       firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         $("#display").html(user.displayName);
+        var listRef = firebase.database().ref(`lists/${user.uid}`);
+        listRef.on('value', function(snapshot) {
+          renderList(snapshot.val());
+        });
       } else {
         $("#display").html("No User");
       }
