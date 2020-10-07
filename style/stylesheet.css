@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+html {
+  width: 100%;
+  text-align: center;
+  background-color: #222222;
+  color: whitesmoke;
+  font-family: 'Roboto';
+  margin: 0px;
+}
+
+body {
+  width: 100%;
+  text-align: center;
+  margin: 0px;
+}
+
+h1 {
+  text-align: center;
+}
+
+#intro {
+  text-align: center;
+}
+
+#grocerylist {
+  width:30%;
+  margin:auto;
+  text-align:left;
+  background-color: whitesmoke;
+  color: #222222;
+  border-radius: 10px;
+  padding: 15px;
+}

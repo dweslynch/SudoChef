@@ -4,14 +4,10 @@
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
      <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
      <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-database.js"></script>
-
+     <link type="text/css" rel="stylesheet" href="./style/stylesheet.css" />
     <script>
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
       var firebaseConfig = {
         apiKey: "AIzaSyCPpZJJ5xm8wevrmdy9zB7k_dc_8wyXww0",
         authDomain: "authtest-af1e0.firebaseapp.com",
@@ -28,33 +24,36 @@
     </script>
   </head>
   <body>
-    <h1>Welcome to the login page</h1>
-    <p id="display">Content</p>
+    <div id="intro">
+      <h1>Welcome to the login page</h1>
+      <p id="display">Content</p>
+    </div>
     <div id="grocerylist"></div>
     <script>
+      // Render food items in the box
       function renderList(groceries)
       {
-        console.log(groceries);
         let html = "";
+        // Loop through all food items in list
         for (const item in groceries)
         {
-          console.log(item);
           html += "<div>";
           html += `<h2>${item}</h2>`;
           html += "<ul>";
+          // Loop through all ingredients in each food
           for (const ingredient in groceries[item])
           {
             html += `<li>${ingredient} ${groceries[item][ingredient]}</li>`;
           }
           html += "</ul></div>";
         }
-        console.log(html);
         $("#grocerylist").html(html);
       }
 
+      // Show grocery list when user is logged in
       firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        $("#display").html(user.displayName);
+        $("#display").html(`${user.displayName}'s Grocery List`);
         var listRef = firebase.database().ref(`lists/${user.uid}`);
         listRef.on('value', function(snapshot) {
           renderList(snapshot.val());
