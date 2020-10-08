@@ -45,9 +45,8 @@ class UpdateForm extends React.Component
     {
       ingredients[this.state.ingredientlist[i]] = 1;
     }
-    let obj = {};
-    obj[this.state.recipeName] = ingredients;
-    this.flowup(obj);
+    let food = [this.state.recipeName, ingredients];
+    this.flowup(food);
   }
 
   render()

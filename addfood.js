@@ -60,9 +60,8 @@ var UpdateForm = function (_React$Component) {
       for (var i = 0; i < this.state.ingredientlist.length; i++) {
         ingredients[this.state.ingredientlist[i]] = 1;
       }
-      var obj = {};
-      obj[this.state.recipeName] = ingredients;
-      this.flowup(obj);
+      var food = [this.state.recipeName, ingredients];
+      this.flowup(food);
     }
   }, {
     key: "render",
