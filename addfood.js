@@ -14,12 +14,14 @@ var UpdateForm = function (_React$Component) {
   function UpdateForm(props) {
     _classCallCheck(this, UpdateForm);
 
+    // Allows the form to submit groceries to the database
     var _this = _possibleConstructorReturn(this, (UpdateForm.__proto__ || Object.getPrototypeOf(UpdateForm)).call(this, props));
 
     _this.flowup = props.flowup;
 
     _this.state = { recipeName: "", ingredients: 1, ingredientlist: [] };
 
+    // Bind event handlers
     _this.handleNameChange = _this.handleNameChange.bind(_this);
     _this.handleButtonClick = _this.handleButtonClick.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -29,38 +31,55 @@ var UpdateForm = function (_React$Component) {
   _createClass(UpdateForm, [{
     key: "handleNameChange",
     value: function handleNameChange(event) {
-      var val = event.target.value;
+      var val = event.target.value; // Have to grab value because the callback erases it
       this.setState(function (state) {
-        return { recipeName: val, ingredients: state.ingredients, ingredientlist: state.ingredientlist };
+        return {
+          recipeName: val,
+          ingredients: state.ingredients,
+          ingredientlist: state.ingredientlist };
       });
     }
   }, {
     key: "handleIngredientIChange",
     value: function handleIngredientIChange(i, name) {
       this.setState(function (state) {
-        var rName = state.recipeName;
-        var _ingredients = state.ingredients;
+        // Grab list from state and change name of ingredient
         var _list = [].concat(_toConsumableArray(state.ingredientlist));
         _list[i] = name;
-        return { recipeName: rName, ingredients: _ingredients, ingredientlist: _list };
+
+        // Return new state
+        return {
+          recipeName: state.recipeName,
+          ingredients: state.ingredients,
+          ingredientlist: _list };
       });
     }
   }, {
     key: "handleButtonClick",
     value: function handleButtonClick(event) {
+      // Add a new ingredient slot
       this.setState(function (state) {
-        return { recipeName: state.recipeName, ingredients: state.ingredients + 1, ingredientlist: state.ingredientlist };
+        return {
+          recipeName: state.recipeName,
+          ingredients: state.ingredients + 1,
+          ingredientlist: state.ingredientlist };
       });
     }
   }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
+      // Prevent reload
       event.preventDefault();
+
       var ingredients = {};
-      for (var i = 0; i < this.state.ingredientlist.length; i++) {
+      // Add ingredients to object
+      for (var i = 0; i < this.state.ingredients; i++) {
+        // Assume quantity = 1 for now
         ingredients[this.state.ingredientlist[i]] = 1;
       }
+
       var food = [this.state.recipeName, ingredients];
+      // Send back to page for database entry
       this.flowup(food);
     }
   }, {
@@ -68,19 +87,46 @@ var UpdateForm = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      // let arr = [1..this.state.ingredients]
       var arr = [];
       for (var i = 0; i < this.state.ingredients; i++) {
         arr.push(i);
       }
+
       return React.createElement(
         "form",
         { onSubmit: this.handleSubmit },
-        "Recipe Name:",
-        React.createElement("input", { value: this.state.recipeName, onChange: this.handleNameChange }),
+        React.createElement(
+          "h2",
+          null,
+          "Add Recipe"
+        ),
+        React.createElement(
+          "label",
+          null,
+          "Recipe Name:"
+        ),
+        React.createElement("br", null),
+        React.createElement("input", { type: "text", value: this.state.recipeName, onChange: this.handleNameChange }),
+        React.createElement("br", null),
+        React.createElement("br", null),
         arr.map(function (i) {
-          return React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i], onChange: function onChange(event) {
-              return _this2.handleIngredientIChange(i, event.target.value);
-            } });
+          return React.createElement(
+            "div",
+            null,
+            React.createElement(
+              "label",
+              null,
+              "Ingredient ",
+              i + 1,
+              ":\xA0\xA0"
+            ),
+            React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i], onChange: function onChange(event) {
+                return _this2.handleIngredientIChange(i, event.target.value);
+              } }),
+            React.createElement("br", null),
+            React.createElement("br", null)
+          );
         }),
         React.createElement("input", { type: "button", value: "Add Ingredient", onClick: this.handleButtonClick }),
         React.createElement("input", { type: "submit", value: "Submit" })
