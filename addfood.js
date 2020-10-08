@@ -25,6 +25,7 @@ var UpdateForm = function (_React$Component) {
     _this.handleNameChange = _this.handleNameChange.bind(_this);
     _this.handleButtonClick = _this.handleButtonClick.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
+    _this.handleIngredientQuantityChange = _this.handleIngredientQuantityChange.bind(_this);
     return _this;
   }
 
@@ -45,7 +46,39 @@ var UpdateForm = function (_React$Component) {
       this.setState(function (state) {
         // Grab list from state and change name of ingredient
         var _list = [].concat(_toConsumableArray(state.ingredientlist));
-        _list[i] = name;
+
+        // Update name if ingredient exists, otherwise create one
+        if (_list[i]) {
+          _list[i].name = name;
+        } else {
+          // Don't set quantity, handleIngredientQuantityChange will do that
+          _list[i] = {
+            name: name
+          };
+        }
+
+        // Return new state
+        return {
+          recipeName: state.recipeName,
+          ingredients: state.ingredients,
+          ingredientlist: _list };
+      });
+    }
+  }, {
+    key: "handleIngredientQuantityChange",
+    value: function handleIngredientQuantityChange(i, quantity) {
+      this.setState(function (state) {
+        // Grab list from state and change quantity of ingredient
+        var _list = [].concat(_toConsumableArray(state.ingredientlist));
+
+        if (_list[i]) {
+          _list[i].quantity = quantity;
+        } else {
+          // Don't set name, handleIngredientIChange will do that
+          _list[i] = {
+            quantity: quantity
+          };
+        }
 
         // Return new state
         return {
@@ -71,15 +104,12 @@ var UpdateForm = function (_React$Component) {
       // Prevent reload
       event.preventDefault();
 
-      var ingredients = {};
-      // Add ingredients to object
-      for (var i = 0; i < this.state.ingredients; i++) {
-        // Assume quantity = 1 for now
-        ingredients[this.state.ingredientlist[i]] = 1;
-      }
+      var food = {
+        name: this.state.recipeName,
+        ingredients: this.state.ingredientlist
+      };
 
-      var food = [this.state.recipeName, ingredients];
-      // Send back to page for database entry
+      // Send recipe back up to page to update database
       this.flowup(food);
     }
   }, {
@@ -121,8 +151,11 @@ var UpdateForm = function (_React$Component) {
               i + 1,
               ":\xA0\xA0"
             ),
-            React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i], onChange: function onChange(event) {
+            React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].name : "", onChange: function onChange(event) {
                 return _this2.handleIngredientIChange(i, event.target.value);
+              } }),
+            React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].quantity : "", onChange: function onChange(event) {
+                return _this2.handleIngredientQuantityChange(i, event.target.value);
               } }),
             React.createElement("br", null),
             React.createElement("br", null)

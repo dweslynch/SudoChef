@@ -43,15 +43,26 @@
         if (user) {
           // User is signed in
           $("#display").html(`${user.displayName}'s Grocery List`);
-          var listRef = firebase.database().ref(`lists/${user.uid}`);
+
+          // Grab a reference to the user's list in the database
+          let userRef = firebase.database().ref(`lists/${user.uid}`);
 
           // Render grocery list from data
-          listRef.once('value', function(snapshot) {
+          userRef.once('value').then(function(snapshot) {
             renderList(snapshot.val(), document.getElementById("grocerylist"));
           });
 
           function updateGroceryList(food)
           {
+
+            // Get a key from FireBase for a new food
+            let newDishKey = userRef.push().key;
+            userRef.child(newDishKey).set(food);
+            
+
+            /*
+
+
             // Get name of new dish and grab a reference in the database
             let dishName = food[0];
             let ingredients = food[1];
@@ -59,6 +70,8 @@
 
             // Insert dish in database
             dishRef.set(ingredients);
+
+            */
 
             // Re-render grocery lists
             firebase.database().ref(`lists/${user.uid}`).once('value').then(function(snapshot) {

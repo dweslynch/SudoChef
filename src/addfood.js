@@ -13,6 +13,7 @@ class UpdateForm extends React.Component
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleIngredientQuantityChange = this.handleIngredientQuantityChange.bind(this);
   }
 
   handleNameChange(event)
@@ -31,7 +32,44 @@ class UpdateForm extends React.Component
     this.setState(function(state) {
       // Grab list from state and change name of ingredient
       let _list = [...state.ingredientlist];
-      _list[i] = name;
+
+      // Update name if ingredient exists, otherwise create one
+      if (_list[i])
+      {
+        _list[i].name = name;
+      }
+      else
+      {
+        // Don't set quantity, handleIngredientQuantityChange will do that
+        _list[i] = {
+          name: name
+        };
+      }
+
+      // Return new state
+      return {
+        recipeName: state.recipeName,
+        ingredients: state.ingredients,
+        ingredientlist: _list };
+    });
+  }
+
+  handleIngredientQuantityChange(i, quantity)
+  {
+    this.setState(function(state) {
+      // Grab list from state and change quantity of ingredient
+      let _list = [...state.ingredientlist];
+
+      if (_list[i])
+      {
+        _list[i].quantity = quantity;
+      }
+      else {
+        // Don't set name, handleIngredientIChange will do that
+        _list[i] = {
+          quantity: quantity
+        };
+      }
 
       // Return new state
       return {
@@ -57,16 +95,12 @@ class UpdateForm extends React.Component
     // Prevent reload
     event.preventDefault();
 
-    let ingredients = {};
-    // Add ingredients to object
-    for (let i = 0; i < this.state.ingredients; i++)
-    {
-      // Assume quantity = 1 for now
-      ingredients[this.state.ingredientlist[i]] = 1;
-    }
+    let food = {
+      name: this.state.recipeName,
+      ingredients: this.state.ingredientlist
+    };
 
-    let food = [this.state.recipeName, ingredients];
-    // Send back to page for database entry
+    // Send recipe back up to page to update database
     this.flowup(food);
   }
 
@@ -89,7 +123,8 @@ class UpdateForm extends React.Component
         arr.map(i =>
           <div>
             <label>Ingredient {i + 1}:&nbsp;&nbsp;</label>
-            <input type="text" value={this.state.ingredientlist[i]} onChange={(event) => this.handleIngredientIChange(i, event.target.value)}/>
+            <input type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].name : ""} onChange={(event) => this.handleIngredientIChange(i, event.target.value)}/>
+            <input type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].quantity : ""} onChange={(event) => this.handleIngredientQuantityChange(i, event.target.value)}/>
             <br/><br/>
           </div>
         )
