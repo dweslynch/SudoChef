@@ -9,7 +9,6 @@ function FoodItem(props)
 function GroceryList(props)
 {
   let entries = Object.entries(props.groceries);
-  console.log(entries);
   let outval = entries.map(function(kvp) {
     let [key, value] = kvp;
     return <div>
@@ -19,12 +18,10 @@ function GroceryList(props)
       </ul>
     </div>;
   });
-  console.log(outval);
   return outval;
 }
 
 function renderList(groceries, container)
 {
-  console.log(groceries);
   ReactDOM.render(<GroceryList groceries={groceries}/>, container);
 }

@@ -18,7 +18,6 @@ function FoodItem(props) {
 
 function GroceryList(props) {
   var entries = Object.entries(props.groceries);
-  console.log(entries);
   var outval = entries.map(function (kvp) {
     var _kvp2 = _slicedToArray(kvp, 2),
         key = _kvp2[0],
@@ -39,11 +38,9 @@ function GroceryList(props) {
       )
     );
   });
-  console.log(outval);
   return outval;
 }
 
 function renderList(groceries, container) {
-  console.log(groceries);
   ReactDOM.render(React.createElement(GroceryList, { groceries: groceries }), container);
 }

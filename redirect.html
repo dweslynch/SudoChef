@@ -11,6 +11,7 @@
      <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
 
      <script src="./index.js"></script>
+     <script src="./addfood.js"></script>
 
      <link type="text/css" rel="stylesheet" href="./style/stylesheet.css" />
     <script>
@@ -35,20 +36,39 @@
       <p id="display">Content</p>
     </div>
     <div id="grocerylist"></div>
+    <input id="foodadd" type="button" value="Add Food">
     <script>
+      let uid = "";
 
       // Show grocery list when user is logged in
       firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        $("#display").html(`${user.displayName}'s Grocery List`);
-        var listRef = firebase.database().ref(`lists/${user.uid}`);
-        listRef.on('value', function(snapshot) {
+        if (user) {
+          uid = user.uid;
+          $("#display").html(`${user.displayName}'s Grocery List`);
+          var listRef = firebase.database().ref(`lists/${user.uid}`);
+          listRef.on('value', function(snapshot) {
+            renderList(snapshot.val(), document.getElementById("grocerylist"));
+          });
+        } else {
+          $("#display").html("No User");
+        }
+      });
+
+      function _flowup(food)
+      {
+        let key = Object.keys(food)[0];
+        let listref = firebase.database().ref(`lists/${uid}/${key}`);
+        listref.set(food[key]);
+        //$("grocerylist").html("");
+        firebase.database().ref(`lists/${uid}`).once('value').then(function(snapshot) {
           renderList(snapshot.val(), document.getElementById("grocerylist"));
         });
-      } else {
-        $("#display").html("No User");
       }
-    });
+
+      $("#foodadd").on("click", function(event) {
+        //$("#grocerylist").html("");
+        renderform(_flowup, document.getElementById("grocerylist"));
+      });
     </script>
   </body>
 </html>
