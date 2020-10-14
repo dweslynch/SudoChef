@@ -1,8 +1,10 @@
 function GroceryList(props)
 {
+  // Get list of entries in the user's grocery list
   let recipes = Object.entries(props.groceries);
+
   return recipes.map(function(kvp) {
-    let [_key, recipe] = kvp;
+    let [key, recipe] = kvp;
     let ingredients = Object.entries(recipe.ingredients);
     return <div>
       <h2>{recipe.name}</h2>
@@ -18,23 +20,6 @@ function GroceryList(props)
     </div>;
   });
 }
-
-/*
-function GroceryList(props)
-{
-  let entries = Object.entries(props.groceries);
-  let outval = entries.map(function(kvp) {
-    let [key, value] = kvp;
-    return <div>
-      <h2>{key}</h2>
-      <ul>
-        <FoodItem ingredients={value} />
-      </ul>
-    </div>;
-  });
-  return outval;
-}
-*/
 
 function renderList(groceries, container)
 {
