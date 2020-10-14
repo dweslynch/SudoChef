@@ -23,5 +23,10 @@ function GroceryList(props)
 
 function renderList(groceries, container)
 {
-  ReactDOM.render(<GroceryList groceries={groceries}/>, container);
+  if (groceries) {
+    ReactDOM.render(<GroceryList groceries={groceries}/>, container);
+  }
+  else {
+    ReactDOM.render(<h2>No Entries</h2>, container);
+  }
 }

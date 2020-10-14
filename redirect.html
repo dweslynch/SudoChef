@@ -58,20 +58,6 @@
             // Get a key from FireBase for a new food
             let newDishKey = userRef.push().key;
             userRef.child(newDishKey).set(food);
-            
-
-            /*
-
-
-            // Get name of new dish and grab a reference in the database
-            let dishName = food[0];
-            let ingredients = food[1];
-            let dishRef = firebase.database().ref(`lists/${user.uid}/${dishName}`);
-
-            // Insert dish in database
-            dishRef.set(ingredients);
-
-            */
 
             // Re-render grocery lists
             firebase.database().ref(`lists/${user.uid}`).once('value').then(function(snapshot) {
