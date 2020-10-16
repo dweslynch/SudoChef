@@ -10,7 +10,10 @@
      <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
      <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
 
+     <script src="./viewrecipe.js"></script>
+
      <script src="./listfood.js"></script>
+     <script src="./newrecipe.js"></script>
      <script src="./addfood.js"></script>
 
      <link type="text/css" rel="stylesheet" href="./style/stylesheet.css" />
@@ -32,11 +35,16 @@
   </head>
   <body>
     <div id="intro">
-      <h1>Welcome to the login page</h1>
-      <p id="display"></p>
+      <br/>
+      <h1 id="display">Loading Recipes...</h1>
     </div>
-    <div id="grocerylist"></div>
-    <input id="foodadd" type="button" value="Add Food">
+    <div id="grocerylist">
+      <h2>Loading Recipes...</h2>
+    </div>
+    <br/>
+    <h2 id="newrecipe" class="clickable left slow">Submit New Recipe &rsaquo;</h2>
+    <br/>
+    <h2 id="addrecipe" class="clickable left slow">Add To List &rsaquo;</h2>
     <script>
       // Show grocery list when user is logged in
       firebase.auth().onAuthStateChanged(function(user) {
@@ -46,31 +54,92 @@
 
           // Grab a reference to the user's list in the database
           let userRef = firebase.database().ref(`lists/${user.uid}`);
+          let recipeRef = firebase.database().ref('recipes');
 
-          // Render grocery list from data
-          userRef.once('value').then(function(snapshot) {
-            renderList(snapshot.val(), document.getElementById("grocerylist"));
+          // Create global recipes objects to prevent slow renders
+          let userRecipes = {};
+          let allRecipes = {};
+
+          function renderGroceryList()
+          {
+            // Render grocery list from grecipes
+            renderList(userRecipes, document.getElementById("grocerylist"));
+
+            // Display the add and new buttons
+            $("#newrecipe").css("display", "block");
+            $("#addrecipe").css("display", "block");
+          }
+
+          // Populate the 'allRecipes' list then render initial grocery list
+          recipeRef.once('value').then(function(snapshot) {
+            allRecipes = snapshot.val();
+          }).then(function() {
+            userRef.once('value').then(function(snapshot) {
+              userRecipes = snapshot.val();
+              renderGroceryList();
+            });
           });
 
-          function updateGroceryList(food)
+          // Update allRecipes every time data changes
+          recipeRef.on('value', function(snapshot) {
+            allRecipes = snapshot.val();
+          });
+
+          // Update userRecipes every time user data changes
+          userRef.on('value', function(snapshot) {
+            userRecipes = snapshot.val();
+          });
+
+          function createNewRecipe(food)
           {
-
             // Get a key from FireBase for a new food
-            let newDishKey = userRef.push().key;
-            userRef.child(newDishKey).set(food);
+            let newDishKey = recipeRef.push().key;
 
-            // Re-render grocery lists
-            firebase.database().ref(`lists/${user.uid}`).once('value').then(function(snapshot) {
-              renderList(snapshot.val(), document.getElementById("grocerylist"));
+            // Add identifiers to recipe
+            food.author = user.displayName;
+            food.authorid = user.uid;
+
+            // Update recipe in database and render list
+            recipeRef.child(newDishKey).set(food).then(function() {
+              renderGroceryList();
             });
           }
 
-          $("#foodadd").on("click", function(event) {
-            renderform(updateGroceryList, document.getElementById("grocerylist"));
+          function updateGroceryList(recipeKey)
+          {
+            // Add recipe to user list and rerender
+            recipeRef.child(recipeKey).once('value').then(function(snapshot) {
+              userRef.child(recipeKey).set(snapshot.val()).then(function() {
+                renderGroceryList();
+              });
+            });
+          }
+
+          // Render the new recipe form when the button is clicked
+          $("#newrecipe").on("click", function(event) {
+            // Hide the new and add buttons
+            $("#newrecipe").css("display", "none");
+            $("#addrecipe").css("display", "none");
+
+            // Provide flowup and backtrack to new form
+            renderNewRecipeForm(createNewRecipe, renderGroceryList, document.getElementById("grocerylist"));
           });
 
-        } else {
+          // Render the add recipe form when the button is clicked
+          $("#addrecipe").on("click", function(event) {
+            // Hide the new and add buttons
+            $("#newrecipe").css("display", "none");
+            $("#addrecipe").css("display", "none");
+
+            // Pass global recipe list onto the react form with flowup and backtrack functions
+            renderAddRecipeForm(updateGroceryList, renderGroceryList, allRecipes, document.getElementById("grocerylist"));
+          });
+
+        }
+        else
+        {
           $("#display").html("<a href='./index.html'>Sign in</a> to view your grocery list");
+          $("#grocerylist").html("<h2>No Entries</h2>");
         }
       });
     </script>

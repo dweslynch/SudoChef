@@ -3,6 +3,12 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 function GroceryList(props) {
   // Get list of entries in the user's grocery list
   var recipes = Object.entries(props.groceries);
+  var container = props.container;
+
+  // Allows individual RecipeView's to get back to this list
+  function backtrack(event) {
+    renderList(props.groceries, container);
+  }
 
   return recipes.map(function (kvp) {
     var _kvp2 = _slicedToArray(kvp, 2),
@@ -15,8 +21,11 @@ function GroceryList(props) {
       null,
       React.createElement(
         "h2",
-        null,
-        recipe.name
+        { className: "clickable", onClick: function onClick(event) {
+            return renderRecipeView(recipe, backtrack, props.container);
+          } },
+        recipe.name,
+        "\xA0\u203A"
       ),
       React.createElement(
         "ul",
@@ -41,7 +50,7 @@ function GroceryList(props) {
 
 function renderList(groceries, container) {
   if (groceries) {
-    ReactDOM.render(React.createElement(GroceryList, { groceries: groceries }), container);
+    ReactDOM.render(React.createElement(GroceryList, { groceries: groceries, container: container }), container);
   } else {
     ReactDOM.render(React.createElement(
       "h2",

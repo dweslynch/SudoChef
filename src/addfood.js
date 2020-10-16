@@ -1,4 +1,4 @@
-class UpdateForm extends React.Component
+class AddRecipeForm extends React.Component
 {
   constructor(props)
   {
@@ -6,87 +6,31 @@ class UpdateForm extends React.Component
 
     // Allows the form to submit groceries to the database
     this.flowup = props.flowup;
+    this.recipes = props.recipes;
+    this.backtrack = props.backtrack;
+    console.log(this.recipes);
 
-    this.state = { recipeName: "", ingredients: 1, ingredientlist: []};
+    this.state = { selectedvalue: "", selectedkey: ""};
 
     // Bind event handlers
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleOptionClick = this.handleOptionClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleIngredientQuantityChange = this.handleIngredientQuantityChange.bind(this);
   }
 
-  handleNameChange(event)
+  handleOptionClick(event)
   {
+    console.log(event.target.value);
     const val = event.target.value; // Have to grab value because the callback erases it
     this.setState(function(state) {
-      return {
-        recipeName: val,
-        ingredients: state.ingredients,
-        ingredientlist: state.ingredientlist };
-    });
-  }
+      // Clone state
+      let clone = {...state};
 
-  handleIngredientIChange(i, name)
-  {
-    this.setState(function(state) {
-      // Grab list from state and change name of ingredient
-      let _list = [...state.ingredientlist];
-
-      // Update name if ingredient exists, otherwise create one
-      if (_list[i])
-      {
-        _list[i].name = name;
-      }
-      else
-      {
-        // Don't set quantity, handleIngredientQuantityChange will do that
-        _list[i] = {
-          name: name
-        };
-      }
+      // Change selected key and value
+      clone.selectedkey = val;
+      clone.selectedvalue = this.recipes[val].name;
 
       // Return new state
-      return {
-        recipeName: state.recipeName,
-        ingredients: state.ingredients,
-        ingredientlist: _list };
-    });
-  }
-
-  handleIngredientQuantityChange(i, quantity)
-  {
-    this.setState(function(state) {
-      // Grab list from state and change quantity of ingredient
-      let _list = [...state.ingredientlist];
-
-      if (_list[i])
-      {
-        _list[i].quantity = quantity;
-      }
-      else {
-        // Don't set name, handleIngredientIChange will do that
-        _list[i] = {
-          quantity: quantity
-        };
-      }
-
-      // Return new state
-      return {
-        recipeName: state.recipeName,
-        ingredients: state.ingredients,
-        ingredientlist: _list };
-    });
-  }
-
-  handleButtonClick(event)
-  {
-    // Add a new ingredient slot
-    this.setState(function(state) {
-      return {
-        recipeName: state.recipeName,
-        ingredients: state.ingredients + 1,
-        ingredientlist: state.ingredientlist };
+      return clone;
     });
   }
 
@@ -94,48 +38,31 @@ class UpdateForm extends React.Component
   {
     // Prevent reload
     event.preventDefault();
-
-    let food = {
-      name: this.state.recipeName,
-      ingredients: this.state.ingredientlist
-    };
-
-    // Send recipe back up to page to update database
-    this.flowup(food);
+    console.log(this.state.selectedkey);
+    this.flowup(this.state.selectedkey);
   }
 
   render()
   {
-    // let arr = [1..this.state.ingredients]
-    let arr = [];
-    for (let i = 0; i < this.state.ingredients; i++)
-    {
-      arr.push(i);
-    }
-
-    return <form onSubmit={this.handleSubmit}>
+    return <form onSubmit = {this.handleSubmit}>
       <h2>Add Recipe</h2>
-      <label>Recipe Name:</label>
       <br/>
-      <input type="text" value={this.state.recipeName} onChange={this.handleNameChange}/>
+      <label>Select Recipe:&nbsp;&nbsp;</label>
+      <select value={this.state.selectedvalue} onChange={this.handleOptionClick}>
+        {
+          Object.keys(this.recipes).map(k =>
+            <option value={k}>{this.recipes[k].name} by {this.recipes[k].author}</option>
+          )
+        }
+      </select>
       <br/><br/>
-      {
-        arr.map(i =>
-          <div>
-            <label>Ingredient {i + 1}:&nbsp;&nbsp;</label>
-            <input type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].name : ""} onChange={(event) => this.handleIngredientIChange(i, event.target.value)}/>
-            <input type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].quantity : ""} onChange={(event) => this.handleIngredientQuantityChange(i, event.target.value)}/>
-            <br/><br/>
-          </div>
-        )
-      }
-      <input type="button" value="Add Ingredient" onClick={this.handleButtonClick}/>
       <input type="submit" value="Submit"/>
+      <h2 className="clickable" onClick={(event) => this.backtrack()}>Return to My Recipes&nbsp;&rsaquo;</h2>
     </form>;
   }
 }
 
-function renderform(flowup, container)
+function renderAddRecipeForm(flowup, backtrack, recipes, container)
 {
-  ReactDOM.render(<UpdateForm flowup={flowup} />, container);
+  ReactDOM.render(<AddRecipeForm flowup={flowup} recipes={recipes} backtrack={backtrack}/>, container);
 }
