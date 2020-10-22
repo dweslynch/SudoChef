@@ -17,6 +17,7 @@ class NewRecipeForm extends React.Component
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleIngredientQuantityChange = this.handleIngredientQuantityChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleUnitChange = this.handleUnitChange.bind(this);
   }
 
   handleNameChange(event)
@@ -35,6 +36,30 @@ class NewRecipeForm extends React.Component
     this.setState(function(state) {
       let clone = {...state};
       clone.description = val;
+      return clone;
+    });
+  }
+
+  handleUnitChange(i, units)
+  {
+    this.setState(function(state) {
+      // Grab list from state and change units of ingredient
+      let _list = [...state.ingredientlist];
+
+      if (_list[i])
+      {
+        _list[i].units = units;
+      }
+      else {
+        // Don't set name, handleIngredientIChange will do that
+        _list[i] = {
+          units: units
+        };
+      }
+
+      // Return new state
+      let clone = {...state};
+      clone.ingredientlist = _list;
       return clone;
     });
   }
@@ -105,7 +130,7 @@ class NewRecipeForm extends React.Component
     this.setState(function(state) {
       let clone = {...state};
       clone.ingredients = clone.ingredients - 1;
-      clone.ingredientlist = clone.ingredientlist.splice(i, 1);
+      clone.ingredientlist.splice(i, 1);
       return clone;
     });
   }
@@ -145,7 +170,18 @@ class NewRecipeForm extends React.Component
           <div>
             <label>Ingredient {i + 1}:&nbsp;&nbsp;</label>
             <input type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].name : ""} onChange={(event) => this.handleIngredientIChange(i, event.target.value)}/>
-            <input type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].quantity : ""} onChange={(event) => this.handleIngredientQuantityChange(i, event.target.value)}/>
+            &nbsp;&nbsp;
+            <input style={{"width": "50px"}} type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].quantity : ""} onChange={(event) => this.handleIngredientQuantityChange(i, event.target.value)}/>
+            &nbsp;&nbsp;
+            <select value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].units : ""} onChange={(event) => this.handleUnitChange(i, event.target.value)}>
+              <option selected value=""> </option>
+              <option value="tsp">tsp</option>
+              <option value="Tbsp">Tbsp</option>
+              <option value="cups">Cup(s)</option>
+              <option value="oz">oz</option>
+              <option value="mL">mL</option>
+              <option value="L">Liter(s)</option>
+            </select>
             <input style={{"background-color": "rgba(0,0,0,0)", border: "none"}} className="clickable" type="button" value="X" onClick={(event) => this.handleRemoveIngredientButtonClick(i)}/>
             <br/><br/>
           </div>

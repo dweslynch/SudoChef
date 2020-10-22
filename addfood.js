@@ -74,7 +74,7 @@ var AddRecipeForm = function (_React$Component) {
         ),
         React.createElement(
           "select",
-          { value: this.state.selectedvalue, onChange: this.handleOptionClick },
+          { value: this.state.selectedkey, onChange: this.handleOptionClick },
           Object.keys(this.recipes).map(function (k) {
             return React.createElement(
               "option",

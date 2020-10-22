@@ -19,7 +19,7 @@ function GroceryList(props)
         {
           ingredients.map(function(_kvp) {
               let [_key, ingredient] = _kvp;
-              return <li>{ingredient.name}:&nbsp;&nbsp;{ingredient.quantity}</li>;
+              return <li>{ingredient.name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</li>;
             }
           )
         }

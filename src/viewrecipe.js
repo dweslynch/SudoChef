@@ -11,7 +11,7 @@ function RecipeView(props)
         ingredients.map(function(kvp)
         {
           let [key, ingredient] = kvp;
-          return <li>{ingredient.name}:&nbsp;&nbsp;{ingredient.quantity}</li>;
+          return <li>{ingredient.name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</li>;
         })
       }
     </ul>

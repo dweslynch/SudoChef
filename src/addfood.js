@@ -48,7 +48,7 @@ class AddRecipeForm extends React.Component
       <h2>Add Recipe</h2>
       <br/>
       <label>Select Recipe:&nbsp;&nbsp;</label>
-      <select value={this.state.selectedvalue} onChange={this.handleOptionClick}>
+      <select value={this.state.selectedkey} onChange={this.handleOptionClick}>
         {
           Object.keys(this.recipes).map(k =>
             <option value={k}>{this.recipes[k].name} by {this.recipes[k].author}</option>

@@ -29,6 +29,7 @@ var NewRecipeForm = function (_React$Component) {
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     _this.handleIngredientQuantityChange = _this.handleIngredientQuantityChange.bind(_this);
     _this.handleDescriptionChange = _this.handleDescriptionChange.bind(_this);
+    _this.handleUnitChange = _this.handleUnitChange.bind(_this);
     return _this;
   }
 
@@ -49,6 +50,28 @@ var NewRecipeForm = function (_React$Component) {
       this.setState(function (state) {
         var clone = Object.assign({}, state);
         clone.description = val;
+        return clone;
+      });
+    }
+  }, {
+    key: "handleUnitChange",
+    value: function handleUnitChange(i, units) {
+      this.setState(function (state) {
+        // Grab list from state and change units of ingredient
+        var _list = [].concat(_toConsumableArray(state.ingredientlist));
+
+        if (_list[i]) {
+          _list[i].units = units;
+        } else {
+          // Don't set name, handleIngredientIChange will do that
+          _list[i] = {
+            units: units
+          };
+        }
+
+        // Return new state
+        var clone = Object.assign({}, state);
+        clone.ingredientlist = _list;
         return clone;
       });
     }
@@ -114,7 +137,7 @@ var NewRecipeForm = function (_React$Component) {
       this.setState(function (state) {
         var clone = Object.assign({}, state);
         clone.ingredients = clone.ingredients - 1;
-        clone.ingredientlist = clone.ingredientlist.splice(i, 1);
+        clone.ingredientlist.splice(i, 1);
         return clone;
       });
     }
@@ -175,9 +198,52 @@ var NewRecipeForm = function (_React$Component) {
             React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].name : "", onChange: function onChange(event) {
                 return _this2.handleIngredientIChange(i, event.target.value);
               } }),
-            React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].quantity : "", onChange: function onChange(event) {
+            "\xA0\xA0",
+            React.createElement("input", { style: { "width": "50px" }, type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].quantity : "", onChange: function onChange(event) {
                 return _this2.handleIngredientQuantityChange(i, event.target.value);
               } }),
+            "\xA0\xA0",
+            React.createElement(
+              "select",
+              { value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].units : "", onChange: function onChange(event) {
+                  return _this2.handleUnitChange(i, event.target.value);
+                } },
+              React.createElement(
+                "option",
+                { selected: true, value: "" },
+                " "
+              ),
+              React.createElement(
+                "option",
+                { value: "tsp" },
+                "tsp"
+              ),
+              React.createElement(
+                "option",
+                { value: "Tbsp" },
+                "Tbsp"
+              ),
+              React.createElement(
+                "option",
+                { value: "cups" },
+                "Cup(s)"
+              ),
+              React.createElement(
+                "option",
+                { value: "oz" },
+                "oz"
+              ),
+              React.createElement(
+                "option",
+                { value: "mL" },
+                "mL"
+              ),
+              React.createElement(
+                "option",
+                { value: "L" },
+                "Liter(s)"
+              )
+            ),
             React.createElement("input", { style: { "background-color": "rgba(0,0,0,0)", border: "none" }, className: "clickable", type: "button", value: "X", onClick: function onClick(event) {
                 return _this2.handleRemoveIngredientButtonClick(i);
               } }),

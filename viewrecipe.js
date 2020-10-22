@@ -28,7 +28,9 @@ function RecipeView(props) {
           null,
           ingredient.name,
           ":\xA0\xA0",
-          ingredient.quantity
+          ingredient.quantity,
+          "\xA0",
+          ingredient.units
         );
       })
     ),
