@@ -22,7 +22,7 @@ function GroceryList(props) {
       React.createElement(
         "h2",
         { className: "clickable", onClick: function onClick(event) {
-            return renderRecipeView(recipe, backtrack, props.container);
+            return renderRecipeView(recipe, backtrack, "Return to My Recipes", props.container);
           } },
         recipe.name,
         "\xA0\u203A"

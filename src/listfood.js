@@ -14,7 +14,7 @@ function GroceryList(props)
     let [key, recipe] = kvp;
     let ingredients = Object.entries(recipe.ingredients);
     return <div>
-      <h2 className="clickable" onClick={(event) => renderRecipeView(recipe, backtrack, props.container)}>{recipe.name}&nbsp;&rsaquo;</h2>
+      <h2 className="clickable" onClick={(event) => renderRecipeView(recipe, backtrack, "Return to My Recipes", props.container)}>{recipe.name}&nbsp;&rsaquo;</h2>
       <ul>
         {
           ingredients.map(function(_kvp) {

@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <title>Find A Recipe</title>
+        <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-database.js"></script>
+
+        <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+
+        <script src="./viewrecipe.js"></script>
+        <script src="./findrecipe.js"></script>
+        <script src="./newrecipe.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="./style/stylesheet.css" />
+        <script>
+            var firebaseConfig = {
+                apiKey: "AIzaSyCPpZJJ5xm8wevrmdy9zB7k_dc_8wyXww0",
+                authDomain: "authtest-af1e0.firebaseapp.com",
+                databaseURL: "https://authtest-af1e0.firebaseio.com",
+                projectId: "authtest-af1e0",
+                storageBucket: "authtest-af1e0.appspot.com",
+                messagingSenderId: "483513788016",
+                appId: "1:483513788016:web:cf2898648d3b9c15bcb6b5",
+                measurementId: "G-936C46KKLS"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            var database = firebase.database();
+        </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="menuicons">
+                <span id="newrecipe" class="clickable slow">+&nbsp;</span>
+                <span id="viewprofile" class="clickable slow">&cirmid;&nbsp;</span>
+            </div>
+            <h1></h1>
+            <div id="search-container"></div>
+            <div id="grocerylist"></div>
+        </div>
+        <script>
+
+            function hideAllContainers()
+            {
+                $("#grocerylist").css("display", "none");
+                $("#search-container").css("display", "none");
+            }
+
+            $("#grocerylist").css("display", "none");
+
+            // Show grocery list when user is logged in
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user)
+                {
+                    // Grab a reference to the user's list in the database
+                    let userRef = firebase.database().ref(`lists/${user.uid}`);
+                    let recipeRef = firebase.database().ref('recipes');
+
+                    // Create global recipes objects to prevent slow renders
+                    let userRecipes = {};
+                    let allRecipes = {};
+
+                    // Is the menu bar active?
+                    let sideMenuBarActive = false;
+
+                    // Render a view of a single recipe
+                    function viewRecipe(key)
+                    {
+                        const recipe = allRecipes[key];
+                        // Render the recipe view with a backtrack function to render the RecipeFinder when exiting
+                        renderRecipeView(recipe, viewRecipeFinder, "Return to Find Recipes", document.getElementById("grocerylist"));
+
+                        // Display proper content
+                        $("#search-container").css("display", "none");
+                        $("#grocerylist").css("display", "block");
+                    }
+
+                    // Handles the submission of a new recipe
+                    function createNewRecipe(food)
+                    {
+                        // Get a key from FireBase for a new food
+                        let newDishKey = recipeRef.push().key;
+
+                        // Add identifiers to recipe
+                        food.author = user.displayName;
+                        food.authorid = user.uid;
+
+                        // Update recipe in database and re-render the recipe finder
+                        recipeRef.child(newDishKey).set(food).then(function() {
+                            viewRecipeFinder();
+                        });
+                    }
+
+                    function viewRecipeFinder()
+                    {
+                        renderRecipeFinder(viewRecipe, allRecipes, document.getElementById("search-container"));
+                        $("#grocerylist").css("display", "none");
+                        $("#search-container").css("display", "block");
+                    }
+
+                    // Populate the 'allRecipes' list
+                    recipeRef.once('value').then(function(snapshot) {
+                        allRecipes = snapshot.val();
+                        viewRecipeFinder();
+                    });
+
+                    // Update allRecipes every time data changes
+                    recipeRef.on('value', function(snapshot) {
+                        allRecipes = snapshot.val();
+                    });
+
+                    $("#newrecipe").on("click", function(event) {
+                        renderNewRecipeForm(createNewRecipe, viewRecipeFinder, document.getElementById("grocerylist"));
+                        $("#search-container").css("display", "none");
+                        $("#grocerylist").css("display", "block");
+                    });
+
+                }
+                else
+                {
+                }
+            });
+        </script>
+    </body>
+</html>

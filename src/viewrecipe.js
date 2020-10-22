@@ -2,6 +2,7 @@ function RecipeView(props)
 {
   const recipe = props.recipe;
   const backtrack = props.backtrack;
+  const returnPrompt = props.prompt;
   const ingredients = Object.entries(recipe.ingredients);
 
   return <div>
@@ -17,11 +18,11 @@ function RecipeView(props)
     </ul>
     <h2>Instructions:</h2>
     <p>{recipe.description}</p>
-    <h2 className="clickable" onClick={backtrack}>Return to My Recipes&nbsp;&rsaquo;</h2>
+    <h2 className="clickable" onClick={backtrack}>{returnPrompt}&nbsp;&rsaquo;</h2>
   </div>;
 }
 
-function renderRecipeView(recipe, backtrack, container)
+function renderRecipeView(recipe, backtrack, returnPrompt, container)
 {
-  ReactDOM.render(<RecipeView recipe={recipe} backtrack={backtrack}/>, container);
+  ReactDOM.render(<RecipeView recipe={recipe} prompt={returnPrompt} backtrack={backtrack}/>, container);
 }

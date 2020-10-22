@@ -3,6 +3,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 function RecipeView(props) {
   var recipe = props.recipe;
   var backtrack = props.backtrack;
+  var returnPrompt = props.prompt;
   var ingredients = Object.entries(recipe.ingredients);
 
   return React.createElement(
@@ -47,11 +48,12 @@ function RecipeView(props) {
     React.createElement(
       "h2",
       { className: "clickable", onClick: backtrack },
-      "Return to My Recipes\xA0\u203A"
+      returnPrompt,
+      "\xA0\u203A"
     )
   );
 }
 
-function renderRecipeView(recipe, backtrack, container) {
-  ReactDOM.render(React.createElement(RecipeView, { recipe: recipe, backtrack: backtrack }), container);
+function renderRecipeView(recipe, backtrack, returnPrompt, container) {
+  ReactDOM.render(React.createElement(RecipeView, { recipe: recipe, prompt: returnPrompt, backtrack: backtrack }), container);
 }
