@@ -13,6 +13,7 @@
         <script src="./viewrecipe.js"></script>
         <script src="./findrecipe.js"></script>
         <script src="./newrecipe.js"></script>
+        <script src="./listfood.js"></script>
 
         <link type="text/css" rel="stylesheet" href="./style/stylesheet.css" />
         <script>
@@ -105,6 +106,10 @@
                     recipeRef.once('value').then(function(snapshot) {
                         allRecipes = snapshot.val();
                         viewRecipeFinder();
+                    }).then(function() {
+                        userRef.once('value').then(function(snapshot) {
+                            userRecipes = snapshot.val();
+                        });
                     });
 
                     // Update allRecipes every time data changes
@@ -112,8 +117,19 @@
                         allRecipes = snapshot.val();
                     });
 
+                    // Update userRecipes everyt time data changes
+                    userRef.on('value', function(snapshot) {
+                        userRecipes = snapshot.val();
+                    });
+
                     $("#newrecipe").on("click", function(event) {
                         renderNewRecipeForm(createNewRecipe, viewRecipeFinder, document.getElementById("grocerylist"));
+                        $("#search-container").css("display", "none");
+                        $("#grocerylist").css("display", "block");
+                    });
+
+                    $("#viewprofile").on("click", function(event) {
+                        renderList(userRecipes, document.getElementById("grocerylist"));
                         $("#search-container").css("display", "none");
                         $("#grocerylist").css("display", "block");
                     });
