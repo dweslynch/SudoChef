@@ -68,9 +68,7 @@ function Suggestions(props)
     */
 
     return matches.slice(0, 10).map(recipe =>
-        <div className="autocomplete-suggestion" onClick={(event) => {flowup(recipe)}}>
-            {recipe.name} by {recipe.author}
-        </div>
+        <AutoCompleteSuggestion recipe={recipe} flowup={flowup}/>
     );
 }
 

@@ -74,15 +74,7 @@ function Suggestions(props) {
     */
 
     return matches.slice(0, 10).map(function (recipe) {
-        return React.createElement(
-            "div",
-            { className: "autocomplete-suggestion", onClick: function onClick(event) {
-                    flowup(recipe);
-                } },
-            recipe.name,
-            " by ",
-            recipe.author
-        );
+        return React.createElement(AutoCompleteSuggestion, { recipe: recipe, flowup: flowup });
     });
 }
 
