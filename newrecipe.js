@@ -19,6 +19,8 @@ var NewRecipeForm = function (_React$Component) {
 
     _this.flowup = props.flowup;
     _this.backtrack = props.backtrack;
+    _this.recipeRef = props.recipeRef;
+    _this.user = props.user;
 
     _this.state = { recipeName: "", ingredients: 1, ingredientlist: [], description: "" };
 
@@ -37,21 +39,13 @@ var NewRecipeForm = function (_React$Component) {
     key: "handleNameChange",
     value: function handleNameChange(event) {
       var val = event.target.value; // Have to grab value because the callback erases it
-      this.setState(function (state) {
-        var clone = Object.assign({}, state);
-        clone.recipeName = val;
-        return clone;
-      });
+      this.setState({ recipeName: val });
     }
   }, {
     key: "handleDescriptionChange",
     value: function handleDescriptionChange(event) {
       var val = event.target.value;
-      this.setState(function (state) {
-        var clone = Object.assign({}, state);
-        clone.description = val;
-        return clone;
-      });
+      this.setState({ description: val });
     }
   }, {
     key: "handleUnitChange",
@@ -150,11 +144,19 @@ var NewRecipeForm = function (_React$Component) {
       var food = {
         name: this.state.recipeName,
         ingredients: this.state.ingredientlist,
-        description: this.state.description
+        description: this.state.description,
+        author: this.user.displayName,
+        authorid: this.user.uid
       };
 
       // Send recipe back up to page to update database
-      this.flowup(food);
+      //this.flowup(food);
+
+      // Get a key from Firebase for a new food
+      var newDishKey = this.recipeRef.child(this.user.uid).push().key;
+
+      // Push new recipe to database and rerender recipe finder
+      this.recipeRef.child(this.user.uid).child(newDishKey).set(food).then(this.backtrack);
     }
   }, {
     key: "render",
@@ -278,6 +280,6 @@ var NewRecipeForm = function (_React$Component) {
   return NewRecipeForm;
 }(React.Component);
 
-function renderNewRecipeForm(flowup, backtrack, container) {
-  ReactDOM.render(React.createElement(NewRecipeForm, { flowup: flowup, backtrack: backtrack }), container);
+function renderNewRecipeForm(user, recipeRef, backtrack, container) {
+  ReactDOM.render(React.createElement(NewRecipeForm, { user: user, recipeRef: recipeRef, backtrack: backtrack }), container);
 }

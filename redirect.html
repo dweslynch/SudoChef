@@ -93,14 +93,15 @@
           function createNewRecipe(food)
           {
             // Get a key from FireBase for a new food
-            let newDishKey = recipeRef.push().key;
+            //let newDishKey = recipeRef.push().key;
+            let newDishKey = recipeRef.child(user.uid).push().key;
 
             // Add identifiers to recipe
             food.author = user.displayName;
             food.authorid = user.uid;
 
             // Update recipe in database and render list
-            recipeRef.child(newDishKey).set(food).then(function() {
+            recipeRef.child(user.uid).child(newDishKey).set(food).then(function() {
               renderGroceryList();
             });
           }

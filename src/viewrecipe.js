@@ -24,5 +24,6 @@ function RecipeView(props)
 
 function renderRecipeView(recipe, backtrack, returnPrompt, container)
 {
+  console.log(container);
   ReactDOM.render(<RecipeView recipe={recipe} prompt={returnPrompt} backtrack={backtrack}/>, container);
 }

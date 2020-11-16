@@ -16,26 +16,41 @@ function Suggestions(props)
 
     let matches = [];
 
-    for (key in recipes)
+    for (uid in recipes)
     {
-        console.log(key);
-        const uRecipe = recipes[key].name.toUpperCase();
-        const uQuery = query.toUpperCase();
+        const userRecipes = recipes[uid];
+        for (key in userRecipes)
+        {
+            const uRecipe = userRecipes[key].name.toUpperCase();
+            const uQuery = query.toUpperCase();
 
-        if (uQuery.includes(" "))
-        {
-            // If the query has multiple words, check if recipe name includes query directly
-            if (uRecipe.includes(uQuery))
+            if (uQuery.includes(" "))
             {
-                matches.push(key);
+                // If the query has multiple words, check if recipe name includes query directly
+                if (uRecipe.includes(uQuery))
+                {
+                    matches.push(userRecipes[key]);
+                    /*
+                    matches.push({
+                        uid: uid,
+                        key: key
+                    });
+                    */
+                }
             }
-        }
-        else
-        {
-            // Otherwise, does a word in the recipe start with the query?
-            if (uRecipe.split(" ").some(x => x.startsWith(uQuery)))
+            else
             {
-                matches.push(key);
+                // Otherwise, does a word in the recipe start with the query?
+                if (uRecipe.split(" ").some(x => x.startsWith(uQuery)))
+                {
+                    matches.push(userRecipes[key]);
+                    /*
+                    matches.push({
+                        uid: uid,
+                        key: key
+                    });
+                    */
+                }
             }
         }
     }
@@ -44,9 +59,17 @@ function Suggestions(props)
 
     // Only deal with maximum 10 matches
     // Will eventually sort by recipe score
-    return matches.slice(0, 10).map(key =>
-        <div className="autocomplete-suggestion" onClick={(event) => flowup(key)}>
-            {recipes[key].name} by {recipes[key].author}
+    /*
+    return matches.slice(0, 10).map(identifier =>
+        <div className="autocomplete-suggestion" onClick={(event) => flowup(identifier.uid, identifier.key)}>
+            {recipes[identifier.uid][identifier.key].name} by {recipes[identifier.uid][identifier.key].author}
+        </div>
+    );
+    */
+
+    return matches.slice(0, 10).map(recipe =>
+        <div className="autocomplete-suggestion" onClick={(event) => {flowup(recipe)}}>
+            {recipe.name} by {recipe.author}
         </div>
     );
 }
@@ -56,12 +79,22 @@ class RecipeFinder extends React.Component
     constructor(props)
     {
         super(props);
-        this.recipes = props.recipes;
+        this.recipeRef = props.recipeRef;
         this.submit = props.submit;
 
-        this.state = { query: "" };
+        this.state = {
+            query: "",
+            recipes: {}
+        };
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
+        this.updateStateFromSnapshot = this.updateStateFromSnapshot.bind(this);
+    }
+
+    componentDidMount()
+    {
+        this.recipeRef.once('value').then(this.updateStateFromSnapshot);
+        this.recipeRef.on('value', this.updateStateFromSnapshot);
     }
 
     handleQueryChange(event)
@@ -69,17 +102,22 @@ class RecipeFinder extends React.Component
         this.setState({query: event.target.value});
     }
 
+    updateStateFromSnapshot(snapshot)
+    {
+        this.setState({ recipes: snapshot.val() });
+    }
+
     render()
     {
         return <div id="autocomplete-container">
             <h1><br/><br/><br/></h1>
             <input id="autocomplete" value={this.state.query} placeholder="Find A Recipe" onChange={this.handleQueryChange}/>
-            <Suggestions className="autocomplete-suggestions-container" query={this.state.query}  recipes={this.recipes} flowup={this.submit}/>
+            <Suggestions className="autocomplete-suggestions-container" query={this.state.query}  recipes={this.state.recipes} flowup={this.submit}/>
         </div>;
     }
 }
 
-function renderRecipeFinder(submit, recipes, container)
+function renderRecipeFinder(submit, recipeRef, container)
 {
-    ReactDOM.render(<RecipeFinder recipes={recipes} submit={submit}/>, container);
+    ReactDOM.render(<RecipeFinder recipeRef={recipeRef} submit={submit}/>, container);
 }

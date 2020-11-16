@@ -22,43 +22,66 @@ function Suggestions(props) {
 
     var matches = [];
 
-    var _loop = function _loop() {
-        console.log(key);
-        var uRecipe = recipes[key].name.toUpperCase();
-        var uQuery = query.toUpperCase();
+    for (uid in recipes) {
+        var userRecipes = recipes[uid];
 
-        if (uQuery.includes(" ")) {
-            // If the query has multiple words, check if recipe name includes query directly
-            if (uRecipe.includes(uQuery)) {
-                matches.push(key);
+        var _loop = function _loop() {
+            var uRecipe = userRecipes[key].name.toUpperCase();
+            var uQuery = query.toUpperCase();
+
+            if (uQuery.includes(" ")) {
+                // If the query has multiple words, check if recipe name includes query directly
+                if (uRecipe.includes(uQuery)) {
+                    matches.push(userRecipes[key]);
+                    /*
+                    matches.push({
+                        uid: uid,
+                        key: key
+                    });
+                    */
+                }
+            } else {
+                // Otherwise, does a word in the recipe start with the query?
+                if (uRecipe.split(" ").some(function (x) {
+                    return x.startsWith(uQuery);
+                })) {
+                    matches.push(userRecipes[key]);
+                    /*
+                    matches.push({
+                        uid: uid,
+                        key: key
+                    });
+                    */
+                }
             }
-        } else {
-            // Otherwise, does a word in the recipe start with the query?
-            if (uRecipe.split(" ").some(function (x) {
-                return x.startsWith(uQuery);
-            })) {
-                matches.push(key);
-            }
+        };
+
+        for (key in userRecipes) {
+            _loop();
         }
-    };
-
-    for (key in recipes) {
-        _loop();
     }
 
     console.log(matches);
 
     // Only deal with maximum 10 matches
     // Will eventually sort by recipe score
-    return matches.slice(0, 10).map(function (key) {
+    /*
+    return matches.slice(0, 10).map(identifier =>
+        <div className="autocomplete-suggestion" onClick={(event) => flowup(identifier.uid, identifier.key)}>
+            {recipes[identifier.uid][identifier.key].name} by {recipes[identifier.uid][identifier.key].author}
+        </div>
+    );
+    */
+
+    return matches.slice(0, 10).map(function (recipe) {
         return React.createElement(
             "div",
             { className: "autocomplete-suggestion", onClick: function onClick(event) {
-                    return flowup(key);
+                    flowup(recipe);
                 } },
-            recipes[key].name,
+            recipe.name,
             " by ",
-            recipes[key].author
+            recipe.author
         );
     });
 }
@@ -71,19 +94,34 @@ var RecipeFinder = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (RecipeFinder.__proto__ || Object.getPrototypeOf(RecipeFinder)).call(this, props));
 
-        _this.recipes = props.recipes;
+        _this.recipeRef = props.recipeRef;
         _this.submit = props.submit;
 
-        _this.state = { query: "" };
+        _this.state = {
+            query: "",
+            recipes: {}
+        };
 
         _this.handleQueryChange = _this.handleQueryChange.bind(_this);
+        _this.updateStateFromSnapshot = _this.updateStateFromSnapshot.bind(_this);
         return _this;
     }
 
     _createClass(RecipeFinder, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.recipeRef.once('value').then(this.updateStateFromSnapshot);
+            this.recipeRef.on('value', this.updateStateFromSnapshot);
+        }
+    }, {
         key: "handleQueryChange",
         value: function handleQueryChange(event) {
             this.setState({ query: event.target.value });
+        }
+    }, {
+        key: "updateStateFromSnapshot",
+        value: function updateStateFromSnapshot(snapshot) {
+            this.setState({ recipes: snapshot.val() });
         }
     }, {
         key: "render",
@@ -99,7 +137,7 @@ var RecipeFinder = function (_React$Component) {
                     React.createElement("br", null)
                 ),
                 React.createElement("input", { id: "autocomplete", value: this.state.query, placeholder: "Find A Recipe", onChange: this.handleQueryChange }),
-                React.createElement(Suggestions, { className: "autocomplete-suggestions-container", query: this.state.query, recipes: this.recipes, flowup: this.submit })
+                React.createElement(Suggestions, { className: "autocomplete-suggestions-container", query: this.state.query, recipes: this.state.recipes, flowup: this.submit })
             );
         }
     }]);
@@ -107,6 +145,6 @@ var RecipeFinder = function (_React$Component) {
     return RecipeFinder;
 }(React.Component);
 
-function renderRecipeFinder(submit, recipes, container) {
-    ReactDOM.render(React.createElement(RecipeFinder, { recipes: recipes, submit: submit }), container);
+function renderRecipeFinder(submit, recipeRef, container) {
+    ReactDOM.render(React.createElement(RecipeFinder, { recipeRef: recipeRef, submit: submit }), container);
 }

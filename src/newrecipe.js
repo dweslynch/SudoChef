@@ -7,6 +7,8 @@ class NewRecipeForm extends React.Component
     // Allows the form to submit groceries to the database
     this.flowup = props.flowup;
     this.backtrack = props.backtrack;
+    this.recipeRef = props.recipeRef;
+    this.user = props.user;
 
     this.state = { recipeName: "", ingredients: 1, ingredientlist: [], description: ""};
 
@@ -23,21 +25,13 @@ class NewRecipeForm extends React.Component
   handleNameChange(event)
   {
     const val = event.target.value; // Have to grab value because the callback erases it
-    this.setState(function(state) {
-      let clone = {...state};
-      clone.recipeName = val;
-      return clone;
-    });
+    this.setState({ recipeName: val });
   }
 
   handleDescriptionChange(event)
   {
     const val = event.target.value;
-    this.setState(function(state) {
-      let clone = {...state};
-      clone.description = val;
-      return clone;
-    });
+    this.setState({ description: val });
   }
 
   handleUnitChange(i, units)
@@ -143,11 +137,19 @@ class NewRecipeForm extends React.Component
     let food = {
       name: this.state.recipeName,
       ingredients: this.state.ingredientlist,
-      description: this.state.description
+      description: this.state.description,
+      author: this.user.displayName,
+      authorid: this.user.uid
     };
 
     // Send recipe back up to page to update database
-    this.flowup(food);
+    //this.flowup(food);
+
+    // Get a key from Firebase for a new food
+    let newDishKey = this.recipeRef.child(this.user.uid).push().key;
+
+    // Push new recipe to database and rerender recipe finder
+    this.recipeRef.child(this.user.uid).child(newDishKey).set(food).then(this.backtrack);
   }
 
   render()
@@ -199,7 +201,7 @@ class NewRecipeForm extends React.Component
   }
 }
 
-function renderNewRecipeForm(flowup, backtrack, container)
+function renderNewRecipeForm(user, recipeRef, backtrack, container)
 {
-  ReactDOM.render(<NewRecipeForm flowup={flowup} backtrack={backtrack}/>, container);
+  ReactDOM.render(<NewRecipeForm user={user} recipeRef={recipeRef} backtrack={backtrack}/>, container);
 }
