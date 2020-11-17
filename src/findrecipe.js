@@ -13,6 +13,7 @@ function Suggestions(props)
     const query = props.query;
     const recipes = props.recipes;
     const flowup = props.flowup;
+    const userRef = props.userRef;
 
     let matches = [];
 
@@ -29,7 +30,7 @@ function Suggestions(props)
                 // If the query has multiple words, check if recipe name includes query directly
                 if (uRecipe.includes(uQuery))
                 {
-                    matches.push(userRecipes[key]);
+                    matches.push({ key: key, value: userRecipes[key] });
                     /*
                     matches.push({
                         uid: uid,
@@ -43,7 +44,7 @@ function Suggestions(props)
                 // Otherwise, does a word in the recipe start with the query?
                 if (uRecipe.split(" ").some(x => x.startsWith(uQuery)))
                 {
-                    matches.push(userRecipes[key]);
+                    matches.push({ key: key, value: userRecipes[key] });
                     /*
                     matches.push({
                         uid: uid,
@@ -68,7 +69,7 @@ function Suggestions(props)
     */
 
     return matches.slice(0, 10).map(recipe =>
-        <AutoCompleteSuggestion recipe={recipe} flowup={flowup}/>
+        <AutoCompleteSuggestion recipeKey={recipe.key} recipe={recipe.value} userRef={userRef} flowup={flowup}/>
     );
 }
 
@@ -78,6 +79,7 @@ class RecipeFinder extends React.Component
     {
         super(props);
         this.recipeRef = props.recipeRef;
+        this.userRef = props.userRef;
         this.submit = props.submit;
 
         this.state = {
@@ -110,12 +112,12 @@ class RecipeFinder extends React.Component
         return <div id="autocomplete-container">
             <h1><br/><br/><br/></h1>
             <input id="autocomplete" value={this.state.query} placeholder="Find A Recipe" onChange={this.handleQueryChange}/>
-            <Suggestions className="autocomplete-suggestions-container" query={this.state.query}  recipes={this.state.recipes} flowup={this.submit}/>
+            <Suggestions className="autocomplete-suggestions-container" query={this.state.query} userRef={this.userRef} recipes={this.state.recipes} flowup={this.submit}/>
         </div>;
     }
 }
 
-function renderRecipeFinder(submit, recipeRef, container)
+function renderRecipeFinder(submit, recipeRef, userRef, container)
 {
-    ReactDOM.render(<RecipeFinder recipeRef={recipeRef} submit={submit}/>, container);
+    ReactDOM.render(<RecipeFinder recipeRef={recipeRef} userRef={userRef} submit={submit}/>, container);
 }

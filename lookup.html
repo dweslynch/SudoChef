@@ -66,9 +66,9 @@
                     let sideMenuBarActive = false;
 
                     // Render a view of a single recipe
-                    function viewRecipe(recipe, prompt)
+                    function viewRecipe(_user, key)
                     {
-                        renderRecipeView(recipe, viewRecipeFinder, prompt, document.getElementById("grocerylist"));
+                        renderRecipeView(_user, key, viewRecipeFinder, "Return to Find Recipes", document.getElementById("grocerylist"), false, userRef, recipeRef);
 
                         // Display proper content
                         $("#search-container").css("display", "none");
@@ -77,7 +77,7 @@
 
                     function viewRecipeFinder()
                     {
-                        renderRecipeFinder(viewRecipe, recipeRef, document.getElementById("search-container"));
+                        renderRecipeFinder(viewRecipe, recipeRef, userRef, document.getElementById("search-container"));
                         $("#grocerylist").css("display", "none");
                         $("#search-container").css("display", "block");
                     }
@@ -93,7 +93,7 @@
                     {
                         $("#search-container").css("display", "none");
                         $("#grocerylist").css("display", "block");
-                        renderList(userRef, document.getElementById("grocerylist"));
+                        renderList(userRef, recipeRef, document.getElementById("grocerylist"));
                     }
 
                     $("#newrecipe").on("click", function(event) {

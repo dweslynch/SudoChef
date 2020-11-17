@@ -17,6 +17,7 @@ var GroceryList = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (GroceryList.__proto__ || Object.getPrototypeOf(GroceryList)).call(this, props));
 
         _this.userRef = props.userRef;
+        _this.recipeRef = props.recipeRef;
         _this.container = props.container;
 
         _this.state = {
@@ -38,7 +39,7 @@ var GroceryList = function (_React$Component) {
     }, {
         key: 'backtrack',
         value: function backtrack(event) {
-            renderList(this.userRef, this.container);
+            renderList(this.userRef, this.recipeRef, this.container);
         }
     }, {
         key: 'updateStateFromSnapshot',
@@ -49,8 +50,8 @@ var GroceryList = function (_React$Component) {
         }
     }, {
         key: 'viewIndividualRecipe',
-        value: function viewIndividualRecipe(recipe) {
-            renderRecipeView(recipe, this.backtrack, "Return to My Recipes", this.container);
+        value: function viewIndividualRecipe(user, key) {
+            renderRecipeView(user, key, this.backtrack, "Return to My Recipes", this.container, true, this.userRef, this.recipeRef);
         }
     }, {
         key: 'render',
@@ -60,9 +61,9 @@ var GroceryList = function (_React$Component) {
                 // Create a local reference to view individual recipe
                 var _viewRecipe = this.viewIndividualRecipe;
                 return this.state.groceries.map(function (kvp) {
-                    var _kvp2 = _slicedToArray(kvp, 2),
-                        key = _kvp2[0],
-                        recipe = _kvp2[1];
+                    var _kvp = _slicedToArray(kvp, 2),
+                        key = _kvp[0],
+                        recipe = _kvp[1];
 
                     var ingredients = Object.entries(recipe.ingredients);
                     return React.createElement(
@@ -71,29 +72,10 @@ var GroceryList = function (_React$Component) {
                         React.createElement(
                             'h2',
                             { className: 'clickable', onClick: function onClick(event) {
-                                    return _viewRecipe(recipe);
+                                    return _viewRecipe(recipe.authorid, key);
                                 } },
                             recipe.name,
                             '\xA0\u203A'
-                        ),
-                        React.createElement(
-                            'ul',
-                            null,
-                            ingredients.map(function (_kvp) {
-                                var _kvp3 = _slicedToArray(_kvp, 2),
-                                    _key = _kvp3[0],
-                                    ingredient = _kvp3[1];
-
-                                return React.createElement(
-                                    'li',
-                                    null,
-                                    ingredient.name,
-                                    ':\xA0\xA0',
-                                    ingredient.quantity,
-                                    '\xA0',
-                                    ingredient.units
-                                );
-                            })
                         )
                     );
                 });
@@ -110,7 +92,7 @@ var GroceryList = function (_React$Component) {
     return GroceryList;
 }(React.Component);
 
-function renderList(userRef, container) {
+function renderList(userRef, recipeRef, container) {
     console.log(container);
-    ReactDOM.render(React.createElement(GroceryList, { userRef: userRef, container: container }), container);
+    ReactDOM.render(React.createElement(GroceryList, { userRef: userRef, recipeRef: recipeRef, container: container }), container);
 }

@@ -19,6 +19,7 @@ function Suggestions(props) {
     var query = props.query;
     var recipes = props.recipes;
     var flowup = props.flowup;
+    var userRef = props.userRef;
 
     var matches = [];
 
@@ -32,7 +33,7 @@ function Suggestions(props) {
             if (uQuery.includes(" ")) {
                 // If the query has multiple words, check if recipe name includes query directly
                 if (uRecipe.includes(uQuery)) {
-                    matches.push(userRecipes[key]);
+                    matches.push({ key: key, value: userRecipes[key] });
                     /*
                     matches.push({
                         uid: uid,
@@ -45,7 +46,7 @@ function Suggestions(props) {
                 if (uRecipe.split(" ").some(function (x) {
                     return x.startsWith(uQuery);
                 })) {
-                    matches.push(userRecipes[key]);
+                    matches.push({ key: key, value: userRecipes[key] });
                     /*
                     matches.push({
                         uid: uid,
@@ -74,7 +75,7 @@ function Suggestions(props) {
     */
 
     return matches.slice(0, 10).map(function (recipe) {
-        return React.createElement(AutoCompleteSuggestion, { recipe: recipe, flowup: flowup });
+        return React.createElement(AutoCompleteSuggestion, { recipeKey: recipe.key, recipe: recipe.value, userRef: userRef, flowup: flowup });
     });
 }
 
@@ -87,6 +88,7 @@ var RecipeFinder = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (RecipeFinder.__proto__ || Object.getPrototypeOf(RecipeFinder)).call(this, props));
 
         _this.recipeRef = props.recipeRef;
+        _this.userRef = props.userRef;
         _this.submit = props.submit;
 
         _this.state = {
@@ -129,7 +131,7 @@ var RecipeFinder = function (_React$Component) {
                     React.createElement("br", null)
                 ),
                 React.createElement("input", { id: "autocomplete", value: this.state.query, placeholder: "Find A Recipe", onChange: this.handleQueryChange }),
-                React.createElement(Suggestions, { className: "autocomplete-suggestions-container", query: this.state.query, recipes: this.state.recipes, flowup: this.submit })
+                React.createElement(Suggestions, { className: "autocomplete-suggestions-container", query: this.state.query, userRef: this.userRef, recipes: this.state.recipes, flowup: this.submit })
             );
         }
     }]);
@@ -137,6 +139,6 @@ var RecipeFinder = function (_React$Component) {
     return RecipeFinder;
 }(React.Component);
 
-function renderRecipeFinder(submit, recipeRef, container) {
-    ReactDOM.render(React.createElement(RecipeFinder, { recipeRef: recipeRef, submit: submit }), container);
+function renderRecipeFinder(submit, recipeRef, userRef, container) {
+    ReactDOM.render(React.createElement(RecipeFinder, { recipeRef: recipeRef, userRef: userRef, submit: submit }), container);
 }

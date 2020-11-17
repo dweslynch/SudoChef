@@ -4,6 +4,7 @@ class GroceryList extends React.Component
     {
         super(props);
         this.userRef = props.userRef;
+        this.recipeRef = props.recipeRef;
         this.container = props.container;
 
         this.state = {
@@ -23,7 +24,7 @@ class GroceryList extends React.Component
 
     backtrack(event)
     {
-        renderList(this.userRef, this.container);
+        renderList(this.userRef, this.recipeRef, this.container);
     }
 
     updateStateFromSnapshot(snapshot)
@@ -33,9 +34,9 @@ class GroceryList extends React.Component
         });
     }
 
-    viewIndividualRecipe(recipe)
+    viewIndividualRecipe(user, key)
     {
-        renderRecipeView(recipe, this.backtrack, "Return to My Recipes", this.container);
+        renderRecipeView(user, key, this.backtrack, "Return to My Recipes", this.container, true, this.userRef, this.recipeRef);
     }
 
     render()
@@ -49,15 +50,7 @@ class GroceryList extends React.Component
                 let [key, recipe] = kvp;
                 let ingredients = Object.entries(recipe.ingredients);
                 return <div>
-                    <h2 className="clickable" onClick={(event) => _viewRecipe(recipe)}>{recipe.name}&nbsp;&rsaquo;</h2>
-                    <ul>
-                        {
-                            ingredients.map(function(_kvp) {
-                                let [_key, ingredient] = _kvp;
-                                return <li>{ingredient.name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</li>;
-                            })
-                        }
-                    </ul>
+                    <h2 className="clickable" onClick={(event) => _viewRecipe(recipe.authorid, key)}>{recipe.name}&nbsp;&rsaquo;</h2>
                 </div>;
             });
         }
@@ -68,8 +61,8 @@ class GroceryList extends React.Component
     }
 }
 
-function renderList(userRef, container)
+function renderList(userRef, recipeRef, container)
 {
     console.log(container);
-    ReactDOM.render(<GroceryList userRef={userRef} container={container}/>, container);
+    ReactDOM.render(<GroceryList userRef={userRef} recipeRef={recipeRef} container={container}/>, container);
 }

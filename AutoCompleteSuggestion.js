@@ -15,9 +15,11 @@ var AutoCompleteSuggestion = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (AutoCompleteSuggestion.__proto__ || Object.getPrototypeOf(AutoCompleteSuggestion)).call(this, props));
 
     _this.flowup = props.flowup;
+    _this.key = props.recipeKey;
     _this.recipe = props.recipe;
     _this.name = _this.recipe.name;
     _this.author = _this.recipe.author;
+    _this.authorid = _this.recipe.authorid;
     return _this;
   }
 
@@ -29,7 +31,7 @@ var AutoCompleteSuggestion = function (_React$Component) {
       return React.createElement(
         "div",
         { className: "autocomplete-suggestion", onClick: function onClick(event) {
-            return _this2.flowup(_this2.recipe, "Return to Find Recipes");
+            return _this2.flowup(_this2.authorid, _this2.key);
           } },
         this.name,
         " by ",

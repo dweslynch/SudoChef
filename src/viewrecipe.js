@@ -1,29 +1,78 @@
-function RecipeView(props)
+class RecipeView extends React.Component
 {
-  const recipe = props.recipe;
-  const backtrack = props.backtrack;
-  const returnPrompt = props.prompt;
-  const ingredients = Object.entries(recipe.ingredients);
+    constructor(props)
+    {
+        super(props);
 
-  return <div>
-    <h2>{recipe.name} by {recipe.author}</h2>
-    <ul>
-      {
-        ingredients.map(function(kvp)
+        this.backtrack = props.backtrack;
+        this.returnPrompt = props.prompt;
+        this.mine = props.mine;
+        this.userRef = props.userRef;
+        this.recipeRef = props.recipeRef;
+        this.key = props.recipeKey;
+        this.uid = props.user;
+
+        this.state = {
+            recipe: {}
+        }
+
+        this.addToInventory = this.addToInventory.bind(this);
+        this.updateStateFromSnapshot = this.updateStateFromSnapshot.bind(this);
+    }
+
+    componentDidMount()
+    {
+        this.recipeRef.child(this.uid).child(this.key).once('value').then(this.updateStateFromSnapshot);
+    }
+
+    addToInventory(event)
+    {
+        const recipe = this.state.recipe;
+        this.userRef.child(this.key).set({ name: recipe.name, author: recipe.author, authorid: recipe.authorid });
+        this.backtrack(event);
+    }
+
+    updateStateFromSnapshot(snapshot)
+    {
+        console.log(this.key);
+        console.log(snapshot.val());
+        this.setState({
+            recipe: snapshot.val()
+        });
+    }
+
+    render()
+    {
+        if (this.state.recipe && this.state.recipe.ingredients)
         {
-          let [key, ingredient] = kvp;
-          return <li>{ingredient.name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</li>;
-        })
-      }
-    </ul>
-    <h2>Instructions:</h2>
-    <p>{recipe.description}</p>
-    <h2 className="clickable" onClick={backtrack}>{returnPrompt}&nbsp;&rsaquo;</h2>
-  </div>;
+            const ingredients = Object.entries(this.state.recipe.ingredients);
+            return <div>
+              <h2>{this.state.recipe.name} by {this.state.recipe.author}</h2>
+              <ul>
+                {
+                  ingredients.map(function(kvp)
+                  {
+                    let [key, ingredient] = kvp;
+                    return <li>{ingredient.name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</li>;
+                  })
+                }
+              </ul>
+              <h2>Instructions:</h2>
+              <p>{this.state.recipe.description}</p>
+              {(!this.mine) ? <h2 className="clickable" onClick={this.addToInventory}>Add To My Grocery List</h2> : null}
+              <h2 className="clickable" onClick={this.backtrack}>{this.returnPrompt}&nbsp;&rsaquo;</h2>
+            </div>;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }
 
-function renderRecipeView(recipe, backtrack, returnPrompt, container)
+function renderRecipeView(user, key, backtrack, returnPrompt, container, mine, userRef, recipeRef)
 {
   console.log(container);
-  ReactDOM.render(<RecipeView recipe={recipe} prompt={returnPrompt} backtrack={backtrack}/>, container);
+  ReactDOM.render(<RecipeView user={user} recipeKey={key} prompt={returnPrompt} mine={mine} backtrack={backtrack} userRef={userRef} recipeRef={recipeRef}/>, container);
 }
