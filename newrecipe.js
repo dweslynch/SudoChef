@@ -22,7 +22,36 @@ var NewRecipeForm = function (_React$Component) {
     _this.recipeRef = props.recipeRef;
     _this.user = props.user;
 
-    _this.state = { recipeName: "", ingredients: 1, ingredientlist: [], description: "", instructions: "" };
+    _this.titles = {
+      peanutFree: "Peanut free",
+      treenutFree: "Treenut free",
+      fishFree: "Safe for fish allergies",
+      shellfishFree: "Safe for shellfish allergies",
+      dairyFree: "Dairy Free",
+      eggFree: "Egg Free",
+      kosher: "Kosher",
+      vegetarian: "Vegetarian",
+      vegan: "Vegan"
+    };
+
+    _this.state = {
+      recipeName: "",
+      ingredients: 1,
+      ingredientlist: [],
+      description: "",
+      instructions: "",
+      tags: {
+        peanutFree: false,
+        treenutFree: false,
+        fishFree: false,
+        shellfishFree: false,
+        dairyFree: false,
+        eggFree: false,
+        kosher: false,
+        vegetarian: false,
+        vegan: false
+      }
+    };
 
     // Bind event handlers
     _this.handleNameChange = _this.handleNameChange.bind(_this);
@@ -33,10 +62,21 @@ var NewRecipeForm = function (_React$Component) {
     _this.handleDescriptionChange = _this.handleDescriptionChange.bind(_this);
     _this.handleUnitChange = _this.handleUnitChange.bind(_this);
     _this.handleInstructionsChange = _this.handleInstructionsChange.bind(_this);
+    _this.handleTagChange = _this.handleTagChange.bind(_this);
     return _this;
   }
 
   _createClass(NewRecipeForm, [{
+    key: "handleTagChange",
+    value: function handleTagChange(event) {
+      var name = event.target.name;
+      this.setState(function (state) {
+        console.log(state.tags[name]);
+        state.tags[name] = !state.tags[name];
+        return state;
+      });
+    }
+  }, {
     key: "handleNameChange",
     value: function handleNameChange(event) {
       var val = event.target.value; // Have to grab value because the callback erases it
@@ -49,8 +89,8 @@ var NewRecipeForm = function (_React$Component) {
       this.setState({ description: val });
     }
   }, {
-    key: "handleInsrunctionsChange",
-    value: function handleInsrunctionsChange(event) {
+    key: "handleInstructionsChange",
+    value: function handleInstructionsChange(event) {
       var val = event.target.value;
       this.setState({ instructions: val });
     }
@@ -153,6 +193,7 @@ var NewRecipeForm = function (_React$Component) {
         ingredients: this.state.ingredientlist,
         description: this.state.description,
         instructions: this.state.instructions,
+        tags: this.state.tags,
         author: this.user.displayName,
         authorid: this.user.uid
       };
@@ -254,7 +295,7 @@ var NewRecipeForm = function (_React$Component) {
                 "Liter(s)"
               )
             ),
-            React.createElement("input", { style: { "background-color": "rgba(0,0,0,0)", border: "none" }, className: "clickable", type: "button", value: "X", onClick: function onClick(event) {
+            React.createElement("input", { style: { "backgroundColor": "rgba(0,0,0,0)", border: "none" }, className: "clickable", type: "button", value: "X", onClick: function onClick(event) {
                 return _this2.handleRemoveIngredientButtonClick(i);
               } }),
             React.createElement("br", null),
@@ -262,6 +303,17 @@ var NewRecipeForm = function (_React$Component) {
           );
         }),
         React.createElement("input", { type: "button", value: "Add Ingredient", onClick: this.handleAddIngredientButtonClick }),
+        React.createElement("br", null),
+        React.createElement("br", null),
+        Object.entries(this.state.tags).map(function (kvp) {
+          return React.createElement(
+            "span",
+            null,
+            React.createElement("input", { type: "button", style: { "margin": "5px", "backgroundColor": kvp[1] ? "black" : "white", "color": kvp[1] ? "white" : "black" }, name: kvp[0], value: _this2.titles[kvp[0]], onClick: _this2.handleTagChange }),
+            "\xA0\xA0"
+          );
+        }),
+        React.createElement("br", null),
         React.createElement("br", null),
         React.createElement("br", null),
         React.createElement(

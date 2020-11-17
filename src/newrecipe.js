@@ -10,7 +10,36 @@ class NewRecipeForm extends React.Component
     this.recipeRef = props.recipeRef;
     this.user = props.user;
 
-    this.state = { recipeName: "", ingredients: 1, ingredientlist: [], description: "", instructions: ""};
+    this.titles = {
+        peanutFree: "Peanut free",
+        treenutFree: "Treenut free",
+        fishFree: "Safe for fish allergies",
+        shellfishFree: "Safe for shellfish allergies",
+        dairyFree: "Dairy Free",
+        eggFree: "Egg Free",
+        kosher: "Kosher",
+        vegetarian: "Vegetarian",
+        vegan: "Vegan"
+    };
+
+    this.state = {
+        recipeName: "",
+        ingredients: 1,
+        ingredientlist: [],
+        description: "",
+        instructions: "",
+        tags: {
+            peanutFree: false,
+            treenutFree: false,
+            fishFree: false,
+            shellfishFree: false,
+            dairyFree: false,
+            eggFree: false,
+            kosher: false,
+            vegetarian: false,
+            vegan: false
+        }
+    };
 
     // Bind event handlers
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -21,6 +50,17 @@ class NewRecipeForm extends React.Component
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleUnitChange = this.handleUnitChange.bind(this);
     this.handleInstructionsChange = this.handleInstructionsChange.bind(this);
+    this.handleTagChange = this.handleTagChange.bind(this);
+  }
+
+  handleTagChange(event)
+  {
+      const name = event.target.name;
+      this.setState(function(state) {
+          console.log(state.tags[name]);
+          state.tags[name] = !state.tags[name];
+          return state;
+      });
   }
 
   handleNameChange(event)
@@ -35,7 +75,7 @@ class NewRecipeForm extends React.Component
     this.setState({ description: val });
   }
 
-  handleInsrunctionsChange(event)
+  handleInstructionsChange(event)
   {
       const val = event.target.value;
       this.setState({ instructions: val });
@@ -146,6 +186,7 @@ class NewRecipeForm extends React.Component
       ingredients: this.state.ingredientlist,
       description: this.state.description,
       instructions: this.state.instructions,
+      tags: this.state.tags,
       author: this.user.displayName,
       authorid: this.user.uid
     };
@@ -192,13 +233,23 @@ class NewRecipeForm extends React.Component
               <option value="mL">mL</option>
               <option value="L">Liter(s)</option>
             </select>
-            <input style={{"background-color": "rgba(0,0,0,0)", border: "none"}} className="clickable" type="button" value="X" onClick={(event) => this.handleRemoveIngredientButtonClick(i)}/>
+            <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable" type="button" value="X" onClick={(event) => this.handleRemoveIngredientButtonClick(i)}/>
             <br/><br/>
           </div>
         )
       }
       <input type="button" value="Add Ingredient" onClick={this.handleAddIngredientButtonClick}/>
       <br/><br/>
+      {
+          Object.entries(this.state.tags).map(kvp =>
+            <span>
+                <input type="button" style={{"margin": "5px", "backgroundColor": (kvp[1]) ? "black" : "white", "color": (kvp[1]) ? "white" : "black"}} name={kvp[0]} value={this.titles[kvp[0]]} onClick={this.handleTagChange}/>
+                &nbsp;&nbsp;
+            </span>
+          )
+      }
+      <br/><br/>
+      <br/>
       <label>Description:</label>
       <br/>
       <textarea value={this.state.description} onChange={this.handleDescriptionChange}/>
