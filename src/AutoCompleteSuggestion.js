@@ -9,7 +9,7 @@ class AutoCompleteSuggestion extends React.Component {
 
   render() {
     return (
-      <div className="autocomplete-suggestion" onClick={(event) => this.flowup(this.recipe)}>
+      <div className="autocomplete-suggestion" onClick={(event) => this.flowup(this.recipe, "Return to Find Recipes")}>
           {this.name} by {this.author}
       </div>
     );

@@ -66,9 +66,9 @@
                     let sideMenuBarActive = false;
 
                     // Render a view of a single recipe
-                    function viewRecipe(recipe)
+                    function viewRecipe(recipe, prompt)
                     {
-                        renderRecipeView(recipe, viewRecipeFinder, "Return to Find Recipes", document.getElementById("grocerylist"));
+                        renderRecipeView(recipe, viewRecipeFinder, prompt, document.getElementById("grocerylist"));
 
                         // Display proper content
                         $("#search-container").css("display", "none");

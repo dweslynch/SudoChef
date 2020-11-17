@@ -29,7 +29,7 @@ var AutoCompleteSuggestion = function (_React$Component) {
       return React.createElement(
         "div",
         { className: "autocomplete-suggestion", onClick: function onClick(event) {
-            return _this2.flowup(_this2.recipe);
+            return _this2.flowup(_this2.recipe, "Return to Find Recipes");
           } },
         this.name,
         " by ",
