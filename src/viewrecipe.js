@@ -57,8 +57,10 @@ class RecipeView extends React.Component
                   })
                 }
               </ul>
-              <h2>Instructions:</h2>
+              <h2>Description:</h2>
               <p>{this.state.recipe.description}</p>
+              <h2>Instructions:</h2>
+              <p>{this.state.recipe.instructions}</p>
               {(!this.mine) ? <h2 className="clickable" onClick={this.addToInventory}>Add To My Grocery List</h2> : null}
               <h2 className="clickable" onClick={this.backtrack}>{this.returnPrompt}&nbsp;&rsaquo;</h2>
             </div>;

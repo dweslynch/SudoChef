@@ -259,7 +259,7 @@ class NewRecipeForm extends React.Component
       <textarea value={this.state.instructions} onChange={this.handleInstructionsChange}/>
       <br/><br/>
       <input type="submit" value="Submit"/>
-      <h2 className="clickable" onClick={(event) => this.backtrack()}>Return to My Recipes&nbsp;&rsaquo;</h2>
+      <h2 className="clickable" onClick={(event) => this.backtrack()}>Return to Find Recipes&nbsp;&rsaquo;</h2>
     </form>;
   }
 }

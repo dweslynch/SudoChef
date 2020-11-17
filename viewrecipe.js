@@ -91,12 +91,22 @@ var RecipeView = function (_React$Component) {
                     React.createElement(
                         'h2',
                         null,
-                        'Instructions:'
+                        'Description:'
                     ),
                     React.createElement(
                         'p',
                         null,
                         this.state.recipe.description
+                    ),
+                    React.createElement(
+                        'h2',
+                        null,
+                        'Instructions:'
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        this.state.recipe.instructions
                     ),
                     !this.mine ? React.createElement(
                         'h2',

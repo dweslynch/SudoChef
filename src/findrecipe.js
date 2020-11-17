@@ -110,8 +110,8 @@ class RecipeFinder extends React.Component
     render()
     {
         return <div id="autocomplete-container">
-            <h1><br/><br/><br/></h1>
-            <input id="autocomplete" value={this.state.query} placeholder="Find A Recipe" onChange={this.handleQueryChange}/>
+            <h1><br/>Find A Recipe<br/><br/></h1>
+            <input id="autocomplete" value={this.state.query} placeholder="Find A Recipe..." onChange={this.handleQueryChange}/>
             <Suggestions className="autocomplete-suggestions-container" query={this.state.query} userRef={this.userRef} recipes={this.state.recipes} flowup={this.submit}/>
         </div>;
     }

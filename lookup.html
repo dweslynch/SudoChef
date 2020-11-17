@@ -17,6 +17,7 @@
         <script src="./AutoCompleteSuggestion.js"></script>
         <script src="./findrecipe.js"></script>
         <script src="./newrecipe.js"></script>
+        <script src="./settings.js"></script>
         <script src="./grocerylist.js"></script>
         <!-- script src="./listfood.js"></script -->
 
@@ -42,6 +43,7 @@
             <div id="menuicons">
                 <span id="newrecipe" class="clickable slow">+&nbsp;</span>
                 <span id="viewprofile" class="clickable slow">&cirmid;&nbsp;</span>
+                <span id="viewsettings" class="clickable slow">&curren;&nbsp;</span>
             </div>
             <h1></h1>
             <div id="search-container"></div>
@@ -99,6 +101,13 @@
                         renderList(userRef, recipeRef, document.getElementById("grocerylist"));
                     }
 
+                    function viewSettings()
+                    {
+                        $("#search-container").css("display", "none");
+                        $("#grocerylist").css("display", "block");
+                        renderSettingsView(userRef, document.getElementById("grocerylist"));
+                    }
+
                     $("#newrecipe").on("click", function(event) {
                         viewNewRecipeForm();
                     });
@@ -106,6 +115,10 @@
                     $("#viewprofile").on("click", function(event) {
                         viewGroceryList();
                     });
+
+                    $("#viewsettings").on("click", function(event) {
+                        viewSettings();
+                    })
 
                     viewRecipeFinder();
                 }

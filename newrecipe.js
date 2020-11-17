@@ -340,7 +340,7 @@ var NewRecipeForm = function (_React$Component) {
           { className: "clickable", onClick: function onClick(event) {
               return _this2.backtrack();
             } },
-          "Return to My Recipes\xA0\u203A"
+          "Return to Find Recipes\xA0\u203A"
         )
       );
     }
