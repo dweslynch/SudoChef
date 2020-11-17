@@ -48,9 +48,9 @@ class GroceryList extends React.Component
             let _viewRecipe = this.viewIndividualRecipe;
             return this.state.groceries.map(function(kvp) {
                 let [key, recipe] = kvp;
-                let ingredients = Object.entries(recipe.ingredients);
                 return <div>
                     <h2 className="clickable" onClick={(event) => _viewRecipe(recipe.authorid, key)}>{recipe.name}&nbsp;&rsaquo;</h2>
+                    <p style={{'margin-left': "15px"}}>{recipe.description}</p>
                 </div>;
             });
         }

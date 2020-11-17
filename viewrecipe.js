@@ -42,7 +42,7 @@ var RecipeView = function (_React$Component) {
         key: "addToInventory",
         value: function addToInventory(event) {
             var recipe = this.state.recipe;
-            this.userRef.child(this.key).set({ name: recipe.name, author: recipe.author, authorid: recipe.authorid });
+            this.userRef.child(this.key).set({ name: recipe.name, author: recipe.author, authorid: recipe.authorid, description: recipe.description });
             this.backtrack(event);
         }
     }, {

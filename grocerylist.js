@@ -65,7 +65,6 @@ var GroceryList = function (_React$Component) {
                         key = _kvp[0],
                         recipe = _kvp[1];
 
-                    var ingredients = Object.entries(recipe.ingredients);
                     return React.createElement(
                         'div',
                         null,
@@ -76,6 +75,11 @@ var GroceryList = function (_React$Component) {
                                 } },
                             recipe.name,
                             '\xA0\u203A'
+                        ),
+                        React.createElement(
+                            'p',
+                            { style: { 'margin-left': "15px" } },
+                            recipe.description
                         )
                     );
                 });

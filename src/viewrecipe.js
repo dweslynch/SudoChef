@@ -28,7 +28,7 @@ class RecipeView extends React.Component
     addToInventory(event)
     {
         const recipe = this.state.recipe;
-        this.userRef.child(this.key).set({ name: recipe.name, author: recipe.author, authorid: recipe.authorid });
+        this.userRef.child(this.key).set({ name: recipe.name, author: recipe.author, authorid: recipe.authorid, description: recipe.description });
         this.backtrack(event);
     }
 

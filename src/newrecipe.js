@@ -10,7 +10,7 @@ class NewRecipeForm extends React.Component
     this.recipeRef = props.recipeRef;
     this.user = props.user;
 
-    this.state = { recipeName: "", ingredients: 1, ingredientlist: [], description: ""};
+    this.state = { recipeName: "", ingredients: 1, ingredientlist: [], description: "", instructions: ""};
 
     // Bind event handlers
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -20,6 +20,7 @@ class NewRecipeForm extends React.Component
     this.handleIngredientQuantityChange = this.handleIngredientQuantityChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleUnitChange = this.handleUnitChange.bind(this);
+    this.handleInstructionsChange = this.handleInstructionsChange.bind(this);
   }
 
   handleNameChange(event)
@@ -32,6 +33,12 @@ class NewRecipeForm extends React.Component
   {
     const val = event.target.value;
     this.setState({ description: val });
+  }
+
+  handleInsrunctionsChange(event)
+  {
+      const val = event.target.value;
+      this.setState({ instructions: val });
   }
 
   handleUnitChange(i, units)
@@ -138,6 +145,7 @@ class NewRecipeForm extends React.Component
       name: this.state.recipeName,
       ingredients: this.state.ingredientlist,
       description: this.state.description,
+      instructions: this.state.instructions,
       author: this.user.displayName,
       authorid: this.user.uid
     };
@@ -191,9 +199,13 @@ class NewRecipeForm extends React.Component
       }
       <input type="button" value="Add Ingredient" onClick={this.handleAddIngredientButtonClick}/>
       <br/><br/>
-      <label>Description and Instructions:</label>
+      <label>Description:</label>
       <br/>
       <textarea value={this.state.description} onChange={this.handleDescriptionChange}/>
+      <br/><br/>
+      <label>Instructions:</label>
+      <br/>
+      <textarea value={this.state.instructions} onChange={this.handleInstructionsChange}/>
       <br/><br/>
       <input type="submit" value="Submit"/>
       <h2 className="clickable" onClick={(event) => this.backtrack()}>Return to My Recipes&nbsp;&rsaquo;</h2>

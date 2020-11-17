@@ -22,7 +22,7 @@ var NewRecipeForm = function (_React$Component) {
     _this.recipeRef = props.recipeRef;
     _this.user = props.user;
 
-    _this.state = { recipeName: "", ingredients: 1, ingredientlist: [], description: "" };
+    _this.state = { recipeName: "", ingredients: 1, ingredientlist: [], description: "", instructions: "" };
 
     // Bind event handlers
     _this.handleNameChange = _this.handleNameChange.bind(_this);
@@ -32,6 +32,7 @@ var NewRecipeForm = function (_React$Component) {
     _this.handleIngredientQuantityChange = _this.handleIngredientQuantityChange.bind(_this);
     _this.handleDescriptionChange = _this.handleDescriptionChange.bind(_this);
     _this.handleUnitChange = _this.handleUnitChange.bind(_this);
+    _this.handleInstructionsChange = _this.handleInstructionsChange.bind(_this);
     return _this;
   }
 
@@ -46,6 +47,12 @@ var NewRecipeForm = function (_React$Component) {
     value: function handleDescriptionChange(event) {
       var val = event.target.value;
       this.setState({ description: val });
+    }
+  }, {
+    key: "handleInsrunctionsChange",
+    value: function handleInsrunctionsChange(event) {
+      var val = event.target.value;
+      this.setState({ instructions: val });
     }
   }, {
     key: "handleUnitChange",
@@ -145,6 +152,7 @@ var NewRecipeForm = function (_React$Component) {
         name: this.state.recipeName,
         ingredients: this.state.ingredientlist,
         description: this.state.description,
+        instructions: this.state.instructions,
         author: this.user.displayName,
         authorid: this.user.uid
       };
@@ -259,10 +267,19 @@ var NewRecipeForm = function (_React$Component) {
         React.createElement(
           "label",
           null,
-          "Description and Instructions:"
+          "Description:"
         ),
         React.createElement("br", null),
         React.createElement("textarea", { value: this.state.description, onChange: this.handleDescriptionChange }),
+        React.createElement("br", null),
+        React.createElement("br", null),
+        React.createElement(
+          "label",
+          null,
+          "Instructions:"
+        ),
+        React.createElement("br", null),
+        React.createElement("textarea", { value: this.state.instructions, onChange: this.handleInstructionsChange }),
         React.createElement("br", null),
         React.createElement("br", null),
         React.createElement("input", { type: "submit", value: "Submit" }),
