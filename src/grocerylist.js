@@ -18,8 +18,8 @@ class GroceryList extends React.Component
 
     componentDidMount()
     {
-        this.userRef.once('value').then(this.updateStateFromSnapshot);
-        this.userRef.on('value', this.updateStateFromSnapshot);
+        this.userRef.child('inventory').once('value').then(this.updateStateFromSnapshot);
+        this.userRef.child('inventory').on('value', this.updateStateFromSnapshot);
     }
 
     backtrack(event)

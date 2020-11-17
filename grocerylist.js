@@ -33,8 +33,8 @@ var GroceryList = function (_React$Component) {
     _createClass(GroceryList, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.userRef.once('value').then(this.updateStateFromSnapshot);
-            this.userRef.on('value', this.updateStateFromSnapshot);
+            this.userRef.child('inventory').once('value').then(this.updateStateFromSnapshot);
+            this.userRef.child('inventory').on('value', this.updateStateFromSnapshot);
         }
     }, {
         key: 'backtrack',

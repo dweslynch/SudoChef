@@ -59,7 +59,7 @@
                 if (user)
                 {
                     // Grab a reference to the user's list in the database
-                    let userRef = firebase.database().ref(`lists/${user.uid}`);
+                    let userRef = firebase.database().ref(`profiles/${user.uid}`);
                     let recipeRef = firebase.database().ref('recipes');
 
                     // Is the menu bar active?

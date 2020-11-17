@@ -34,19 +34,19 @@ var RecipeView = function (_React$Component) {
     }
 
     _createClass(RecipeView, [{
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             this.recipeRef.child(this.uid).child(this.key).once('value').then(this.updateStateFromSnapshot);
         }
     }, {
-        key: "addToInventory",
+        key: 'addToInventory',
         value: function addToInventory(event) {
             var recipe = this.state.recipe;
-            this.userRef.child(this.key).set({ name: recipe.name, author: recipe.author, authorid: recipe.authorid, description: recipe.description });
+            this.userRef.child('inventory').child(this.key).set({ name: recipe.name, author: recipe.author, authorid: recipe.authorid, description: recipe.description });
             this.backtrack(event);
         }
     }, {
-        key: "updateStateFromSnapshot",
+        key: 'updateStateFromSnapshot',
         value: function updateStateFromSnapshot(snapshot) {
             console.log(this.key);
             console.log(snapshot.val());
@@ -55,22 +55,22 @@ var RecipeView = function (_React$Component) {
             });
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             if (this.state.recipe && this.state.recipe.ingredients) {
                 var ingredients = Object.entries(this.state.recipe.ingredients);
                 return React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "h2",
+                        'h2',
                         null,
                         this.state.recipe.name,
-                        " by ",
+                        ' by ',
                         this.state.recipe.author
                     ),
                     React.createElement(
-                        "ul",
+                        'ul',
                         null,
                         ingredients.map(function (kvp) {
                             var _kvp = _slicedToArray(kvp, 2),
@@ -78,36 +78,36 @@ var RecipeView = function (_React$Component) {
                                 ingredient = _kvp[1];
 
                             return React.createElement(
-                                "li",
+                                'li',
                                 null,
                                 ingredient.name,
-                                ":\xA0\xA0",
+                                ':\xA0\xA0',
                                 ingredient.quantity,
-                                "\xA0",
+                                '\xA0',
                                 ingredient.units
                             );
                         })
                     ),
                     React.createElement(
-                        "h2",
+                        'h2',
                         null,
-                        "Instructions:"
+                        'Instructions:'
                     ),
                     React.createElement(
-                        "p",
+                        'p',
                         null,
                         this.state.recipe.description
                     ),
                     !this.mine ? React.createElement(
-                        "h2",
-                        { className: "clickable", onClick: this.addToInventory },
-                        "Add To My Grocery List"
+                        'h2',
+                        { className: 'clickable', onClick: this.addToInventory },
+                        'Add To My Grocery List'
                     ) : null,
                     React.createElement(
-                        "h2",
-                        { className: "clickable", onClick: this.backtrack },
+                        'h2',
+                        { className: 'clickable', onClick: this.backtrack },
                         this.returnPrompt,
-                        "\xA0\u203A"
+                        '\xA0\u203A'
                     )
                 );
             } else {
