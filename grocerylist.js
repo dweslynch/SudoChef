@@ -218,6 +218,8 @@ var GroceryList = function (_React$Component2) {
         _this2.updateRestrictionsFromSnapshot = _this2.updateRestrictionsFromSnapshot.bind(_this2);
         _this2.viewIndividualRecipe = _this2.viewIndividualRecipe.bind(_this2);
         _this2.userHasDietaryRestrictions = _this2.userHasDietaryRestrictions.bind(_this2);
+        _this2.renderDisplay = _this2.renderDisplay.bind(_this2);
+        _this2.renderDisplayFromSnapshot = _this2.renderDisplayFromSnapshot.bind(_this2);
         return _this2;
     }
 
@@ -229,6 +231,16 @@ var GroceryList = function (_React$Component2) {
 
             // Don't need because this should stay constant for now until profile is finished
             //this.userRef.child('inventory').on('value', this.updateGroceriesFromSnapshot);
+        }
+    }, {
+        key: "renderDisplayFromSnapshot",
+        value: function renderDisplayFromSnapshot(snapshot) {
+            renderGroceryListDisplay(this.recipeRef, snapshot.val(), this.container);
+        }
+    }, {
+        key: "renderDisplay",
+        value: function renderDisplay() {
+            this.userRef.child('inventory').once('value').then(this.renderDisplayFromSnapshot);
         }
     }, {
         key: "userHasDietaryRestrictions",
@@ -272,33 +284,45 @@ var GroceryList = function (_React$Component2) {
             // Create local copy so can call from within the map callback
             var _hasRestrictions = this.userHasDietaryRestrictions;
             var restrictions = this.state.restrictions;
+            var _renderDisplay = this.renderDisplay;
             if (this.state.groceries) {
                 // Create a local reference to view individual recipe
                 var _viewRecipe = this.viewIndividualRecipe;
-                return this.state.groceries.map(function (kvp) {
-                    var _kvp2 = _slicedToArray(kvp, 2),
-                        key = _kvp2[0],
-                        recipe = _kvp2[1];
+                return React.createElement(
+                    "div",
+                    null,
+                    this.state.groceries.map(function (kvp) {
+                        var _kvp2 = _slicedToArray(kvp, 2),
+                            key = _kvp2[0],
+                            recipe = _kvp2[1];
 
-                    return React.createElement(
-                        "div",
-                        null,
-                        React.createElement(
-                            "h2",
-                            { className: "clickable", onClick: function onClick(event) {
-                                    return _viewRecipe(recipe.authorid, key);
-                                } },
-                            recipe.name,
-                            "\xA0\u203A"
-                        ),
-                        React.createElement(
-                            "p",
-                            { style: { 'marginLeft': "15px" } },
-                            recipe.description
-                        ),
-                        _hasRestrictions() ? React.createElement(RestrictionMatchIndicator, { restrictions: restrictions, tags: recipe.tags }) : null
-                    );
-                });
+                        return React.createElement(
+                            "div",
+                            null,
+                            React.createElement(
+                                "h2",
+                                { className: "clickable", onClick: function onClick(event) {
+                                        return _viewRecipe(recipe.authorid, key);
+                                    } },
+                                recipe.name,
+                                "\xA0\u203A"
+                            ),
+                            React.createElement(
+                                "p",
+                                { style: { 'marginLeft': "15px" } },
+                                recipe.description
+                            ),
+                            _hasRestrictions() ? React.createElement(RestrictionMatchIndicator, { restrictions: restrictions, tags: recipe.tags }) : null
+                        );
+                    }),
+                    React.createElement(
+                        "h2",
+                        { className: "clickable", onClick: function onClick(event) {
+                                return _renderDisplay();
+                            } },
+                        "Generate Grocery List"
+                    )
+                );
             } else {
                 return React.createElement(
                     "h2",

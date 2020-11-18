@@ -115,6 +115,8 @@ class GroceryList extends React.Component
         this.updateRestrictionsFromSnapshot = this.updateRestrictionsFromSnapshot.bind(this);
         this.viewIndividualRecipe = this.viewIndividualRecipe.bind(this);
         this.userHasDietaryRestrictions = this.userHasDietaryRestrictions.bind(this);
+        this.renderDisplay = this.renderDisplay.bind(this);
+        this.renderDisplayFromSnapshot = this.renderDisplayFromSnapshot.bind(this);
     }
 
     componentDidMount()
@@ -124,6 +126,16 @@ class GroceryList extends React.Component
 
         // Don't need because this should stay constant for now until profile is finished
         //this.userRef.child('inventory').on('value', this.updateGroceriesFromSnapshot);
+    }
+
+    renderDisplayFromSnapshot(snapshot)
+    {
+        renderGroceryListDisplay(this.recipeRef, snapshot.val(), this.container);
+    }
+
+    renderDisplay()
+    {
+        this.userRef.child('inventory').once('value').then(this.renderDisplayFromSnapshot);
     }
 
     userHasDietaryRestrictions()
@@ -168,18 +180,24 @@ class GroceryList extends React.Component
         // Create local copy so can call from within the map callback
         let _hasRestrictions = this.userHasDietaryRestrictions;
         const restrictions = this.state.restrictions;
+        let _renderDisplay = this.renderDisplay;
         if (this.state.groceries)
         {
             // Create a local reference to view individual recipe
             let _viewRecipe = this.viewIndividualRecipe;
-            return this.state.groceries.map(function(kvp) {
-                let [key, recipe] = kvp;
-                return <div>
-                    <h2 className="clickable" onClick={(event) => _viewRecipe(recipe.authorid, key)}>{recipe.name}&nbsp;&rsaquo;</h2>
-                    <p style={{'marginLeft': "15px"}}>{recipe.description}</p>
-                    {(_hasRestrictions()) ? <RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/> : null}
-                </div>;
-            });
+            return <div>
+                {
+                    this.state.groceries.map(function(kvp) {
+                        let [key, recipe] = kvp;
+                        return <div>
+                            <h2 className="clickable" onClick={(event) => _viewRecipe(recipe.authorid, key)}>{recipe.name}&nbsp;&rsaquo;</h2>
+                            <p style={{'marginLeft': "15px"}}>{recipe.description}</p>
+                            {(_hasRestrictions()) ? <RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/> : null}
+                        </div>;
+                    })
+                }
+                <h2 className="clickable" onClick={(event) => _renderDisplay()}>Generate Grocery List</h2>
+            </div>;
         }
         else
         {
