@@ -53,17 +53,17 @@
             </div>
             <h1><br/></h1>
             <div id="search-container"></div>
-            <div id="grocerylist"></div>
+            <div id="componentbox"></div>
         </div>
         <script>
 
             function hideAllContainers()
             {
-                $("#grocerylist").css("display", "none");
+                $("#componentbox").css("display", "none");
                 $("#search-container").css("display", "none");
             }
 
-            $("#grocerylist").css("display", "none");
+            $("#componentbox").css("display", "none");
 
             // Show grocery list when user is logged in
             firebase.auth().onAuthStateChanged(function(user) {
@@ -79,18 +79,18 @@
                     // Render a view of a single recipe
                     function viewRecipe(_user, key)
                     {
-                        renderRecipeView(_user, key, viewRecipeFinder, "Return to Find Recipes", document.getElementById("grocerylist"), false, userRef, recipeRef);
+                        renderRecipeView(_user, key, viewRecipeFinder, "Return to Find Recipes", document.getElementById("componentbox"), false, userRef, recipeRef);
 
                         // Display proper content
                         $("#search-container").css("display", "none");
-                        $("#grocerylist").css("display", "block");
+                        $("#componentbox").css("display", "block");
                         $("#viewfindrecipe").css("display", "inline");
                     }
 
                     function viewRecipeFinder()
                     {
                         renderRecipeFinder(viewRecipe, recipeRef, userRef, document.getElementById("search-container"));
-                        $("#grocerylist").css("display", "none");
+                        $("#componentbox").css("display", "none");
                         $("#search-container").css("display", "block");
                         $("#viewfindrecipe").css("display", "none");
                     }
@@ -98,24 +98,24 @@
                     function viewNewRecipeForm()
                     {
                         $("#search-container").css("display", "none");
-                        $("#grocerylist").css("display", "block");
-                        renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("grocerylist"));
+                        $("#componentbox").css("display", "block");
+                        renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("componentbox"));
                         $("#viewfindrecipe").css("display", "inline");
                     }
 
                     function viewGroceryList()
                     {
                         $("#search-container").css("display", "none");
-                        $("#grocerylist").css("display", "block");
-                        renderList(userRef, recipeRef, document.getElementById("grocerylist"));
+                        $("#componentbox").css("display", "block");
+                        renderList(userRef, recipeRef, document.getElementById("componentbox"));
                         $("#viewfindrecipe").css("display", "inline");
                     }
 
                     function viewSettings()
                     {
                         $("#search-container").css("display", "none");
-                        $("#grocerylist").css("display", "block");
-                        renderSettingsView(userRef, document.getElementById("grocerylist"));
+                        $("#componentbox").css("display", "block");
+                        renderSettingsView(userRef, document.getElementById("componentbox"));
                         $("#viewfindrecipe").css("display", "inline");
                     }
 
