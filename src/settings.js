@@ -102,6 +102,7 @@ class Settings extends React.Component
 
     render() {
         return <div>
+            <h2>Dietary Restrictions<br/></h2>
             { Object.entries(this.state.restrictions).map(kvp =>
                 <span>
                     <input type="button" style={{"margin": "5px", "backgroundColor": (kvp[1]) ? "black" : "white", "color": (kvp[1]) ? "white" : "black"}} name={kvp[0]} value={this.titles[kvp[0]]} onClick={this.handleRestrictionToggle}/>

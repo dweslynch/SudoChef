@@ -127,6 +127,7 @@ var RecipeFinder = function (_React$Component) {
                     "h1",
                     null,
                     React.createElement("br", null),
+                    React.createElement("br", null),
                     "Find A Recipe",
                     React.createElement("br", null),
                     React.createElement("br", null)

@@ -40,12 +40,17 @@
     </head>
     <body>
         <div id="wrapper">
-            <div id="menuicons">
-                <span id="newrecipe" class="clickable slow">+&nbsp;</span>
-                <span id="viewprofile" class="clickable slow">&cirmid;&nbsp;</span>
-                <span id="viewsettings" class="clickable slow">&curren;&nbsp;</span>
+            <div id="menucontainer">
+                <div id="leftmenuicons">
+                    <span id="viewfindrecipe" class="clickable slow">&nbsp;&larr;</span>
+                </div>
+                <div id="menuicons">
+                    <span id="newrecipe" class="clickable slow">+&nbsp;</span>
+                    <span id="viewprofile" class="clickable slow">&cirmid;&nbsp;</span>
+                    <span id="viewsettings" class="clickable slow">&curren;&nbsp;</span>
+                </div>
             </div>
-            <h1></h1>
+            <h1><br/></h1>
             <div id="search-container"></div>
             <div id="grocerylist"></div>
         </div>
@@ -78,6 +83,7 @@
                         // Display proper content
                         $("#search-container").css("display", "none");
                         $("#grocerylist").css("display", "block");
+                        $("#viewfindrecipe").css("display", "inline");
                     }
 
                     function viewRecipeFinder()
@@ -85,6 +91,7 @@
                         renderRecipeFinder(viewRecipe, recipeRef, userRef, document.getElementById("search-container"));
                         $("#grocerylist").css("display", "none");
                         $("#search-container").css("display", "block");
+                        $("#viewfindrecipe").css("display", "none");
                     }
 
                     function viewNewRecipeForm()
@@ -92,6 +99,7 @@
                         $("#search-container").css("display", "none");
                         $("#grocerylist").css("display", "block");
                         renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("grocerylist"));
+                        $("#viewfindrecipe").css("display", "inline");
                     }
 
                     function viewGroceryList()
@@ -99,6 +107,7 @@
                         $("#search-container").css("display", "none");
                         $("#grocerylist").css("display", "block");
                         renderList(userRef, recipeRef, document.getElementById("grocerylist"));
+                        $("#viewfindrecipe").css("display", "inline");
                     }
 
                     function viewSettings()
@@ -106,6 +115,7 @@
                         $("#search-container").css("display", "none");
                         $("#grocerylist").css("display", "block");
                         renderSettingsView(userRef, document.getElementById("grocerylist"));
+                        $("#viewfindrecipe").css("display", "inline");
                     }
 
                     $("#newrecipe").on("click", function(event) {
@@ -118,7 +128,12 @@
 
                     $("#viewsettings").on("click", function(event) {
                         viewSettings();
-                    })
+                    });
+
+                    $("#viewfindrecipe").on("click", function(event)
+                    {
+                        viewRecipeFinder();
+                    });
 
                     viewRecipeFinder();
                 }

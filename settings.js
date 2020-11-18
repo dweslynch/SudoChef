@@ -109,6 +109,12 @@ var Settings = function (_React$Component) {
             return React.createElement(
                 "div",
                 null,
+                React.createElement(
+                    "h2",
+                    null,
+                    "Dietary Restrictions",
+                    React.createElement("br", null)
+                ),
                 Object.entries(this.state.restrictions).map(function (kvp) {
                     return React.createElement(
                         "span",
