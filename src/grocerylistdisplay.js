@@ -137,6 +137,7 @@ class GroceryListDisplay extends React.Component {
                     }
                     else
                     {
+                        //TODO:  Need to handle case where exactly one ingredient is unitless
                         let amount1 = this.convertToOunces(ingredients[value.name]);
                         let amount2 = this.convertToOunces({ quantity: parseFloat(value.quantity), units: value.units });
 

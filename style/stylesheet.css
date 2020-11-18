@@ -104,7 +104,7 @@ a:hover {
 
 .autocomplete-suggestion
 {
-    width: auto;
+    width: 100%;
     padding: 15px;
     text-align: left;
     border: 1px solid #333333;
@@ -113,4 +113,9 @@ a:hover {
 .autocomplete-suggestion:hover
 {
     cursor: pointer;
+}
+
+.autocomplete-suggestions-container {
+    width: 100%;
+    margin: 0px;
 }

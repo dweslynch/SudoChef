@@ -153,6 +153,7 @@ var GroceryListDisplay = function (_React$Component) {
                                 if (ingredients[value.name].units == value.units) {
                                     ingredients[value.name].quantity += parseFloat(value.quantity);
                                 } else {
+                                    //TODO:  Need to handle case where exactly one ingredient is unitless
                                     var amount1 = this.convertToOunces(ingredients[value.name]);
                                     var amount2 = this.convertToOunces({ quantity: parseFloat(value.quantity), units: value.units });
 
