@@ -224,33 +224,20 @@ var NewRecipeForm = function (_React$Component) {
         React.createElement(
           "h2",
           null,
-          "Add New Recipe"
+          "Create New Recipe"
         ),
-        React.createElement(
-          "label",
-          null,
-          "Recipe Name:"
-        ),
-        React.createElement("br", null),
-        React.createElement("input", { type: "text", value: this.state.recipeName, onChange: this.handleNameChange }),
+        React.createElement("input", { type: "text", className: "full", value: this.state.recipeName, placeholder: "Recipe Name", onChange: this.handleNameChange }),
         React.createElement("br", null),
         React.createElement("br", null),
         arr.map(function (i) {
           return React.createElement(
             "div",
             null,
-            React.createElement(
-              "label",
-              null,
-              "Ingredient ",
-              i + 1,
-              ":\xA0\xA0"
-            ),
-            React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].name : "", onChange: function onChange(event) {
+            React.createElement("input", { type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].name : "", placeholder: "Ingredient " + (i + 1), onChange: function onChange(event) {
                 return _this2.handleIngredientIChange(i, event.target.value);
               } }),
             "\xA0\xA0",
-            React.createElement("input", { style: { "width": "50px" }, type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].quantity : "", onChange: function onChange(event) {
+            React.createElement("input", { style: { "width": "75px" }, type: "text", value: _this2.state.ingredientlist[i] ? _this2.state.ingredientlist[i].quantity : "", placeholder: "Quantity", onChange: function onChange(event) {
                 return _this2.handleIngredientQuantityChange(i, event.target.value);
               } }),
             "\xA0\xA0",
@@ -295,21 +282,21 @@ var NewRecipeForm = function (_React$Component) {
                 "Liter(s)"
               )
             ),
-            React.createElement("input", { style: { "backgroundColor": "rgba(0,0,0,0)", border: "none" }, className: "clickable", type: "button", value: "X", onClick: function onClick(event) {
+            React.createElement("input", { style: { "backgroundColor": "rgba(0,0,0,0)", border: "none" }, className: "clickable circle-button", type: "button", value: "X", onClick: function onClick(event) {
                 return _this2.handleRemoveIngredientButtonClick(i);
               } }),
             React.createElement("br", null),
             React.createElement("br", null)
           );
         }),
-        React.createElement("input", { type: "button", value: "Add Ingredient", onClick: this.handleAddIngredientButtonClick }),
+        React.createElement("input", { type: "button", className: "dark-button fullest", value: "Add Ingredient", onClick: this.handleAddIngredientButtonClick }),
         React.createElement("br", null),
         React.createElement("br", null),
         Object.entries(this.state.tags).map(function (kvp) {
           return React.createElement(
             "span",
             null,
-            React.createElement("input", { type: "button", style: { "margin": "5px", "backgroundColor": kvp[1] ? "black" : "white", "color": kvp[1] ? "white" : "black" }, name: kvp[0], value: _this2.titles[kvp[0]], onClick: _this2.handleTagChange }),
+            React.createElement("input", { type: "button", className: kvp[1] ? "spaced dark-button" : "spaced light-button", name: kvp[0], value: _this2.titles[kvp[0]], onClick: _this2.handleTagChange }),
             "\xA0\xA0"
           );
         }),
@@ -322,7 +309,7 @@ var NewRecipeForm = function (_React$Component) {
           "Description:"
         ),
         React.createElement("br", null),
-        React.createElement("textarea", { value: this.state.description, onChange: this.handleDescriptionChange }),
+        React.createElement("textarea", { value: this.state.description, className: "full", onChange: this.handleDescriptionChange }),
         React.createElement("br", null),
         React.createElement("br", null),
         React.createElement(
@@ -331,10 +318,10 @@ var NewRecipeForm = function (_React$Component) {
           "Instructions:"
         ),
         React.createElement("br", null),
-        React.createElement("textarea", { value: this.state.instructions, onChange: this.handleInstructionsChange }),
+        React.createElement("textarea", { value: this.state.instructions, className: "full", onChange: this.handleInstructionsChange }),
         React.createElement("br", null),
         React.createElement("br", null),
-        React.createElement("input", { type: "submit", value: "Submit" }),
+        React.createElement("input", { type: "submit", className: "dark-button fullest", value: "Submit" }),
         React.createElement(
           "h2",
           { className: "clickable", onClick: function onClick(event) {

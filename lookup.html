@@ -4,6 +4,7 @@
     <head>
         <title>Find A Recipe</title>
         <meta charset="UTF-8">
+        <script src="https://kit.fontawesome.com/ca7e1b4280.js" crossorigin="anonymous"></script>
         <script src="./node_modules/jquery/dist/jquery.min.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
 
@@ -20,9 +21,9 @@
         <script src="./settings.js"></script>
         <script src="./grocerylistdisplay.js"></script>
         <script src="./grocerylist.js"></script>
-        <!-- script src="./listfood.js"></script -->
 
-        <link type="text/css" rel="stylesheet" href="./style/stylesheet.css" />
+        <!-- link type="text/css" rel="stylesheet" href="./style/stylesheet.css" / -->
+        <link type="text/css" rel="stylesheet" href="./style/neustyle.css" />
         <script>
             var firebaseConfig = {
                 apiKey: "AIzaSyCPpZJJ5xm8wevrmdy9zB7k_dc_8wyXww0",
@@ -42,20 +43,55 @@
     <body>
         <div id="wrapper">
             <div id="menucontainer">
-                <div id="leftmenuicons">
-                    <span id="viewfindrecipe" class="clickable slow">&nbsp;&larr;</span>
+                <div class='left-menu-icons'>
+                    <!--
+                    <span id="viewfindrecipe" class="clickable slow">&larr;Back</span>
+                    -->
+                    <span id="viewfindrecipe" class="clickable light-button-circle"><i class="fas fa-angle-double-left"></i></span>
                 </div>
-                <div id="menuicons">
-                    <span id="newrecipe" class="clickable slow">+&nbsp;</span>
-                    <span id="viewprofile" class="clickable slow">&cirmid;&nbsp;</span>
-                    <span id="viewsettings" class="clickable slow">&curren;&nbsp;</span>
+                <div class='right-menu-icons'>
+                    <!--
+                    <span id="newrecipe" class="clickable slow">New +</span>
+                    <span id="viewprofile" class="clickable slow">List &cirmid;</span>
+                    <span id="viewsettings" class="clickable slow">Settings &curren;</span>
+                    -->
+                    <span id="newrecipe" class="clickable light-button-circle"><i class="fas fa-plus"></i></span>
+                    <span id="viewprofile" class="clickable light-button-circle"><i class="fas fa-list"></i></span>
+                    <span id="viewsettings" class="clickable light-button-circle"><i class="fas fa-cog"></i></span>
                 </div>
             </div>
             <h1><br/></h1>
             <div id="search-container"></div>
-            <div id="componentbox"></div>
+            <div id="componentbox" class="primary-content-card"></div>
+            <table id="image-container" class="top-image-container">
+                <tr>
+                    <td class="card">
+                        <img src="./images/tiramisu.jpg"/>
+                        <h2 class="clickable">
+                            Tiramisu by Devin
+                        </h2>
+                    </td>
+
+                    <td class="card">
+                        <img id="img2" src="./images/poutine.jpg"/>
+                        <h2 class="clickable">
+                            Poutine by Devin
+                        </h2>
+                    </td>
+
+                    <td class="card">
+                        <img src="./images/tiramisu.jpg"/>
+                    </td>
+                </tr>
+            </table>
         </div>
         <script>
+
+            $("#componentbox").css("display", "none");
+
+            $("#img1").css("height", $("#img1").css("width"));
+            $("#img2").css("height", $("#img2").css("width"));
+            $("#img3").css("height", $("#img3").css("width"));
 
             function hideAllContainers()
             {
@@ -63,7 +99,11 @@
                 $("#search-container").css("display", "none");
             }
 
-            $("#componentbox").css("display", "none");
+            function resetAllMenuButtons()
+            {
+                $(".dark-button-circle").addClass("light-button-circle");
+                $(".light-button-circle").removeClass("dark-button-circle");
+            }
 
             // Show grocery list when user is logged in
             firebase.auth().onAuthStateChanged(function(user) {
@@ -84,7 +124,11 @@
                         // Display proper content
                         $("#search-container").css("display", "none");
                         $("#componentbox").css("display", "block");
-                        $("#viewfindrecipe").css("display", "inline");
+                        $("#viewfindrecipe").css("display", "inline-block");
+
+                        $("#image-container").css("display", "none");
+
+                        resetAllMenuButtons();
                     }
 
                     function viewRecipeFinder()
@@ -93,6 +137,10 @@
                         $("#componentbox").css("display", "none");
                         $("#search-container").css("display", "block");
                         $("#viewfindrecipe").css("display", "none");
+
+                        $("#image-container").css("display", "table");
+
+                        resetAllMenuButtons();
                     }
 
                     function viewNewRecipeForm()
@@ -100,7 +148,13 @@
                         $("#search-container").css("display", "none");
                         $("#componentbox").css("display", "block");
                         renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("componentbox"));
-                        $("#viewfindrecipe").css("display", "inline");
+                        $("#viewfindrecipe").css("display", "inline-block");
+
+                        $("#image-container").css("display", "none");
+
+                        resetAllMenuButtons();
+                        $("#newrecipe").addClass("dark-button-circle");
+                        $("#newrecipe").removeClass("light-button-circle");
                     }
 
                     function viewGroceryList()
@@ -108,7 +162,13 @@
                         $("#search-container").css("display", "none");
                         $("#componentbox").css("display", "block");
                         renderList(userRef, recipeRef, document.getElementById("componentbox"));
-                        $("#viewfindrecipe").css("display", "inline");
+                        $("#viewfindrecipe").css("display", "inline-block");
+
+                        $("#image-container").css("display", "none");
+
+                        resetAllMenuButtons();
+                        $("#viewprofile").addClass("dark-button-circle");
+                        $("#viewprofile").removeClass("light-button-circle");
                     }
 
                     function viewSettings()
@@ -116,7 +176,13 @@
                         $("#search-container").css("display", "none");
                         $("#componentbox").css("display", "block");
                         renderSettingsView(userRef, document.getElementById("componentbox"));
-                        $("#viewfindrecipe").css("display", "inline");
+                        $("#viewfindrecipe").css("display", "inline-block");
+
+                        $("#image-container").css("display", "none");
+
+                        resetAllMenuButtons();
+                        $("#viewsettings").addClass("dark-button-circle");
+                        $("#viewsettings").removeClass("light-button-circle");
                     }
 
                     $("#newrecipe").on("click", function(event) {

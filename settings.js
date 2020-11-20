@@ -119,7 +119,7 @@ var Settings = function (_React$Component) {
                     return React.createElement(
                         "span",
                         null,
-                        React.createElement("input", { type: "button", style: { "margin": "5px", "backgroundColor": kvp[1] ? "black" : "white", "color": kvp[1] ? "white" : "black" }, name: kvp[0], value: _this2.titles[kvp[0]], onClick: _this2.handleRestrictionToggle })
+                        React.createElement("input", { type: "button", className: kvp[1] ? "spaced dark-button" : "spaced light-button", name: kvp[0], value: _this2.titles[kvp[0]], onClick: _this2.handleRestrictionToggle })
                     );
                 })
             );

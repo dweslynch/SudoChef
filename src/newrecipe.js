@@ -211,18 +211,15 @@ class NewRecipeForm extends React.Component
     }
 
     return <form onSubmit={this.handleSubmit}>
-      <h2>Add New Recipe</h2>
-      <label>Recipe Name:</label>
-      <br/>
-      <input type="text" value={this.state.recipeName} onChange={this.handleNameChange}/>
+      <h2>Create New Recipe</h2>
+      <input type="text" className="full" value={this.state.recipeName} placeholder="Recipe Name" onChange={this.handleNameChange}/>
       <br/><br/>
       {
         arr.map(i =>
           <div>
-            <label>Ingredient {i + 1}:&nbsp;&nbsp;</label>
-            <input type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].name : ""} onChange={(event) => this.handleIngredientIChange(i, event.target.value)}/>
+            <input type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].name : ""} placeholder={`Ingredient ${i + 1}`} onChange={(event) => this.handleIngredientIChange(i, event.target.value)}/>
             &nbsp;&nbsp;
-            <input style={{"width": "50px"}} type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].quantity : ""} onChange={(event) => this.handleIngredientQuantityChange(i, event.target.value)}/>
+            <input style={{"width": "75px"}} type="text" value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].quantity : ""} placeholder="Quantity" onChange={(event) => this.handleIngredientQuantityChange(i, event.target.value)}/>
             &nbsp;&nbsp;
             <select value={(this.state.ingredientlist[i]) ? this.state.ingredientlist[i].units : ""} onChange={(event) => this.handleUnitChange(i, event.target.value)}>
               <option selected value=""> </option>
@@ -233,17 +230,17 @@ class NewRecipeForm extends React.Component
               <option value="mL">mL</option>
               <option value="L">Liter(s)</option>
             </select>
-            <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable" type="button" value="X" onClick={(event) => this.handleRemoveIngredientButtonClick(i)}/>
+            <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable circle-button" type="button" value="X" onClick={(event) => this.handleRemoveIngredientButtonClick(i)}/>
             <br/><br/>
           </div>
         )
       }
-      <input type="button" value="Add Ingredient" onClick={this.handleAddIngredientButtonClick}/>
+      <input type="button" className="dark-button fullest" value="Add Ingredient" onClick={this.handleAddIngredientButtonClick}/>
       <br/><br/>
       {
           Object.entries(this.state.tags).map(kvp =>
             <span>
-                <input type="button" style={{"margin": "5px", "backgroundColor": (kvp[1]) ? "black" : "white", "color": (kvp[1]) ? "white" : "black"}} name={kvp[0]} value={this.titles[kvp[0]]} onClick={this.handleTagChange}/>
+                <input type="button" className={(kvp[1]) ? "spaced dark-button" : "spaced light-button"} name={kvp[0]} value={this.titles[kvp[0]]} onClick={this.handleTagChange}/>
                 &nbsp;&nbsp;
             </span>
           )
@@ -252,13 +249,13 @@ class NewRecipeForm extends React.Component
       <br/>
       <label>Description:</label>
       <br/>
-      <textarea value={this.state.description} onChange={this.handleDescriptionChange}/>
+      <textarea value={this.state.description} className="full" onChange={this.handleDescriptionChange}/>
       <br/><br/>
       <label>Instructions:</label>
       <br/>
-      <textarea value={this.state.instructions} onChange={this.handleInstructionsChange}/>
+      <textarea value={this.state.instructions} className="full" onChange={this.handleInstructionsChange}/>
       <br/><br/>
-      <input type="submit" value="Submit"/>
+      <input type="submit" className="dark-button fullest" value="Submit"/>
       <h2 className="clickable" onClick={(event) => this.backtrack()}>Return to Find Recipes&nbsp;&rsaquo;</h2>
     </form>;
   }

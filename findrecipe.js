@@ -122,18 +122,29 @@ var RecipeFinder = function (_React$Component) {
         value: function render() {
             return React.createElement(
                 "div",
-                { id: "autocomplete-container" },
+                null,
                 React.createElement(
                     "h1",
                     null,
-                    React.createElement("br", null),
-                    React.createElement("br", null),
-                    "Find A Recipe",
-                    React.createElement("br", null),
                     React.createElement("br", null)
                 ),
-                React.createElement("input", { id: "autocomplete", value: this.state.query, placeholder: "Find A Recipe...", onChange: this.handleQueryChange }),
-                React.createElement(Suggestions, { className: "autocomplete-suggestions-container", query: this.state.query, userRef: this.userRef, recipes: this.state.recipes, flowup: this.submit })
+                React.createElement(
+                    "div",
+                    { className: "autocomplete-container" },
+                    React.createElement(
+                        "h1",
+                        null,
+                        "Find A Recipe",
+                        React.createElement("br", null),
+                        React.createElement("br", null)
+                    ),
+                    React.createElement("input", { className: "autocomplete", value: this.state.query, placeholder: "Find A Recipe...", onChange: this.handleQueryChange }),
+                    React.createElement(
+                        "div",
+                        { className: "autocomplete-suggestions-container" },
+                        React.createElement(Suggestions, { className: "autocomplete-suggestions-container", query: this.state.query, userRef: this.userRef, recipes: this.state.recipes, flowup: this.submit })
+                    )
+                )
             );
         }
     }]);
