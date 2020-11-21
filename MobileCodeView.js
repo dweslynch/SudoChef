@@ -28,7 +28,7 @@ var MobileCodeView = function (_React$Component) {
             console.log(mobileURL);
             var formattedMobileURL = encodeURIComponent(mobileURL);
 
-            var codeURL = 'http://api.qrserver.com/v1/create-qr-code/?data=' + formattedMobileURL + '&size=250x250';
+            var codeURL = 'http://api.qrserver.com/v1/create-qr-code/?data=' + formattedMobileURL + '&size=250x250&color=111111&bgcolor=eeeeee';
 
             return codeURL;
         }

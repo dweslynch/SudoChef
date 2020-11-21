@@ -15,7 +15,7 @@ class MobileCodeView extends React.Component {
         console.log(mobileURL);
         const formattedMobileURL = encodeURIComponent(mobileURL);
 
-        const codeURL = `http://api.qrserver.com/v1/create-qr-code/?data=${formattedMobileURL}&size=250x250`;
+        const codeURL = `http://api.qrserver.com/v1/create-qr-code/?data=${formattedMobileURL}&size=250x250&color=111111&bgcolor=eeeeee`;
 
         return codeURL;
     }
