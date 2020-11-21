@@ -9,7 +9,8 @@ class GroceryListMobileView extends React.Component {
         this.state = {
             items: 0,
             list: [],
-            checked: []
+            checked: [],
+            done: false
         };
 
         this.updateListFromSnapshot = this.updateListFromSnapshot.bind(this);
@@ -45,6 +46,7 @@ class GroceryListMobileView extends React.Component {
     clearList()
     {
         this.dbRef.child('mobile').child(this.listKey).remove();
+        this.setState({ done: true })
     }
 
     handleToggleCheck(i)
@@ -64,6 +66,7 @@ class GroceryListMobileView extends React.Component {
         }
 
         return <div className="mobile-cell">
+            (this.state.done) ? <span>Thank you for using our app!</span> :
             {
                 arr.map(i =>
                     <span>
