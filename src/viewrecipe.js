@@ -76,5 +76,5 @@ class RecipeView extends React.Component
 function renderRecipeView(user, key, backtrack, returnPrompt, container, mine, userRef, recipeRef)
 {
   console.log(container);
-  ReactDOM.render(<RecipeView user={user} recipeKey={key} prompt={returnPrompt} mine={mine} backtrack={backtrack} userRef={userRef} recipeRef={recipeRef}/>, container);
+  ReactDOM.render(<RecipeView user={user} recipeKey={key} key={key} prompt={returnPrompt} mine={mine} backtrack={backtrack} userRef={userRef} recipeRef={recipeRef}/>, container);
 }

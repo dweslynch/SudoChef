@@ -62,7 +62,16 @@
                 </div>
             </div>
             <h1><br/></h1>
-            <div id="search-container"></div>
+            <div id="search-container">
+                <div>
+                    <h1><br/></h1>
+                    <div class="autocomplete-container">
+                        <h1> Find A Recipe<br/></h1>
+                        <br/>
+                        <h2><i class="fas fa-spinner spin"></i>&nbsp;Loading Recipes</h2>
+                    </div>
+                </div>
+            </div>
             <div id="componentbox" class="primary-content-card"></div>
             <div id="additional-components"></div>
             <div id="picks" class="card editor-picks-headline">
@@ -143,11 +152,13 @@
                         resetAllMenuButtons();
                     }
 
+                    renderRecipeFinder(viewRecipe, recipeRef, userRef, document.getElementById("search-container"));
+
                     function viewRecipeFinder()
                     {
                         $(window).scrollTop(0);
 
-                        ReactDOM.unmountComponentAtNode(document.getElementById("componentbox"));
+                        //ReactDOM.unmountComponentAtNode(document.getElementById("componentbox"));
                         $("#componentbox").css("display", "none");
                         $("#search-container").css("display", "block");
                         $("#viewfindrecipe").css("display", "none");
@@ -244,7 +255,7 @@
                         viewRecipe("dDMZeDGwxKR9LQWMJhQzKuzBDU12", "-MMbp2RHC15FZFFuQzRJ");
                     });
 
-                    viewRecipeFinder();
+                    //viewRecipeFinder();
                 }
                 else
                 {

@@ -108,7 +108,7 @@ var RecipeView = function (_React$Component) {
                         null,
                         this.state.recipe.instructions
                     ),
-                    !this.mine ? React.createElement('input', { type: 'button', className: 'fullest dark-button', value: 'Add To My Grocery List', onClick: this.addToInventory }) : null,
+                    !this.mine ? React.createElement('input', { type: 'button', className: 'fullest dark-button', value: 'Add To My Recipes', onClick: this.addToInventory }) : null,
                     React.createElement(
                         'h2',
                         { className: 'clickable', onClick: this.backtrack },
@@ -127,5 +127,5 @@ var RecipeView = function (_React$Component) {
 
 function renderRecipeView(user, key, backtrack, returnPrompt, container, mine, userRef, recipeRef) {
     console.log(container);
-    ReactDOM.render(React.createElement(RecipeView, { user: user, recipeKey: key, prompt: returnPrompt, mine: mine, backtrack: backtrack, userRef: userRef, recipeRef: recipeRef }), container);
+    ReactDOM.render(React.createElement(RecipeView, { user: user, recipeKey: key, key: key, prompt: returnPrompt, mine: mine, backtrack: backtrack, userRef: userRef, recipeRef: recipeRef }), container);
 }

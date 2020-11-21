@@ -123,6 +123,11 @@ var RecipeFinder = function (_React$Component) {
             this.recipeRef.on('value', this.updateStateFromSnapshot);
         }
     }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            this.recipeRef.off('value', this.updateStateFromSnapshot);
+        }
+    }, {
         key: "handleQueryChange",
         value: function handleQueryChange(event) {
             this.setState({ query: event.target.value });
@@ -157,7 +162,7 @@ var RecipeFinder = function (_React$Component) {
                     React.createElement(
                         "div",
                         { className: "autocomplete-suggestions-container" },
-                        React.createElement(Suggestions, { className: "autocomplete-suggestions-container", query: this.state.query, userRef: this.userRef, recipes: this.state.recipes, flowup: this.submit })
+                        React.createElement(Suggestions, { className: "autocomplete-suggestions-container", key: this.state.query, query: this.state.query, userRef: this.userRef, recipes: this.state.recipes, flowup: this.submit })
                     )
                 )
             );

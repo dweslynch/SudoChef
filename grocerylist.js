@@ -205,7 +205,8 @@ var GroceryList = function (_React$Component) {
 
         _this.state = {
             groceries: [],
-            restrictions: []
+            restrictions: [],
+            ready: false
         };
 
         _this.backtrack = _this.backtrack.bind(_this);
@@ -216,6 +217,7 @@ var GroceryList = function (_React$Component) {
         _this.renderDisplay = _this.renderDisplay.bind(_this);
         _this.renderDisplayFromSnapshot = _this.renderDisplayFromSnapshot.bind(_this);
         _this.handleRemoveRecipeClick = _this.handleRemoveRecipeClick.bind(_this);
+        _this.ready = _this.ready.bind(_this);
         return _this;
     }
 
@@ -227,6 +229,19 @@ var GroceryList = function (_React$Component) {
 
             this.userRef.child('inventory').on('value', this.updateGroceriesFromSnapshot);
             this.userRef.child('restrictions').on('value', this.updateRestrictionsFromSnapshot);
+        }
+    }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            this.userRef.child('inventory').off('value', this.updateGroceriesFromSnapshot);
+            this.userRef.child('restrictions').off('value', this.updateRestrictionsFromSnapshot);
+        }
+    }, {
+        key: "ready",
+        value: function ready() {
+            this.setState({
+                ready: true
+            });
         }
     }, {
         key: "renderDisplayFromSnapshot",
@@ -275,6 +290,8 @@ var GroceryList = function (_React$Component) {
                     groceries: []
                 });
             }
+
+            this.ready();
         }
     }, {
         key: "viewIndividualRecipe",
@@ -284,16 +301,70 @@ var GroceryList = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            console.log(this.state.groceries);
+            if (this.state.ready) {
+                console.log(this.state.groceries);
 
-            // Create local copy so can call from within the map callback
-            var _hasRestrictions = this.userHasDietaryRestrictions;
-            var restrictions = this.state.restrictions;
-            var _renderDisplay = this.renderDisplay;
-            var _removeRecipe = this.handleRemoveRecipeClick;
-            if (this.state.groceries) {
-                // Create a local reference to view individual recipe
-                var _viewRecipe = this.viewIndividualRecipe;
+                // Create local copy so can call from within the map callback
+                var _hasRestrictions = this.userHasDietaryRestrictions;
+                var restrictions = this.state.restrictions;
+                var _renderDisplay = this.renderDisplay;
+                var _removeRecipe = this.handleRemoveRecipeClick;
+                if (this.state.groceries) {
+                    // Create a local reference to view individual recipe
+                    var _viewRecipe = this.viewIndividualRecipe;
+                    return React.createElement(
+                        "div",
+                        null,
+                        React.createElement(
+                            "h2",
+                            null,
+                            "My Recipes"
+                        ),
+                        this.state.groceries.map(function (kvp) {
+                            var _kvp2 = _slicedToArray(kvp, 2),
+                                key = _kvp2[0],
+                                recipe = _kvp2[1];
+
+                            return React.createElement(
+                                "div",
+                                null,
+                                React.createElement("input", { style: { "backgroundColor": "rgba(0,0,0,0)", border: "none" }, className: "clickable circle-button", type: "button", value: "X", onClick: function onClick(event) {
+                                        return _removeRecipe(key);
+                                    } }),
+                                React.createElement(
+                                    "h2",
+                                    { className: "clickable", style: { "display": "inline-block" }, onClick: function onClick(event) {
+                                            return _viewRecipe(recipe.authorid, key);
+                                        } },
+                                    "\xA0\xA0",
+                                    recipe.name,
+                                    "\xA0\u203A"
+                                ),
+                                React.createElement(
+                                    "p",
+                                    { style: { 'marginLeft': "15px" } },
+                                    recipe.description
+                                ),
+                                _hasRestrictions() ? React.createElement(
+                                    "span",
+                                    { style: { 'marginLeft': '15px' } },
+                                    React.createElement(RestrictionMatchIndicator, { restrictions: restrictions, tags: recipe.tags })
+                                ) : null
+                            );
+                        }),
+                        React.createElement("br", null),
+                        React.createElement("input", { type: "button", className: "dark-button fullest", value: "Preview Grocery List", onClick: function onClick(event) {
+                                return _renderDisplay();
+                            } })
+                    );
+                } else {
+                    return React.createElement(
+                        "h2",
+                        null,
+                        "No Entries"
+                    );
+                }
+            } else {
                 return React.createElement(
                     "div",
                     null,
@@ -302,48 +373,17 @@ var GroceryList = function (_React$Component) {
                         null,
                         "My Recipes"
                     ),
-                    this.state.groceries.map(function (kvp) {
-                        var _kvp2 = _slicedToArray(kvp, 2),
-                            key = _kvp2[0],
-                            recipe = _kvp2[1];
-
-                        return React.createElement(
-                            "div",
+                    React.createElement(
+                        "span",
+                        { style: { 'textAlign': 'center' } },
+                        React.createElement(
+                            "h1",
                             null,
-                            React.createElement("input", { style: { "backgroundColor": "rgba(0,0,0,0)", border: "none" }, className: "clickable circle-button", type: "button", value: "X", onClick: function onClick(event) {
-                                    return _removeRecipe(key);
-                                } }),
-                            React.createElement(
-                                "h2",
-                                { className: "clickable", style: { "display": "inline-block" }, onClick: function onClick(event) {
-                                        return _viewRecipe(recipe.authorid, key);
-                                    } },
-                                "\xA0\xA0",
-                                recipe.name,
-                                "\xA0\u203A"
-                            ),
-                            React.createElement(
-                                "p",
-                                { style: { 'marginLeft': "15px" } },
-                                recipe.description
-                            ),
-                            _hasRestrictions() ? React.createElement(
-                                "span",
-                                { style: { 'marginLeft': '15px' } },
-                                React.createElement(RestrictionMatchIndicator, { restrictions: restrictions, tags: recipe.tags })
-                            ) : null
-                        );
-                    }),
-                    React.createElement("br", null),
-                    React.createElement("input", { type: "button", className: "dark-button fullest", value: "Preview Grocery List", onClick: function onClick(event) {
-                            return _renderDisplay();
-                        } })
-                );
-            } else {
-                return React.createElement(
-                    "h2",
-                    null,
-                    "No Entries"
+                            React.createElement("br", null),
+                            React.createElement("i", { className: "fas fa-spinner spin" }),
+                            React.createElement("br", null)
+                        )
+                    )
                 );
             }
         }

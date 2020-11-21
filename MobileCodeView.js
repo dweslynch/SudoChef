@@ -15,7 +15,6 @@ var MobileCodeView = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (MobileCodeView.__proto__ || Object.getPrototypeOf(MobileCodeView)).call(this, props));
 
         _this.mobileKey = props.mobileKey;
-
         _this.generateURL = _this.generateURL.bind(_this);
         return _this;
     }

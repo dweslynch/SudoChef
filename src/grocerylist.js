@@ -149,7 +149,8 @@ class GroceryList extends React.Component
 
         this.state = {
             groceries: [],
-            restrictions: []
+            restrictions: [],
+            ready: false
         }
 
         this.backtrack = this.backtrack.bind(this);
@@ -160,6 +161,7 @@ class GroceryList extends React.Component
         this.renderDisplay = this.renderDisplay.bind(this);
         this.renderDisplayFromSnapshot = this.renderDisplayFromSnapshot.bind(this);
         this.handleRemoveRecipeClick = this.handleRemoveRecipeClick.bind(this);
+        this.ready = this.ready.bind(this);
     }
 
     componentDidMount()
@@ -169,6 +171,19 @@ class GroceryList extends React.Component
 
         this.userRef.child('inventory').on('value', this.updateGroceriesFromSnapshot);
         this.userRef.child('restrictions').on('value', this.updateRestrictionsFromSnapshot);
+    }
+
+    componentWillUnmount()
+    {
+        this.userRef.child('inventory').off('value', this.updateGroceriesFromSnapshot);
+        this.userRef.child('restrictions').off('value', this.updateRestrictionsFromSnapshot);
+    }
+
+    ready()
+    {
+        this.setState({
+            ready: true
+        });
     }
 
     renderDisplayFromSnapshot(snapshot)
@@ -221,6 +236,8 @@ class GroceryList extends React.Component
                 groceries: []
             });
         }
+
+        this.ready();
     }
 
     viewIndividualRecipe(user, key)
@@ -230,37 +247,51 @@ class GroceryList extends React.Component
 
     render()
     {
-        console.log(this.state.groceries);
-
-        // Create local copy so can call from within the map callback
-        let _hasRestrictions = this.userHasDietaryRestrictions;
-        const restrictions = this.state.restrictions;
-        let _renderDisplay = this.renderDisplay;
-        let _removeRecipe = this.handleRemoveRecipeClick;
-        if (this.state.groceries)
+        if (this.state.ready)
         {
-            // Create a local reference to view individual recipe
-            let _viewRecipe = this.viewIndividualRecipe;
-            return <div>
-                <h2>My Recipes</h2>
-                {
-                    this.state.groceries.map(function(kvp) {
-                        let [key, recipe] = kvp;
-                        return <div>
-                            <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable circle-button" type="button" value="X" onClick={(event) => _removeRecipe(key)}/>
-                            <h2 className="clickable" style={{"display": "inline-block"}} onClick={(event) => _viewRecipe(recipe.authorid, key)}>&nbsp;&nbsp;{recipe.name}&nbsp;&rsaquo;</h2>
-                            <p style={{'marginLeft': "15px"}}>{recipe.description}</p>
-                            {(_hasRestrictions()) ? <span style={{'marginLeft': '15px'}}><RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/></span> : null}
-                        </div>;
-                    })
-                }
-                <br/>
-                <input type="button" className="dark-button fullest" value="Preview Grocery List" onClick={(event) => _renderDisplay()} />
-            </div>;
+            console.log(this.state.groceries);
+
+            // Create local copy so can call from within the map callback
+            let _hasRestrictions = this.userHasDietaryRestrictions;
+            const restrictions = this.state.restrictions;
+            let _renderDisplay = this.renderDisplay;
+            let _removeRecipe = this.handleRemoveRecipeClick;
+            if (this.state.groceries)
+            {
+                // Create a local reference to view individual recipe
+                let _viewRecipe = this.viewIndividualRecipe;
+                return <div>
+                    <h2>My Recipes</h2>
+                    {
+                        this.state.groceries.map(function(kvp) {
+                            let [key, recipe] = kvp;
+                            return <div>
+                                <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable circle-button" type="button" value="X" onClick={(event) => _removeRecipe(key)}/>
+                                <h2 className="clickable" style={{"display": "inline-block"}} onClick={(event) => _viewRecipe(recipe.authorid, key)}>&nbsp;&nbsp;{recipe.name}&nbsp;&rsaquo;</h2>
+                                <p style={{'marginLeft': "15px"}}>{recipe.description}</p>
+                                {(_hasRestrictions()) ? <span style={{'marginLeft': '15px'}}><RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/></span> : null}
+                            </div>;
+                        })
+                    }
+                    <br/>
+                    <input type="button" className="dark-button fullest" value="Preview Grocery List" onClick={(event) => _renderDisplay()} />
+                </div>;
+            }
+            else
+            {
+                return <h2>No Entries</h2>;
+            }
         }
         else
         {
-            return <h2>No Entries</h2>;
+            return <div>
+                <h2>My Recipes</h2>
+                <span style={{'textAlign': 'center'}}>
+                    <h1>
+                        <br/><i className="fas fa-spinner spin"></i><br/>
+                    </h1>
+                </span>
+            </div>;
         }
     }
 }

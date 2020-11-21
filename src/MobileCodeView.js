@@ -4,7 +4,6 @@ class MobileCodeView extends React.Component {
         super(props);
 
         this.mobileKey = props.mobileKey;
-
         this.generateURL = this.generateURL.bind(this);
     }
 

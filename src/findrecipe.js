@@ -93,7 +93,7 @@ class RecipeFinder extends React.Component
 
         this.state = {
             query: "",
-            recipes: {}
+            recipes: {},
         };
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
@@ -104,6 +104,11 @@ class RecipeFinder extends React.Component
     {
         this.recipeRef.once('value').then(this.updateStateFromSnapshot);
         this.recipeRef.on('value', this.updateStateFromSnapshot);
+    }
+
+    componentWillUnmount()
+    {
+        this.recipeRef.off('value', this.updateStateFromSnapshot);
     }
 
     handleQueryChange(event)
@@ -124,7 +129,7 @@ class RecipeFinder extends React.Component
                 <h1>Find A Recipe<br/><br/></h1>
                 <input className="autocomplete" value={this.state.query} placeholder="Find A Recipe..." onChange={this.handleQueryChange}/>
                 <div className="autocomplete-suggestions-container">
-                    <Suggestions className="autocomplete-suggestions-container" query={this.state.query} userRef={this.userRef} recipes={this.state.recipes} flowup={this.submit}/>
+                    <Suggestions className="autocomplete-suggestions-container" key={this.state.query} query={this.state.query} userRef={this.userRef} recipes={this.state.recipes} flowup={this.submit}/>
                 </div>
             </div>
         </div>;
