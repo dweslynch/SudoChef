@@ -25,6 +25,7 @@ html {
 
 table, tr {
     width: 100%;
+    font-size: 3em;
 }
 
 .left-mobile-cell {
