@@ -117,6 +117,7 @@ class GroceryList extends React.Component
         this.userHasDietaryRestrictions = this.userHasDietaryRestrictions.bind(this);
         this.renderDisplay = this.renderDisplay.bind(this);
         this.renderDisplayFromSnapshot = this.renderDisplayFromSnapshot.bind(this);
+        this.handleRemoveRecipeClick = this.handleRemoveRecipeClick.bind(this);
     }
 
     componentDidMount()
@@ -124,8 +125,8 @@ class GroceryList extends React.Component
         this.userRef.child('inventory').once('value').then(this.updateGroceriesFromSnapshot);
         this.userRef.child('restrictions').once('value').then(this.updateRestrictionsFromSnapshot);
 
-        // Don't need because this should stay constant for now until profile is finished
-        //this.userRef.child('inventory').on('value', this.updateGroceriesFromSnapshot);
+        this.userRef.child('inventory').on('value', this.updateGroceriesFromSnapshot);
+        this.userRef.child('restrictions').on('value', this.updateRestrictionsFromSnapshot);
     }
 
     renderDisplayFromSnapshot(snapshot)
@@ -149,12 +150,15 @@ class GroceryList extends React.Component
         renderList(this.userRef, this.recipeRef, this.container);
     }
 
+    handleRemoveRecipeClick(key)
+    {
+        this.userRef.child('inventory').child(key).remove();
+    }
+
     updateRestrictionsFromSnapshot(snapshot)
     {
         if (snapshot.val())
         {
-            console.log("detected restrictions");
-            console.log(snapshot.val());
             this.setState({
                 restrictions: Object.entries(snapshot.val())
             });
@@ -181,6 +185,7 @@ class GroceryList extends React.Component
         let _hasRestrictions = this.userHasDietaryRestrictions;
         const restrictions = this.state.restrictions;
         let _renderDisplay = this.renderDisplay;
+        let _removeRecipe = this.handleRemoveRecipeClick;
         if (this.state.groceries)
         {
             // Create a local reference to view individual recipe
@@ -190,13 +195,14 @@ class GroceryList extends React.Component
                     this.state.groceries.map(function(kvp) {
                         let [key, recipe] = kvp;
                         return <div>
-                            <h2 className="clickable" onClick={(event) => _viewRecipe(recipe.authorid, key)}>{recipe.name}&nbsp;&rsaquo;</h2>
+                            <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable circle-button" type="button" value="X" onClick={(event) => _removeRecipe(key)}/>
+                            <h2 className="clickable" style={{"display": "inline-block"}} onClick={(event) => _viewRecipe(recipe.authorid, key)}>&nbsp;{recipe.name}&nbsp;&rsaquo;</h2>
                             <p style={{'marginLeft': "15px"}}>{recipe.description}</p>
                             {(_hasRestrictions()) ? <RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/> : null}
                         </div>;
                     })
                 }
-                <h2 className="clickable" onClick={(event) => _renderDisplay()}>Generate Grocery List</h2>
+                <h2 className="clickable" onClick={(event) => _renderDisplay()}>Generate Grocery List&nbsp;&rsaquo;</h2>
             </div>;
         }
         else

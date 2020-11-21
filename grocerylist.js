@@ -220,6 +220,7 @@ var GroceryList = function (_React$Component2) {
         _this2.userHasDietaryRestrictions = _this2.userHasDietaryRestrictions.bind(_this2);
         _this2.renderDisplay = _this2.renderDisplay.bind(_this2);
         _this2.renderDisplayFromSnapshot = _this2.renderDisplayFromSnapshot.bind(_this2);
+        _this2.handleRemoveRecipeClick = _this2.handleRemoveRecipeClick.bind(_this2);
         return _this2;
     }
 
@@ -229,8 +230,8 @@ var GroceryList = function (_React$Component2) {
             this.userRef.child('inventory').once('value').then(this.updateGroceriesFromSnapshot);
             this.userRef.child('restrictions').once('value').then(this.updateRestrictionsFromSnapshot);
 
-            // Don't need because this should stay constant for now until profile is finished
-            //this.userRef.child('inventory').on('value', this.updateGroceriesFromSnapshot);
+            this.userRef.child('inventory').on('value', this.updateGroceriesFromSnapshot);
+            this.userRef.child('restrictions').on('value', this.updateRestrictionsFromSnapshot);
         }
     }, {
         key: "renderDisplayFromSnapshot",
@@ -254,11 +255,14 @@ var GroceryList = function (_React$Component2) {
             renderList(this.userRef, this.recipeRef, this.container);
         }
     }, {
+        key: "handleRemoveRecipeClick",
+        value: function handleRemoveRecipeClick(key) {
+            this.userRef.child('inventory').child(key).remove();
+        }
+    }, {
         key: "updateRestrictionsFromSnapshot",
         value: function updateRestrictionsFromSnapshot(snapshot) {
             if (snapshot.val()) {
-                console.log("detected restrictions");
-                console.log(snapshot.val());
                 this.setState({
                     restrictions: Object.entries(snapshot.val())
                 });
@@ -285,6 +289,7 @@ var GroceryList = function (_React$Component2) {
             var _hasRestrictions = this.userHasDietaryRestrictions;
             var restrictions = this.state.restrictions;
             var _renderDisplay = this.renderDisplay;
+            var _removeRecipe = this.handleRemoveRecipeClick;
             if (this.state.groceries) {
                 // Create a local reference to view individual recipe
                 var _viewRecipe = this.viewIndividualRecipe;
@@ -299,11 +304,15 @@ var GroceryList = function (_React$Component2) {
                         return React.createElement(
                             "div",
                             null,
+                            React.createElement("input", { style: { "backgroundColor": "rgba(0,0,0,0)", border: "none" }, className: "clickable circle-button", type: "button", value: "X", onClick: function onClick(event) {
+                                    return _removeRecipe(key);
+                                } }),
                             React.createElement(
                                 "h2",
-                                { className: "clickable", onClick: function onClick(event) {
+                                { className: "clickable", style: { "display": "inline-block" }, onClick: function onClick(event) {
                                         return _viewRecipe(recipe.authorid, key);
                                     } },
+                                "\xA0",
                                 recipe.name,
                                 "\xA0\u203A"
                             ),
@@ -320,7 +329,7 @@ var GroceryList = function (_React$Component2) {
                         { className: "clickable", onClick: function onClick(event) {
                                 return _renderDisplay();
                             } },
-                        "Generate Grocery List"
+                        "Generate Grocery List\xA0\u203A"
                     )
                 );
             } else {
