@@ -176,6 +176,7 @@ class GroceryListDisplay extends React.Component {
         let mobileKey = mobileRef.push().key;
 
         mobileRef.child(mobileKey).set(_ingredients);
+
         return mobileKey;
     }
 

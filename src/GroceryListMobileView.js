@@ -70,7 +70,7 @@ class GroceryListMobileView extends React.Component {
                         <span className={(this.state.checked[i]) ? "strikethrough" : "blank"} onClick={(event) => this.handleToggleCheck(i)}>
                         {this.state.list[i].name}:&nbsp;&nbsp;{this.state.list[i].quantity}&nbsp;{(this.state.list[i].units) ? this.state.list[i].units : ""}
                         </span>
-                        <br/>
+                        <br/><br/>
                     </span>
                 )
             }

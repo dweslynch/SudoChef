@@ -259,6 +259,7 @@ var GroceryListDisplay = function (_React$Component) {
             var mobileKey = mobileRef.push().key;
 
             mobileRef.child(mobileKey).set(_ingredients);
+
             return mobileKey;
         }
     }, {

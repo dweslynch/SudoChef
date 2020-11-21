@@ -114,6 +114,7 @@ var GroceryListMobileView = function (_React$Component) {
                             '\xA0',
                             _this2.state.list[i].units ? _this2.state.list[i].units : ""
                         ),
+                        React.createElement('br', null),
                         React.createElement('br', null)
                     );
                 })
