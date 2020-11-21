@@ -1,3 +1,39 @@
+function RestrictionMatchIndicator(props)
+{
+    if (props.restrictions.length > 0)
+    {
+        let tagTrue = false;
+        let violates = false;
+        for (const kvp of props.restrictions)
+        {
+            console.log(`restriction ${kvp[0]}: ${kvp[1]} and tag: ${props.tags[kvp[0]]}`);
+            //if (kvp[1] == "true" && this.tags[kvp[0]] == "false")
+            if (kvp[1] && !props.tags[kvp[0]])
+            {
+                violates = true;
+            }
+            else if (props.tags[kvp[0]])
+            {
+                tagTrue = true;
+            }
+        }
+        if (tagTrue && violates)
+        {
+            return <span style={{"color": "red"}}>&#x02717; This recipe may not meet your dietary restrictions</span>;
+        }
+        else if (tagTrue && !violates)
+        {
+            return <span style={{"color" : "green"}}>&#x02713; This recipe meets all your dietary restrictions</span>;
+        }
+        else
+        {
+            return <span style={{"color": "orange"}}>&#x025CA; This recipe does not include dietary restriction information</span>;
+        }
+    }
+    else return null;
+}
+
+/*
 class RestrictionMatchIndicator extends React.Component {
     constructor(props)
     {
@@ -95,6 +131,7 @@ class RestrictionMatchIndicator extends React.Component {
         }
     }
 }
+*/
 
 class GroceryList extends React.Component
 {

@@ -70,14 +70,14 @@
                 <tr>
                     <td class="editor-pick card">
                         <img src="./images/tiramisu.jpg"/>
-                        <h2 class="clickable">
+                        <h2 class="clickable" id="tiramisu-button">
                             Tiramisu by Devin
                         </h2>
                     </td>
 
                     <td class="editor-pick card">
                         <img id="img2" src="./images/poutine.jpg"/>
-                        <h2 class="clickable">
+                        <h2 class="clickable" id="poutine-button">
                             Poutine by Devin
                         </h2>
                     </td>
@@ -124,7 +124,7 @@
                     function viewRecipe(_user, key)
                     {
 
-                        console.log(`viewing recipe ${key} by ${user}`);
+                        console.log(`viewing recipe ${key} by ${_user}`);
 
                         // Display proper content
                         $("#search-container").css("display", "none");
@@ -143,6 +143,8 @@
 
                     function viewRecipeFinder()
                     {
+                        $(window).scrollTop(0);
+
                         ReactDOM.unmountComponentAtNode(document.getElementById("componentbox"));
                         $("#componentbox").css("display", "none");
                         $("#search-container").css("display", "block");
@@ -228,6 +230,16 @@
                     $("#viewfindrecipe").on("click", function(event)
                     {
                         viewRecipeFinder();
+                    });
+
+                    $("#tiramisu-button").on("click", function(event) {
+                        $(window).scrollTop(0);
+                        viewRecipe("dDMZeDGwxKR9LQWMJhQzKuzBDU12", "-MMbe0sbZnF68lsL6Sc7");
+                    });
+
+                    $("#poutine-button").on("click", function(event) {
+                        $(window).scrollTop(0);
+                        viewRecipe("dDMZeDGwxKR9LQWMJhQzKuzBDU12", "-MMbp2RHC15FZFFuQzRJ");
                     });
 
                     viewRecipeFinder();

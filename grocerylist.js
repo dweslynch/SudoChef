@@ -8,220 +8,189 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var RestrictionMatchIndicator = function (_React$Component) {
-    _inherits(RestrictionMatchIndicator, _React$Component);
+function RestrictionMatchIndicator(props) {
+    if (props.restrictions.length > 0) {
+        var tagTrue = false;
+        var violates = false;
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
 
-    function RestrictionMatchIndicator(props) {
-        _classCallCheck(this, RestrictionMatchIndicator);
+        try {
+            for (var _iterator = props.restrictions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var kvp = _step.value;
 
-        var _this = _possibleConstructorReturn(this, (RestrictionMatchIndicator.__proto__ || Object.getPrototypeOf(RestrictionMatchIndicator)).call(this, props));
+                console.log("restriction " + kvp[0] + ": " + kvp[1] + " and tag: " + props.tags[kvp[0]]);
+                //if (kvp[1] == "true" && this.tags[kvp[0]] == "false")
+                if (kvp[1] && !props.tags[kvp[0]]) {
+                    violates = true;
+                } else if (props.tags[kvp[0]]) {
+                    tagTrue = true;
+                }
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
 
-        _this.restrictions = props.restrictions;
-        _this.tags = props.tags;
+        if (tagTrue && violates) {
+            return React.createElement(
+                "span",
+                { style: { "color": "red" } },
+                "\u2717 This recipe may not meet your dietary restrictions"
+            );
+        } else if (tagTrue && !violates) {
+            return React.createElement(
+                "span",
+                { style: { "color": "green" } },
+                "\u2713 This recipe meets all your dietary restrictions"
+            );
+        } else {
+            return React.createElement(
+                "span",
+                { style: { "color": "orange" } },
+                "\u25CA This recipe does not include dietary restriction information"
+            );
+        }
+    } else return null;
+}
 
-        _this.matchesRestrictions = _this.matchesRestrictions.bind(_this);
-        _this.matchesSomeRestrictions = _this.matchesSomeRestrictions.bind(_this);
-        _this.doesNotHaveRestrictions = _this.doesNotHaveRestrictions.bind(_this);
-        return _this;
+/*
+class RestrictionMatchIndicator extends React.Component {
+    constructor(props)
+    {
+        super(props);
+
+        this.restrictions = props.restrictions;
+        this.tags = props.tags;
+
+        this.matchesRestrictions = this.matchesRestrictions.bind(this);
+        this.matchesSomeRestrictions = this.matchesSomeRestrictions.bind(this);
+        this.doesNotHaveRestrictions = this.doesNotHaveRestrictions.bind(this);
     }
 
     // Returns true if restrictions are met, returns false if not or if there are none
-
-
-    _createClass(RestrictionMatchIndicator, [{
-        key: "matchesRestrictions",
-        value: function matchesRestrictions() {
-            if (this.restrictions.length > 0) {
-                var _iteratorNormalCompletion = true;
-                var _didIteratorError = false;
-                var _iteratorError = undefined;
-
-                try {
-                    for (var _iterator = this.restrictions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                        var kvp = _step.value;
-
-                        console.log("restriction " + kvp[0] + ": " + kvp[1] + " and tag: " + this.tags[kvp[0]]);
-                        //if (kvp[1] == "true" && this.tags[kvp[0]] == "false")
-                        if (kvp[1] && !this.tags[kvp[0]]) {
-                            return false;
-                        }
-                    }
-                } catch (err) {
-                    _didIteratorError = true;
-                    _iteratorError = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion && _iterator.return) {
-                            _iterator.return();
-                        }
-                    } finally {
-                        if (_didIteratorError) {
-                            throw _iteratorError;
-                        }
-                    }
+    matchesRestrictions()
+    {
+        if (this.restrictions.length > 0)
+        {
+            for (const kvp of this.restrictions)
+            {
+                console.log(`restriction ${kvp[0]}: ${kvp[1]} and tag: ${this.tags[kvp[0]]}`);
+                //if (kvp[1] == "true" && this.tags[kvp[0]] == "false")
+                if (kvp[1] && !this.tags[kvp[0]])
+                {
+                    return false;
                 }
-
-                return true;
-            } else return false;
+            }
+            return true;
         }
+        else return false;
+    }
 
-        // Returns true if the user has restrictions, the recipe has tags, but not all restrictions are met
+    // Returns true if the user has restrictions, the recipe has tags, but not all restrictions are met
+    matchesSomeRestrictions()
+    {
+        if (this.restrictions.length > 0)
+        {
+            let hasTags = false;
+            const _tags = Object.entries(this.tags);
+            for (const kvp of _tags)
+            {
+                if (kvp[1])
+                    hasTags = true;
+            }
 
-    }, {
-        key: "matchesSomeRestrictions",
-        value: function matchesSomeRestrictions() {
-            if (this.restrictions.length > 0) {
-                var hasTags = false;
-                var _tags = Object.entries(this.tags);
-                var _iteratorNormalCompletion2 = true;
-                var _didIteratorError2 = false;
-                var _iteratorError2 = undefined;
-
-                try {
-                    for (var _iterator2 = _tags[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                        var kvp = _step2.value;
-
-                        if (kvp[1]) hasTags = true;
-                    }
-                } catch (err) {
-                    _didIteratorError2 = true;
-                    _iteratorError2 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                            _iterator2.return();
-                        }
-                    } finally {
-                        if (_didIteratorError2) {
-                            throw _iteratorError2;
-                        }
-                    }
-                }
-
-                if (!hasTags) return false;
-
-                var _iteratorNormalCompletion3 = true;
-                var _didIteratorError3 = false;
-                var _iteratorError3 = undefined;
-
-                try {
-                    for (var _iterator3 = this.restrictions[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                        var _kvp = _step3.value;
-
-                        if (_kvp[1] && !this.tags[_kvp[0]]) return true;
-                    }
-                } catch (err) {
-                    _didIteratorError3 = true;
-                    _iteratorError3 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                            _iterator3.return();
-                        }
-                    } finally {
-                        if (_didIteratorError3) {
-                            throw _iteratorError3;
-                        }
-                    }
-                }
-
+            if (!hasTags)
                 return false;
-            } else return false;
+
+            for (const kvp of this.restrictions)
+            {
+                if (kvp[1] && !this.tags[kvp[0]])
+                    return true;
+            }
+            return false;
         }
+        else return false
+    }
 
-        // Returns true if the user has dietary restrictions and there are no tags on the recipe
-
-    }, {
-        key: "doesNotHaveRestrictions",
-        value: function doesNotHaveRestrictions() {
-            if (this.restrictions.length > 0) {
-                var _tags = Object.entries(this.tags);
-                var _iteratorNormalCompletion4 = true;
-                var _didIteratorError4 = false;
-                var _iteratorError4 = undefined;
-
-                try {
-                    for (var _iterator4 = _tags[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                        var kvp = _step4.value;
-
-                        if (kvp[1]) return false;
-                    }
-                } catch (err) {
-                    _didIteratorError4 = true;
-                    _iteratorError4 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                            _iterator4.return();
-                        }
-                    } finally {
-                        if (_didIteratorError4) {
-                            throw _iteratorError4;
-                        }
-                    }
-                }
-
-                return true;
-            } else return false;
+    // Returns true if the user has dietary restrictions and there are no tags on the recipe
+    doesNotHaveRestrictions()
+    {
+        if (this.restrictions.length > 0)
+        {
+            const _tags = Object.entries(this.tags);
+            for (const kvp of _tags)
+            {
+                if (kvp[1])
+                    return false;
+            }
+            return true;
         }
-    }, {
-        key: "render",
-        value: function render() {
-            if (this.restrictions.length > 0) {
-                if (this.matchesRestrictions()) {
-                    return React.createElement(
-                        "span",
-                        { style: { "color": "green" } },
-                        "\u2713 This recipe meets all your dietary restrictions"
-                    );
-                } else if (this.matchesSomeRestrictions()) {
-                    return React.createElement(
-                        "span",
-                        { style: { "color": "red" } },
-                        "\u2717 This recipe may not meet your dietary restrictions"
-                    );
-                } else if (this.doesNotHaveRestrictions()) {
-                    return React.createElement(
-                        "span",
-                        { style: { "color": "orange" } },
-                        "\u25CA This recipe does not include dietary restriction information"
-                    );
-                }
-            } else {
-                return null;
+        else return false;
+    }
+
+    render()
+    {
+        if (this.restrictions.length > 0)
+        {
+            if (this.matchesRestrictions())
+            {
+                return <span style={{"color" : "green"}}>&#x02713; This recipe meets all your dietary restrictions</span>;
+            }
+            else if (this.matchesSomeRestrictions())
+            {
+                return <span style={{"color": "red"}}>&#x02717; This recipe may not meet your dietary restrictions</span>;
+            }
+            else if (this.doesNotHaveRestrictions())
+            {
+                return <span style={{"color": "orange"}}>&#x025CA; This recipe does not include dietary restriction information</span>;
             }
         }
-    }]);
+        else
+        {
+            return null;
+        }
+    }
+}
+*/
 
-    return RestrictionMatchIndicator;
-}(React.Component);
-
-var GroceryList = function (_React$Component2) {
-    _inherits(GroceryList, _React$Component2);
+var GroceryList = function (_React$Component) {
+    _inherits(GroceryList, _React$Component);
 
     function GroceryList(props) {
         _classCallCheck(this, GroceryList);
 
-        var _this2 = _possibleConstructorReturn(this, (GroceryList.__proto__ || Object.getPrototypeOf(GroceryList)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (GroceryList.__proto__ || Object.getPrototypeOf(GroceryList)).call(this, props));
 
-        _this2.userRef = props.userRef;
-        _this2.recipeRef = props.recipeRef;
-        _this2.container = props.container;
+        _this.userRef = props.userRef;
+        _this.recipeRef = props.recipeRef;
+        _this.container = props.container;
 
-        _this2.state = {
+        _this.state = {
             groceries: [],
             restrictions: []
         };
 
-        _this2.backtrack = _this2.backtrack.bind(_this2);
-        _this2.updateGroceriesFromSnapshot = _this2.updateGroceriesFromSnapshot.bind(_this2);
-        _this2.updateRestrictionsFromSnapshot = _this2.updateRestrictionsFromSnapshot.bind(_this2);
-        _this2.viewIndividualRecipe = _this2.viewIndividualRecipe.bind(_this2);
-        _this2.userHasDietaryRestrictions = _this2.userHasDietaryRestrictions.bind(_this2);
-        _this2.renderDisplay = _this2.renderDisplay.bind(_this2);
-        _this2.renderDisplayFromSnapshot = _this2.renderDisplayFromSnapshot.bind(_this2);
-        _this2.handleRemoveRecipeClick = _this2.handleRemoveRecipeClick.bind(_this2);
-        return _this2;
+        _this.backtrack = _this.backtrack.bind(_this);
+        _this.updateGroceriesFromSnapshot = _this.updateGroceriesFromSnapshot.bind(_this);
+        _this.updateRestrictionsFromSnapshot = _this.updateRestrictionsFromSnapshot.bind(_this);
+        _this.viewIndividualRecipe = _this.viewIndividualRecipe.bind(_this);
+        _this.userHasDietaryRestrictions = _this.userHasDietaryRestrictions.bind(_this);
+        _this.renderDisplay = _this.renderDisplay.bind(_this);
+        _this.renderDisplayFromSnapshot = _this.renderDisplayFromSnapshot.bind(_this);
+        _this.handleRemoveRecipeClick = _this.handleRemoveRecipeClick.bind(_this);
+        return _this;
     }
 
     _createClass(GroceryList, [{
@@ -308,9 +277,9 @@ var GroceryList = function (_React$Component2) {
                         "My Recipes"
                     ),
                     this.state.groceries.map(function (kvp) {
-                        var _kvp2 = _slicedToArray(kvp, 2),
-                            key = _kvp2[0],
-                            recipe = _kvp2[1];
+                        var _kvp = _slicedToArray(kvp, 2),
+                            key = _kvp[0],
+                            recipe = _kvp[1];
 
                         return React.createElement(
                             "div",
