@@ -21,6 +21,7 @@
         <script src="./settings.js"></script>
         <script src="./grocerylistdisplay.js"></script>
         <script src="./grocerylist.js"></script>
+        <script src="./pantry.js"></script>
 
         <!-- link type="text/css" rel="stylesheet" href="./style/stylesheet.css" / -->
         <link type="text/css" rel="stylesheet" href="./style/neustyle.css" />
@@ -98,6 +99,7 @@
             {
                 $("#componentbox").css("display", "none");
                 $("#search-container").css("display", "none");
+                $("#additional-components").css("display", "none");
             }
 
             function resetAllMenuButtons()
@@ -128,6 +130,7 @@
                         $("#viewfindrecipe").css("display", "inline-block");
 
                         $("#image-container").css("display", "none");
+                        $("#additional-components").css("display", "none");
 
                         resetAllMenuButtons();
                     }
@@ -138,6 +141,8 @@
                         $("#componentbox").css("display", "none");
                         $("#search-container").css("display", "block");
                         $("#viewfindrecipe").css("display", "none");
+
+                        $("#additional-components").css("display", "none");
 
                         $("#image-container").css("display", "table");
 
@@ -150,6 +155,8 @@
                         $("#componentbox").css("display", "block");
                         renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("componentbox"));
                         $("#viewfindrecipe").css("display", "inline-block");
+
+                        $("#additional-components").css("display", "none");
 
                         $("#image-container").css("display", "none");
 
@@ -165,6 +172,8 @@
                         renderList(userRef, recipeRef, document.getElementById("componentbox"));
                         $("#viewfindrecipe").css("display", "inline-block");
 
+                        $("#additional-components").css("display", "none");
+
                         $("#image-container").css("display", "none");
 
                         resetAllMenuButtons();
@@ -176,7 +185,14 @@
                     {
                         $("#search-container").css("display", "none");
                         $("#componentbox").css("display", "block");
+                        $("#additional-components").css("display", "block");
+
                         renderSettingsView(userRef, document.getElementById("componentbox"));
+
+                        const pantryContainerHTML = "<div id='pantry-container' class='primary-content-card'></div>";
+                        $("#additional-components").html(pantryContainerHTML);
+                        renderPantry(userRef, document.getElementById("pantry-container"));
+
                         $("#viewfindrecipe").css("display", "inline-block");
 
                         $("#image-container").css("display", "none");

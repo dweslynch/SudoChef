@@ -43,6 +43,10 @@ h1 {
                 6px 6px 16px #DDDDDD80;
 }
 
+#additional-components {
+    margin-top: 25px;
+}
+
 input[type="text"], textarea {
     font-family: 'Roboto';
     margin-top: 5px;
