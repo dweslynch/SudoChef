@@ -65,27 +65,30 @@
             <div id="search-container"></div>
             <div id="componentbox" class="primary-content-card"></div>
             <div id="additional-components"></div>
-            <table id="image-container" class="top-image-container">
-                <tr>
-                    <td class="editor-pick card">
-                        <img src="./images/tiramisu.jpg"/>
-                        <h2 class="clickable" id="tiramisu-button">
-                            Tiramisu by Devin
-                        </h2>
-                    </td>
+            <div id="picks" class="card editor-picks-headline">
+                <h1>Editor's Picks</h1>
+                <table id="image-container" class="top-image-container">
+                    <tr>
+                        <td class="editor-pick">
+                            <img id="img1" class="clickable" src="./images/tiramisu.jpg"/>
+                            <h2 class="clickable" id="tiramisu-button">
+                                Tiramisu by Devin
+                            </h2>
+                        </td>
 
-                    <td class="editor-pick card">
-                        <img id="img2" src="./images/poutine.jpg"/>
-                        <h2 class="clickable" id="poutine-button">
-                            Poutine by Devin
-                        </h2>
-                    </td>
+                        <td class="editor-pick">
+                            <img id="img2" class="clickable" src="./images/poutine.jpg"/>
+                            <h2 class="clickable" id="poutine-button">
+                                Poutine by Devin
+                            </h2>
+                        </td>
 
-                    <td class="editor-pick card">
-                        <img src="./images/tiramisu.jpg"/>
-                    </td>
-                </tr>
-            </table>
+                        <td class="editor-pick">
+                            <img id="img3" class="clickable" src="./images/tiramisu.jpg"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <script>
 
@@ -132,7 +135,7 @@
 
                         renderRecipeView(_user, key, viewRecipeFinder, "Return to Find Recipes", document.getElementById("componentbox"), false, userRef, recipeRef);
 
-                        $("#image-container").css("display", "none");
+                        $("#picks").css("display", "none");
 
                         ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
                         $("#additional-components").css("display", "none");
@@ -154,7 +157,7 @@
                         ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
                         $("#additional-components").css("display", "none");
 
-                        $("#image-container").css("display", "table");
+                        $("#picks").css("display", "block");
 
                         resetAllMenuButtons();
                     }
@@ -169,7 +172,7 @@
                         ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
                         $("#additional-components").css("display", "none");
 
-                        $("#image-container").css("display", "none");
+                        $("#picks").css("display", "none");
 
                         resetAllMenuButtons();
                         $("#newrecipe").addClass("dark-button-circle");
@@ -186,7 +189,7 @@
                         ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
                         $("#additional-components").css("display", "none");
 
-                        $("#image-container").css("display", "none");
+                        $("#picks").css("display", "none");
 
                         resetAllMenuButtons();
                         $("#viewprofile").addClass("dark-button-circle");
@@ -207,7 +210,7 @@
 
                         $("#viewfindrecipe").css("display", "inline-block");
 
-                        $("#image-container").css("display", "none");
+                        $("#picks").css("display", "none");
 
                         resetAllMenuButtons();
                         $("#viewsettings").addClass("dark-button-circle");
@@ -231,12 +234,12 @@
                         viewRecipeFinder();
                     });
 
-                    $("#tiramisu-button").on("click", function(event) {
+                    $("#img1, #tiramisu-button").on("click", function(event) {
                         $(window).scrollTop(0);
                         viewRecipe("dDMZeDGwxKR9LQWMJhQzKuzBDU12", "-MMbe0sbZnF68lsL6Sc7");
                     });
 
-                    $("#poutine-button").on("click", function(event) {
+                    $("#img2, #poutine-button").on("click", function(event) {
                         $(window).scrollTop(0);
                         viewRecipe("dDMZeDGwxKR9LQWMJhQzKuzBDU12", "-MMbp2RHC15FZFFuQzRJ");
                     });

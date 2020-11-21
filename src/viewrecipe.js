@@ -61,7 +61,7 @@ class RecipeView extends React.Component
               <p>{this.state.recipe.description}</p>
               <h2>Instructions:</h2>
               <p>{this.state.recipe.instructions}</p>
-              {(!this.mine) ? <input type="button" className="fullest dark-button" value="Add To My Grocery List" onClick={this.addToInventory}/> : null}
+              {(!this.mine) ? <input type="button" className="fullest dark-button" value="Add To My Recipes" onClick={this.addToInventory}/> : null}
               <h2 className="clickable" onClick={this.backtrack}>{this.returnPrompt}&nbsp;&rsaquo;</h2>
             </div>;
         }
