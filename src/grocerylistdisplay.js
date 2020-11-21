@@ -3,7 +3,26 @@ function IngredientDisplay(props)
     let ingredient = props.ingredient;
     let name = props.name;
 
-    return <h2>{name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</h2>;
+    if (ingredient.pantry)
+    {
+        if (ingredient.quantity > 0)
+        {
+            // Recipe partially covered by pantry
+            return <span>
+                <h2>{name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</h2>
+                <span style={{"color": "orange"}}>&#x025CA; You still need to purchase {(ingredient.units) ? `${ingredient.quantity} ${ingredient.units} of ${name}` : `${ingredient.quantity} ${name}`}</span>
+            </span>;
+        }
+        else
+        {
+            // Recipe fully covered by pantry
+            return <span>
+                <h2 class="strikethrough">{name}:&nbsp;&nbsp;0&nbsp;{ingredient.units}</h2>
+                <span style={{"color" : "green"}}>&#x02713; You have enough {name} in your pantry</span>
+            </span>;
+        }
+    }
+    else return <h2>{name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</h2>;
 }
 
 class GroceryListDisplay extends React.Component {
@@ -12,14 +31,19 @@ class GroceryListDisplay extends React.Component {
         super(props);
 
         this.recipeRef = props.recipeRef;
+        this.userRef = props.userRef;
         this.recipeKeys = props.recipes;
 
         this.state = {
             recipes: [],
-            ready: false
+            ready: false,
+            pantry: [],
+            ready2: false
         }
 
         this.addSnapshotToRecipeList = this.addSnapshotToRecipeList.bind(this);
+        this.getPantryFromSnapshot = this.getPantryFromSnapshot.bind(this);
+        this.pushUpdatedPantry = this.pushUpdatedPantry.bind(this);
         this.ready = this.ready.bind(this);
         this.convertToOunces = this.convertToOunces.bind(this);
         this.reduceUnits = this.reduceUnits.bind(this);
@@ -28,6 +52,9 @@ class GroceryListDisplay extends React.Component {
 
     componentDidMount()
     {
+        this.userRef.child('pantry').once('value').then(this.getPantryFromSnapshot);
+        // Let's eventually refactor to make a list of authors and reduce the number of database calls
+
         let recipes = Object.entries(this.recipeKeys);
         for (let i = 0; i < recipes.length - 1; i++)
         {
@@ -53,6 +80,58 @@ class GroceryListDisplay extends React.Component {
         });
     }
 
+    getPantryFromSnapshot(snapshot)
+    {
+        // Treat userIngredients as kvps for efficiency
+
+        const entries = Object.entries(snapshot.val());
+        let ingredients = { };
+
+        for (const kvp of entries)
+        {
+            let [key, value] = kvp;
+            // Gotta parse that float
+            ingredients[value.name] = { quantity: parseFloat(value.quantity), units: value.units };
+        }
+
+        this.setState({
+            pantry: ingredients,
+            ready2: true
+        });
+    }
+
+    pushUpdatedPantry(pantry)
+    {
+        // Clone pantry and remove undefined units
+        let _pantry = [];
+
+        for (key in pantry)
+        {
+            if (pantry[key].quantity > 0)
+            {
+                if (pantry[key].units)
+                {
+                    const item = {
+                        name: key,
+                        quantity: pantry[key].quantity,
+                        units: pantry[key].units
+                    }
+                    _pantry.push(item);
+                }
+                else
+                {
+                    const item = {
+                        name: key,
+                        quantity: pantry[key].quantity
+                    }
+                    _pantry.push(item);
+                }
+            }
+        }
+
+        this.userRef.child('pantry').set(_pantry);
+    }
+
     mergeOunces(amount1, amount2)
     {
         if (amount1.units == "oz" && amount2.units == "oz")
@@ -69,20 +148,22 @@ class GroceryListDisplay extends React.Component {
 
     reduceUnits(amount)
     {
+        let _amount = {...amount};
+
         // Should prob always be the case
-        if (amount.units == "oz")
+        if (_amount.units == "oz")
         {
-            if (amount.quantity > 33)
+            if (_amount.quantity > 33)
             {
-                return { quantity: Math.ceil(amount.quantity / 33.814), units: "L" };
+                return { quantity: Math.ceil(_amount.quantity / 33.814), units: "L" };
             }
-            else if (amount.quantity >= 8)
+            else if (_amount.quantity >= 8)
             {
-                return { quantity: Math.ceil(amount.quantity / 8.0), units: "cups" };
+                return { quantity: Math.ceil(_amount.quantity / 8.0), units: "cups" };
             }
-            else return amount;
+            else return _amount;
         }
-        else return amount;
+        else return _amount;
     }
 
     convertToOunces(amount)
@@ -116,7 +197,7 @@ class GroceryListDisplay extends React.Component {
         }
     }
 
-    combineIngredients()
+    combineIngredients(pantry)
     {
         let ingredients = {};
 
@@ -149,6 +230,63 @@ class GroceryListDisplay extends React.Component {
                     ingredients[value.name] = { quantity: parseFloat(value.quantity), units: value.units };
                 }
 
+                // Check pantry.  Might need to make this faster later
+                if (pantry[value.name])
+                {
+                    console.log("in pantry");
+                    let pantryIngredients = {...pantry[value.name]};
+                    let recipeIngredients = {...ingredients[value.name]};
+
+                    if (pantryIngredients.units != recipeIngredients.units)
+                    {
+                        console.log("different units");
+                        // Normalize units
+                        // Won't work when exactly one unit is blank, but should work when both are
+                        pantryIngredients = this.convertToOunces(pantryIngredients);
+                        recipeIngredients = this.convertToOunces(recipeIngredients);
+                    }
+
+                    if (pantryIngredients.quantity >= recipeIngredients.quantity)
+                    {
+                        console.log("pantry covers recipe");
+                        // User has enough to cover their recipes
+                        const remaining = pantryIngredients.quantity - recipeIngredients.quantity;
+
+                        recipeIngredients.quantity = 0;
+                        recipeIngredients.pantry = true;
+                        ingredients[value.name] = recipeIngredients;
+
+                        pantryIngredients.quantity = remaining;
+                        pantry[value.name] = this.reduceUnits(pantryIngredients);
+                    }
+                    else
+                    {
+                        console.log("pantry does not cover recipe");
+                        // Some pantry ingredients, but not enough to cover the recipe
+                        const remaining = recipeIngredients.quantity - pantryIngredients.quantity;
+
+                        pantryIngredients.quantity = 0;
+                        pantry[value.name] = pantryIngredients;
+                        recipeIngredients.pantry = true;
+
+                        console.log(recipeIngredients.name);
+                        console.log(recipeIngredients.quantity);
+                        console.log(recipeIngredients.units);
+
+                        console.log(remaining);
+                        recipeIngredients.quantity = remaining;
+                        ingredients[value.name] = this.reduceUnits(recipeIngredients);
+
+                        console.log(recipeIngredients.name);
+                        console.log(recipeIngredients.quantity);
+                        console.log(recipeIngredients.units);
+                    }
+                }
+                else
+                {
+                    ingredients[value.name].pantry = false;
+                }
+
                 ingredients[value.name] = this.reduceUnits(ingredients[value.name]);
             }
         }
@@ -157,23 +295,25 @@ class GroceryListDisplay extends React.Component {
 
     render()
     {
-        if (this.state.ready)
+        if (this.state.ready && this.state.ready2)
         {
-            const ingredients = Object.entries(this.combineIngredients());
-            console.log(ingredients);
+            let _pantry = {...this.state.pantry};
+            const ingredients = Object.entries(this.combineIngredients(_pantry));
+
             return <div>
                 {
                     ingredients.map(kvp =>
                         <IngredientDisplay name={kvp[0]} ingredient={kvp[1]}/>
                     )
                 }
+                <input type="button" className="dark-button fullest" value="Ready to Purchase" onClick={(event) => this.pushUpdatedPantry(_pantry)}/>
             </div>;
         }
         else return null;
     }
 }
 
-function renderGroceryListDisplay(recipeRef, keys, container)
+function renderGroceryListDisplay(userRef, recipeRef, keys, container)
 {
-    ReactDOM.render(<GroceryListDisplay recipeRef={recipeRef} recipes={keys}/>, container);
+    ReactDOM.render(<GroceryListDisplay userRef={userRef} recipeRef={recipeRef} recipes={keys}/>, container);
 }

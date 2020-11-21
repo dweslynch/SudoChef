@@ -131,7 +131,7 @@ class GroceryList extends React.Component
 
     renderDisplayFromSnapshot(snapshot)
     {
-        renderGroceryListDisplay(this.recipeRef, snapshot.val(), this.container);
+        renderGroceryListDisplay(this.userRef, this.recipeRef, snapshot.val(), this.container);
     }
 
     renderDisplay()
@@ -198,11 +198,12 @@ class GroceryList extends React.Component
                             <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable circle-button" type="button" value="X" onClick={(event) => _removeRecipe(key)}/>
                             <h2 className="clickable" style={{"display": "inline-block"}} onClick={(event) => _viewRecipe(recipe.authorid, key)}>&nbsp;{recipe.name}&nbsp;&rsaquo;</h2>
                             <p style={{'marginLeft': "15px"}}>{recipe.description}</p>
-                            {(_hasRestrictions()) ? <RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/> : null}
+                            {(_hasRestrictions()) ? <span style={{'marginLeft': '15px'}}><RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/></span> : null}
                         </div>;
                     })
                 }
-                <h2 className="clickable" onClick={(event) => _renderDisplay()}>Generate Grocery List&nbsp;&rsaquo;</h2>
+                <br/>
+                <input type="button" class="dark-button fullest" value="Preview Grocery List" onClick={(event) => _renderDisplay()} />
             </div>;
         }
         else

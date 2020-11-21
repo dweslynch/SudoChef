@@ -272,6 +272,11 @@ img {
     width: 100%;
 }
 
+.strikethrough {
+    text-decoration: line-through;
+    color: #666666;
+}
+
 .clickable:hover {
     cursor: pointer;
 }

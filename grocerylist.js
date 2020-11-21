@@ -236,7 +236,7 @@ var GroceryList = function (_React$Component2) {
     }, {
         key: "renderDisplayFromSnapshot",
         value: function renderDisplayFromSnapshot(snapshot) {
-            renderGroceryListDisplay(this.recipeRef, snapshot.val(), this.container);
+            renderGroceryListDisplay(this.userRef, this.recipeRef, snapshot.val(), this.container);
         }
     }, {
         key: "renderDisplay",
@@ -321,16 +321,17 @@ var GroceryList = function (_React$Component2) {
                                 { style: { 'marginLeft': "15px" } },
                                 recipe.description
                             ),
-                            _hasRestrictions() ? React.createElement(RestrictionMatchIndicator, { restrictions: restrictions, tags: recipe.tags }) : null
+                            _hasRestrictions() ? React.createElement(
+                                "span",
+                                { style: { 'marginLeft': '15px' } },
+                                React.createElement(RestrictionMatchIndicator, { restrictions: restrictions, tags: recipe.tags })
+                            ) : null
                         );
                     }),
-                    React.createElement(
-                        "h2",
-                        { className: "clickable", onClick: function onClick(event) {
-                                return _renderDisplay();
-                            } },
-                        "Generate Grocery List\xA0\u203A"
-                    )
+                    React.createElement("br", null),
+                    React.createElement("input", { type: "button", "class": "dark-button fullest", value: "Preview Grocery List", onClick: function onClick(event) {
+                            return _renderDisplay();
+                        } })
                 );
             } else {
                 return React.createElement(
