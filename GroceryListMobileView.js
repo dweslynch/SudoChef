@@ -76,7 +76,7 @@ var GroceryListMobileView = function (_React$Component) {
     }, {
         key: 'clearList',
         value: function clearList() {
-            this.dbRef.child('mobile').child(this.key).remove();
+            this.dbRef.child('mobile').child(this.listKey).remove();
         }
     }, {
         key: 'handleToggleCheck',
