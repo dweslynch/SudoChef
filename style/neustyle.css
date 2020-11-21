@@ -212,6 +212,12 @@ img {
     border-radius: 10px;
 }
 
+img.code {
+    width: 75%;
+    object-fit: fill;
+    border-radius: 0px;
+}
+
 .autocomplete {
     width: 95%;
     padding: 15px;

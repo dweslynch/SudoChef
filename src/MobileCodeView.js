@@ -23,9 +23,9 @@ class MobileCodeView extends React.Component {
     render()
     {
         return <div style={{'textAlign': 'center'}}>
-            <h2>My Grocery List</h2>
-            <p>Scan this code on your mobile device</p>
-            <br/><br/>
+            <h2>Make a Grocery Run</h2>
+            <p>Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.</p>
+            <br/>
             <img className="code" src={this.generateURL(this.mobileKey)}/>
         </div>;
     }

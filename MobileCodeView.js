@@ -41,14 +41,13 @@ var MobileCodeView = function (_React$Component) {
                 React.createElement(
                     'h2',
                     null,
-                    'My Grocery List'
+                    'Make a Grocery Run'
                 ),
                 React.createElement(
                     'p',
                     null,
-                    'Scan this code on your mobile device'
+                    'Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.'
                 ),
-                React.createElement('br', null),
                 React.createElement('br', null),
                 React.createElement('img', { className: 'code', src: this.generateURL(this.mobileKey) })
             );
