@@ -123,12 +123,15 @@
                     // Render a view of a single recipe
                     function viewRecipe(_user, key)
                     {
-                        renderRecipeView(_user, key, viewRecipeFinder, "Return to Find Recipes", document.getElementById("componentbox"), false, userRef, recipeRef);
+
+                        console.log(`viewing recipe ${key} by ${user}`);
 
                         // Display proper content
                         $("#search-container").css("display", "none");
                         $("#componentbox").css("display", "block");
                         $("#viewfindrecipe").css("display", "inline-block");
+
+                        renderRecipeView(_user, key, viewRecipeFinder, "Return to Find Recipes", document.getElementById("componentbox"), false, userRef, recipeRef);
 
                         $("#image-container").css("display", "none");
                         $("#additional-components").css("display", "none");
@@ -138,10 +141,12 @@
 
                     function viewRecipeFinder()
                     {
-                        renderRecipeFinder(viewRecipe, recipeRef, userRef, document.getElementById("search-container"));
+                        ReactDOM.unmountComponentAtNode(document.getElementById("componentbox"));
                         $("#componentbox").css("display", "none");
                         $("#search-container").css("display", "block");
                         $("#viewfindrecipe").css("display", "none");
+
+                        renderRecipeFinder(viewRecipe, recipeRef, userRef, document.getElementById("search-container"));
 
                         $("#additional-components").css("display", "none");
 
@@ -154,8 +159,8 @@
                     {
                         $("#search-container").css("display", "none");
                         $("#componentbox").css("display", "block");
-                        renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("componentbox"));
                         $("#viewfindrecipe").css("display", "inline-block");
+                        renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("componentbox"));
 
                         $("#additional-components").css("display", "none");
 
@@ -170,8 +175,8 @@
                     {
                         $("#search-container").css("display", "none");
                         $("#componentbox").css("display", "block");
-                        renderList(userRef, recipeRef, document.getElementById("componentbox"));
                         $("#viewfindrecipe").css("display", "inline-block");
+                        renderList(userRef, recipeRef, document.getElementById("componentbox"));
 
                         $("#additional-components").css("display", "none");
 

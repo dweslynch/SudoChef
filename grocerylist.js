@@ -271,9 +271,15 @@ var GroceryList = function (_React$Component2) {
     }, {
         key: "updateGroceriesFromSnapshot",
         value: function updateGroceriesFromSnapshot(snapshot) {
-            this.setState({
-                groceries: Object.entries(snapshot.val())
-            });
+            if (snapshot.val()) {
+                this.setState({
+                    groceries: Object.entries(snapshot.val())
+                });
+            } else {
+                this.setState({
+                    groceries: []
+                });
+            }
         }
     }, {
         key: "viewIndividualRecipe",
@@ -296,6 +302,11 @@ var GroceryList = function (_React$Component2) {
                 return React.createElement(
                     "div",
                     null,
+                    React.createElement(
+                        "h2",
+                        null,
+                        "My Recipes"
+                    ),
                     this.state.groceries.map(function (kvp) {
                         var _kvp2 = _slicedToArray(kvp, 2),
                             key = _kvp2[0],
@@ -312,7 +323,7 @@ var GroceryList = function (_React$Component2) {
                                 { className: "clickable", style: { "display": "inline-block" }, onClick: function onClick(event) {
                                         return _viewRecipe(recipe.authorid, key);
                                     } },
-                                "\xA0",
+                                "\xA0\xA0",
                                 recipe.name,
                                 "\xA0\u203A"
                             ),
@@ -329,7 +340,7 @@ var GroceryList = function (_React$Component2) {
                         );
                     }),
                     React.createElement("br", null),
-                    React.createElement("input", { type: "button", "class": "dark-button fullest", value: "Preview Grocery List", onClick: function onClick(event) {
+                    React.createElement("input", { type: "button", className: "dark-button fullest", value: "Preview Grocery List", onClick: function onClick(event) {
                             return _renderDisplay();
                         } })
                 );

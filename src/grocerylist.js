@@ -167,9 +167,18 @@ class GroceryList extends React.Component
 
     updateGroceriesFromSnapshot(snapshot)
     {
-        this.setState({
-            groceries: Object.entries(snapshot.val())
-        });
+        if (snapshot.val())
+        {
+            this.setState({
+                groceries: Object.entries(snapshot.val())
+            });
+        }
+        else
+        {
+            this.setState({
+                groceries: []
+            });
+        }
     }
 
     viewIndividualRecipe(user, key)
@@ -191,19 +200,20 @@ class GroceryList extends React.Component
             // Create a local reference to view individual recipe
             let _viewRecipe = this.viewIndividualRecipe;
             return <div>
+                <h2>My Recipes</h2>
                 {
                     this.state.groceries.map(function(kvp) {
                         let [key, recipe] = kvp;
                         return <div>
                             <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable circle-button" type="button" value="X" onClick={(event) => _removeRecipe(key)}/>
-                            <h2 className="clickable" style={{"display": "inline-block"}} onClick={(event) => _viewRecipe(recipe.authorid, key)}>&nbsp;{recipe.name}&nbsp;&rsaquo;</h2>
+                            <h2 className="clickable" style={{"display": "inline-block"}} onClick={(event) => _viewRecipe(recipe.authorid, key)}>&nbsp;&nbsp;{recipe.name}&nbsp;&rsaquo;</h2>
                             <p style={{'marginLeft': "15px"}}>{recipe.description}</p>
                             {(_hasRestrictions()) ? <span style={{'marginLeft': '15px'}}><RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/></span> : null}
                         </div>;
                     })
                 }
                 <br/>
-                <input type="button" class="dark-button fullest" value="Preview Grocery List" onClick={(event) => _renderDisplay()} />
+                <input type="button" className="dark-button fullest" value="Preview Grocery List" onClick={(event) => _renderDisplay()} />
             </div>;
         }
         else
