@@ -10,6 +10,7 @@ function Suggestions(props) {
     console.log(props.recipes);
     console.log("running");
     console.log(props.query);
+
     if (!props.query) {
         return null;
     }
@@ -74,8 +75,22 @@ function Suggestions(props) {
     );
     */
 
+    /*
+    return matches.slice(0, 10).map(recipe =>
+        <AutoCompleteSuggestion recipeKey={recipe.key} recipe={recipe.value} userRef={userRef} flowup={flowup}/>
+    );
+    */
+
     return matches.slice(0, 10).map(function (recipe) {
-        return React.createElement(AutoCompleteSuggestion, { recipeKey: recipe.key, recipe: recipe.value, userRef: userRef, flowup: flowup });
+        return React.createElement(
+            "div",
+            { className: "autocomplete-suggestion", onClick: function onClick(event) {
+                    return flowup(recipe.value.authorid, recipe.key);
+                } },
+            recipe.value.name,
+            " by ",
+            recipe.value.author
+        );
     });
 }
 
