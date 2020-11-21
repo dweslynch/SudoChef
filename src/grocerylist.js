@@ -3,18 +3,23 @@ function RestrictionMatchIndicator(props)
     if (props.restrictions.length > 0)
     {
         let tagTrue = false;
-        let violates = false;
-        for (const kvp of props.restrictions)
+
+        for (const kvp of Object.entries(props.tags))
         {
-            console.log(`restriction ${kvp[0]}: ${kvp[1]} and tag: ${props.tags[kvp[0]]}`);
-            //if (kvp[1] == "true" && this.tags[kvp[0]] == "false")
-            if (kvp[1] && !props.tags[kvp[0]])
-            {
-                violates = true;
-            }
-            else if (props.tags[kvp[0]])
+            if (kvp[1])
             {
                 tagTrue = true;
+            }
+        }
+
+        let violates = false;
+        for (const _kvp of props.restrictions)
+        {
+            console.log(`restriction ${_kvp[0]}: ${_kvp[1]} and tag: ${props.tags[_kvp[0]]}`);
+            //if (kvp[1] == "true" && this.tags[kvp[0]] == "false")
+            if (_kvp[1] && !props.tags[_kvp[0]])
+            {
+                violates = true;
             }
         }
         if (tagTrue && violates)
@@ -27,7 +32,7 @@ function RestrictionMatchIndicator(props)
         }
         else
         {
-            return <span style={{"color": "orange"}}>&#x025CA; This recipe does not include dietary restriction information</span>;
+            return <span style={{"color": "orange"}}>&#x0229B; This recipe does not include dietary restriction information</span>;
         }
     }
     else return null;

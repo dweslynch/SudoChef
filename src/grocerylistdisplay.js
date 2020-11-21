@@ -7,22 +7,22 @@ function IngredientDisplay(props)
     {
         if (ingredient.quantity > 0)
         {
-            // Recipe partially covered by pantry
+            // Recipe partially covered by pantry &#x025CA
             return <span>
-                <h2>{name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</h2>
-                <span style={{"color": "orange"}}>&#x025CA; You still need to purchase {(ingredient.units) ? `${ingredient.quantity} ${ingredient.units} of ${name}` : `${ingredient.quantity} ${name}`}</span>
+                <p><span style={{'fontWeight': 'bold'}}>{name}</span>:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</p>
+                <span style={{"color": "orange"}}>&#x0229B; You'll need to purchase {(ingredient.units) ? `${ingredient.quantity} more ${ingredient.units} of ${name}` : `${ingredient.quantity} ${name}`}</span>
             </span>;
         }
         else
         {
             // Recipe fully covered by pantry
             return <span>
-                <h2 class="strikethrough">{name}:&nbsp;&nbsp;0&nbsp;{ingredient.units}</h2>
+                <p class="strikethrough"><span style={{'fontWeight': 'bold'}}>{name}</span>:&nbsp;&nbsp;0&nbsp;{ingredient.units}</p>
                 <span style={{"color" : "green"}}>&#x02713; You have enough {name} in your pantry</span>
             </span>;
         }
     }
-    else return <h2>{name}:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</h2>;
+    else return <p><span style={{'fontWeight': 'bold'}}>{name}</span>:&nbsp;&nbsp;{ingredient.quantity}&nbsp;{ingredient.units}</p>;
 }
 
 class GroceryListDisplay extends React.Component {
@@ -58,14 +58,22 @@ class GroceryListDisplay extends React.Component {
         this.userRef.child('pantry').once('value').then(this.getPantryFromSnapshot);
         // Let's eventually refactor to make a list of authors and reduce the number of database calls
 
-        let recipes = Object.entries(this.recipeKeys);
-        for (let i = 0; i < recipes.length - 1; i++)
+        if (this.recipeKeys)
         {
-            this.recipeRef.child(recipes[i][1].authorid).child(recipes[i][0]).once('value').then(this.addSnapshotToRecipeList);
-        }
+            let recipes = Object.entries(this.recipeKeys);
 
-        // Only set 'ready' once last food item is fetched
-        this.recipeRef.child(recipes[recipes.length - 1][1].authorid).child(recipes[recipes.length - 1][0]).once('value').then(this.addSnapshotToRecipeList).then(this.ready);
+            for (let i = 0; i < recipes.length - 1; i++)
+            {
+                this.recipeRef.child(recipes[i][1].authorid).child(recipes[i][0]).once('value').then(this.addSnapshotToRecipeList);
+            }
+
+            // Only set 'ready' once last food item is fetched
+            this.recipeRef.child(recipes[recipes.length - 1][1].authorid).child(recipes[recipes.length - 1][0]).once('value').then(this.addSnapshotToRecipeList).then(this.ready);
+        }
+        else
+        {
+            this.ready();
+        }
     }
 
     // Ready to render component
@@ -359,12 +367,13 @@ class GroceryListDisplay extends React.Component {
             const ingredients = Object.entries(this.combineIngredients(_pantry));
 
             return <div>
+                <h2>My Grocery List</h2>
                 {
                     ingredients.map(kvp =>
                         <IngredientDisplay name={kvp[0]} ingredient={kvp[1]}/>
                     )
                 }
-                <input type="button" className="dark-button fullest" value="Ready to Purchase" onClick={(event) => this.generateMobileList(_pantry, ingredients)}/>
+                <input type="button" className="dark-button fullest" value="Make a Grocery Run" onClick={(event) => this.generateMobileList(_pantry, ingredients)}/>
             </div>;
         }
         else return null;

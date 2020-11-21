@@ -23,6 +23,7 @@ h1 {
 .card {
     background-color: #EEEEEE;
     color: #111111;
+    border: 1px solid #FFFFFF20;
     border-radius: 10px;
     padding: 15px;
 
@@ -36,28 +37,12 @@ h1 {
     text-align: left;
     background-color: #EEEEEE;
     color: #111111;
+    border: 1px solid #FFFFFF20;
     border-radius: 10px;
     padding: 15px;
 
     box-shadow: -6px -6px 16px #FFFFFF80,
                 6px 6px 16px #DDDDDD80;
-}
-
-.card {
-    background-color: #EEEEEE;
-    color: #111111;
-    border-radius: 10px;
-    padding: 15px;
-}
-
-.primary-content-card {
-    width: 33%;
-    margin: auto;
-    text-align: left;
-    background-color: #EEEEEE;
-    color: #111111;
-    border-radius: 10px;
-    padding: 15px;
 }
 
 #additional-components {

@@ -14,54 +14,66 @@ function IngredientDisplay(props) {
 
     if (ingredient.pantry) {
         if (ingredient.quantity > 0) {
-            // Recipe partially covered by pantry
+            // Recipe partially covered by pantry &#x025CA
             return React.createElement(
-                "span",
+                'span',
                 null,
                 React.createElement(
-                    "h2",
+                    'p',
                     null,
-                    name,
-                    ":\xA0\xA0",
+                    React.createElement(
+                        'span',
+                        { style: { 'fontWeight': 'bold' } },
+                        name
+                    ),
+                    ':\xA0\xA0',
                     ingredient.quantity,
-                    "\xA0",
+                    '\xA0',
                     ingredient.units
                 ),
                 React.createElement(
-                    "span",
+                    'span',
                     { style: { "color": "orange" } },
-                    "\u25CA You still need to purchase ",
-                    ingredient.units ? ingredient.quantity + " " + ingredient.units + " of " + name : ingredient.quantity + " " + name
+                    '\u229B You\'ll need to purchase ',
+                    ingredient.units ? ingredient.quantity + ' more ' + ingredient.units + ' of ' + name : ingredient.quantity + ' ' + name
                 )
             );
         } else {
             // Recipe fully covered by pantry
             return React.createElement(
-                "span",
+                'span',
                 null,
                 React.createElement(
-                    "h2",
-                    { "class": "strikethrough" },
-                    name,
-                    ":\xA0\xA00\xA0",
+                    'p',
+                    { 'class': 'strikethrough' },
+                    React.createElement(
+                        'span',
+                        { style: { 'fontWeight': 'bold' } },
+                        name
+                    ),
+                    ':\xA0\xA00\xA0',
                     ingredient.units
                 ),
                 React.createElement(
-                    "span",
+                    'span',
                     { style: { "color": "green" } },
-                    "\u2713 You have enough ",
+                    '\u2713 You have enough ',
                     name,
-                    " in your pantry"
+                    ' in your pantry'
                 )
             );
         }
     } else return React.createElement(
-        "h2",
+        'p',
         null,
-        name,
-        ":\xA0\xA0",
+        React.createElement(
+            'span',
+            { style: { 'fontWeight': 'bold' } },
+            name
+        ),
+        ':\xA0\xA0',
         ingredient.quantity,
-        "\xA0",
+        '\xA0',
         ingredient.units
     );
 }
@@ -99,30 +111,35 @@ var GroceryListDisplay = function (_React$Component) {
     }
 
     _createClass(GroceryListDisplay, [{
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             this.userRef.child('pantry').once('value').then(this.getPantryFromSnapshot);
             // Let's eventually refactor to make a list of authors and reduce the number of database calls
 
-            var recipes = Object.entries(this.recipeKeys);
-            for (var i = 0; i < recipes.length - 1; i++) {
-                this.recipeRef.child(recipes[i][1].authorid).child(recipes[i][0]).once('value').then(this.addSnapshotToRecipeList);
-            }
+            if (this.recipeKeys) {
+                var recipes = Object.entries(this.recipeKeys);
 
-            // Only set 'ready' once last food item is fetched
-            this.recipeRef.child(recipes[recipes.length - 1][1].authorid).child(recipes[recipes.length - 1][0]).once('value').then(this.addSnapshotToRecipeList).then(this.ready);
+                for (var i = 0; i < recipes.length - 1; i++) {
+                    this.recipeRef.child(recipes[i][1].authorid).child(recipes[i][0]).once('value').then(this.addSnapshotToRecipeList);
+                }
+
+                // Only set 'ready' once last food item is fetched
+                this.recipeRef.child(recipes[recipes.length - 1][1].authorid).child(recipes[recipes.length - 1][0]).once('value').then(this.addSnapshotToRecipeList).then(this.ready);
+            } else {
+                this.ready();
+            }
         }
 
         // Ready to render component
 
     }, {
-        key: "ready",
+        key: 'ready',
         value: function ready() {
             console.log("ready");
             this.setState({ ready: true });
         }
     }, {
-        key: "addSnapshotToRecipeList",
+        key: 'addSnapshotToRecipeList',
         value: function addSnapshotToRecipeList(snapshot) {
             this.setState(function (state) {
                 state.recipes.push(snapshot.val());
@@ -130,7 +147,7 @@ var GroceryListDisplay = function (_React$Component) {
             });
         }
     }, {
-        key: "getPantryFromSnapshot",
+        key: 'getPantryFromSnapshot',
         value: function getPantryFromSnapshot(snapshot) {
             // Treat userIngredients as kvps for efficiency
             if (snapshot.val()) {
@@ -180,7 +197,7 @@ var GroceryListDisplay = function (_React$Component) {
             }
         }
     }, {
-        key: "pushUpdatedPantry",
+        key: 'pushUpdatedPantry',
         value: function pushUpdatedPantry(pantry) {
             // Clone pantry and remove undefined units
             var _pantry = [];
@@ -207,7 +224,7 @@ var GroceryListDisplay = function (_React$Component) {
             this.userRef.child('pantry').set(_pantry);
         }
     }, {
-        key: "pushMobileIngredients",
+        key: 'pushMobileIngredients',
         value: function pushMobileIngredients(ingredients) {
             var mobileRef = this.recipeRef.parent.child('mobile');
 
@@ -263,7 +280,7 @@ var GroceryListDisplay = function (_React$Component) {
             return mobileKey;
         }
     }, {
-        key: "generateMobileList",
+        key: 'generateMobileList',
         value: function generateMobileList(pantry, ingredients) {
             this.pushUpdatedPantry(pantry);
             var key = this.pushMobileIngredients(ingredients);
@@ -273,7 +290,7 @@ var GroceryListDisplay = function (_React$Component) {
             renderMobileCode(key, this.container);
         }
     }, {
-        key: "mergeOunces",
+        key: 'mergeOunces',
         value: function mergeOunces(amount1, amount2) {
             if (amount1.units == "oz" && amount2.units == "oz") {
                 return { quantity: amount1.quantity + amount2.quantity, units: "oz" };
@@ -284,7 +301,7 @@ var GroceryListDisplay = function (_React$Component) {
             }
         }
     }, {
-        key: "reduceUnits",
+        key: 'reduceUnits',
         value: function reduceUnits(amount) {
             var _amount = Object.assign({}, amount);
 
@@ -298,7 +315,7 @@ var GroceryListDisplay = function (_React$Component) {
             } else return _amount;
         }
     }, {
-        key: "convertToOunces",
+        key: 'convertToOunces',
         value: function convertToOunces(amount) {
             var quantity = amount.quantity;
             var units = amount.units;
@@ -318,7 +335,7 @@ var GroceryListDisplay = function (_React$Component) {
             }
         }
     }, {
-        key: "combineIngredients",
+        key: 'combineIngredients',
         value: function combineIngredients(pantry) {
             var ingredients = {};
 
@@ -447,7 +464,7 @@ var GroceryListDisplay = function (_React$Component) {
             return ingredients;
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var _this2 = this;
 
@@ -456,12 +473,17 @@ var GroceryListDisplay = function (_React$Component) {
                 var ingredients = Object.entries(this.combineIngredients(_pantry));
 
                 return React.createElement(
-                    "div",
+                    'div',
                     null,
+                    React.createElement(
+                        'h2',
+                        null,
+                        'My Grocery List'
+                    ),
                     ingredients.map(function (kvp) {
                         return React.createElement(IngredientDisplay, { name: kvp[0], ingredient: kvp[1] });
                     }),
-                    React.createElement("input", { type: "button", className: "dark-button fullest", value: "Ready to Purchase", onClick: function onClick(event) {
+                    React.createElement('input', { type: 'button', className: 'dark-button fullest', value: 'Make a Grocery Run', onClick: function onClick(event) {
                             return _this2.generateMobileList(_pantry, ingredients);
                         } })
                 );

@@ -11,20 +11,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function RestrictionMatchIndicator(props) {
     if (props.restrictions.length > 0) {
         var tagTrue = false;
-        var violates = false;
+
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
 
         try {
-            for (var _iterator = props.restrictions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            for (var _iterator = Object.entries(props.tags)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                 var kvp = _step.value;
 
-                console.log("restriction " + kvp[0] + ": " + kvp[1] + " and tag: " + props.tags[kvp[0]]);
-                //if (kvp[1] == "true" && this.tags[kvp[0]] == "false")
-                if (kvp[1] && !props.tags[kvp[0]]) {
-                    violates = true;
-                } else if (props.tags[kvp[0]]) {
+                if (kvp[1]) {
                     tagTrue = true;
                 }
             }
@@ -39,6 +35,36 @@ function RestrictionMatchIndicator(props) {
             } finally {
                 if (_didIteratorError) {
                     throw _iteratorError;
+                }
+            }
+        }
+
+        var violates = false;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+            for (var _iterator2 = props.restrictions[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var _kvp = _step2.value;
+
+                console.log("restriction " + _kvp[0] + ": " + _kvp[1] + " and tag: " + props.tags[_kvp[0]]);
+                //if (kvp[1] == "true" && this.tags[kvp[0]] == "false")
+                if (_kvp[1] && !props.tags[_kvp[0]]) {
+                    violates = true;
+                }
+            }
+        } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                    _iterator2.return();
+                }
+            } finally {
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
                 }
             }
         }
@@ -59,7 +85,7 @@ function RestrictionMatchIndicator(props) {
             return React.createElement(
                 "span",
                 { style: { "color": "orange" } },
-                "\u25CA This recipe does not include dietary restriction information"
+                "\u229B This recipe does not include dietary restriction information"
             );
         }
     } else return null;
@@ -277,9 +303,9 @@ var GroceryList = function (_React$Component) {
                         "My Recipes"
                     ),
                     this.state.groceries.map(function (kvp) {
-                        var _kvp = _slicedToArray(kvp, 2),
-                            key = _kvp[0],
-                            recipe = _kvp[1];
+                        var _kvp2 = _slicedToArray(kvp, 2),
+                            key = _kvp2[0],
+                            recipe = _kvp2[1];
 
                         return React.createElement(
                             "div",
