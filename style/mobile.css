@@ -9,6 +9,7 @@ html {
   margin: 0px;
   padding-bottom: 5%;
   padding-top: 5%;
+  font-size: 2em;
 }
 
 .mobile-card {
@@ -23,15 +24,18 @@ html {
                 6px 6px 16px #DDDDDD80;
 }
 
-table, tr {
+.mobile-cell {
     width: 100%;
     font-size: 2em;
-}
-
-.left-mobile-cell {
     text-align: left;
 }
 
-.right-mobile-cell {
-    text-align: right;
+.strikethrough {
+    text-decoration: line-through;
+    color: #666666;
+}
+
+.blank {
+    text-decoration: none;
+    color: #111111;
 }

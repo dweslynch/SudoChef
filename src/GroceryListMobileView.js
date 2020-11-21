@@ -63,22 +63,15 @@ class GroceryListMobileView extends React.Component {
             arr.push(i);
         }
 
-        return <table>
+        return <div className="mobileCell">
             {
                 arr.map(i =>
-                    <tr>
-                        <td className="left-mobile-cell">
-                            <span>
-                            {this.state.list[i].name}:&nbsp;&nbsp;{this.state.list[i].quantity}&nbsp;{(this.state.list[i].units) ? this.state.list[i].units : ""}
-                            </span>
-                        </td>
-                        <td className="right-mobile-cell">
-                            <input type="checkbox" value={this.state.checked[i]} onChange={(event) => this.handleToggleCheck(i)}/>
-                        </td>
-                    </tr>
+                    <span className={(this.state.checked[i]) ? "strikethrough" : "blank"} onClick={(event) => this.handleToggleCheck(i)}>
+                    {this.state.list[i].name}:&nbsp;&nbsp;{this.state.list[i].quantity}&nbsp;{(this.state.list[i].units) ? this.state.list[i].units : ""}
+                    </span>
                 )
             }
-        </table>;
+        </div>;
     }
 }
 

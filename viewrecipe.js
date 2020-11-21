@@ -108,11 +108,7 @@ var RecipeView = function (_React$Component) {
                         null,
                         this.state.recipe.instructions
                     ),
-                    !this.mine ? React.createElement(
-                        'h2',
-                        { className: 'clickable', onClick: this.addToInventory },
-                        'Add To My Grocery List'
-                    ) : null,
+                    !this.mine ? React.createElement('input', { type: 'button', className: 'fullest dark-button', value: 'Add To My Grocery List', onClick: this.addToInventory }) : null,
                     React.createElement(
                         'h2',
                         { className: 'clickable', onClick: this.backtrack },

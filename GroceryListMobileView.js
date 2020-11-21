@@ -97,32 +97,19 @@ var GroceryListMobileView = function (_React$Component) {
             }
 
             return React.createElement(
-                'table',
-                null,
+                'div',
+                { className: 'mobileCell' },
                 arr.map(function (i) {
                     return React.createElement(
-                        'tr',
-                        null,
-                        React.createElement(
-                            'td',
-                            { className: 'left-mobile-cell' },
-                            React.createElement(
-                                'span',
-                                null,
-                                _this2.state.list[i].name,
-                                ':\xA0\xA0',
-                                _this2.state.list[i].quantity,
-                                '\xA0',
-                                _this2.state.list[i].units ? _this2.state.list[i].units : ""
-                            )
-                        ),
-                        React.createElement(
-                            'td',
-                            { className: 'right-mobile-cell' },
-                            React.createElement('input', { type: 'checkbox', value: _this2.state.checked[i], onChange: function onChange(event) {
-                                    return _this2.handleToggleCheck(i);
-                                } })
-                        )
+                        'span',
+                        { className: _this2.state.checked[i] ? "strikethrough" : "blank", onClick: function onClick(event) {
+                                return _this2.handleToggleCheck(i);
+                            } },
+                        _this2.state.list[i].name,
+                        ':\xA0\xA0',
+                        _this2.state.list[i].quantity,
+                        '\xA0',
+                        _this2.state.list[i].units ? _this2.state.list[i].units : ""
                     );
                 })
             );
