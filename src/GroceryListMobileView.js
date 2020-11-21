@@ -74,6 +74,7 @@ class GroceryListMobileView extends React.Component {
                     </span>
                 )
             }
+            <input type="button" className="dark-button-mobile" value="Done" onClick={(event) => this.clearList()}/>
         </div>;
     }
 }

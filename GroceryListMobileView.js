@@ -117,7 +117,10 @@ var GroceryListMobileView = function (_React$Component) {
                         React.createElement('br', null),
                         React.createElement('br', null)
                     );
-                })
+                }),
+                React.createElement('input', { type: 'button', className: 'dark-button-mobile', value: 'Done', onClick: function onClick(event) {
+                        return _this2.clearList();
+                    } })
             );
         }
     }]);

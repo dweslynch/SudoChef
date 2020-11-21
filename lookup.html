@@ -134,6 +134,8 @@
                         renderRecipeView(_user, key, viewRecipeFinder, "Return to Find Recipes", document.getElementById("componentbox"), false, userRef, recipeRef);
 
                         $("#image-container").css("display", "none");
+
+                        ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
                         $("#additional-components").css("display", "none");
 
                         resetAllMenuButtons();
@@ -148,6 +150,7 @@
 
                         renderRecipeFinder(viewRecipe, recipeRef, userRef, document.getElementById("search-container"));
 
+                        ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
                         $("#additional-components").css("display", "none");
 
                         $("#image-container").css("display", "table");
@@ -162,6 +165,7 @@
                         $("#viewfindrecipe").css("display", "inline-block");
                         renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("componentbox"));
 
+                        ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
                         $("#additional-components").css("display", "none");
 
                         $("#image-container").css("display", "none");
@@ -178,6 +182,7 @@
                         $("#viewfindrecipe").css("display", "inline-block");
                         renderList(userRef, recipeRef, document.getElementById("componentbox"));
 
+                        ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
                         $("#additional-components").css("display", "none");
 
                         $("#image-container").css("display", "none");

@@ -39,3 +39,14 @@ html {
     text-decoration: none;
     color: #111111;
 }
+
+.dark-button-mobile {
+    padding: 10px;
+    border: 1px solid #FFFFFF20;
+    background-color: #333333;
+    color: #EEEEEE;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: -6px -6px 6px #11111180 inset,
+                6px 6px 6px #55555580 inset;
+}
