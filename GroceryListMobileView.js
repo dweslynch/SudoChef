@@ -101,14 +101,11 @@ var GroceryListMobileView = function (_React$Component) {
             return React.createElement(
                 'div',
                 { className: 'mobile-cell' },
-                '(this.state.done) ? ',
-                React.createElement(
+                this.state.done ? React.createElement(
                     'span',
                     null,
                     'Thank you for using our app!'
-                ),
-                ' :',
-                arr.map(function (i) {
+                ) : arr.map(function (i) {
                     return React.createElement(
                         'span',
                         null,
