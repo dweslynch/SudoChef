@@ -46,7 +46,7 @@ var MobileCodeView = function (_React$Component) {
                 React.createElement(
                     'p',
                     null,
-                    'Scan this code on your mobile device to view your mobile grocery list'
+                    'Scan this code on your mobile device'
                 ),
                 React.createElement('br', null),
                 React.createElement('br', null),
