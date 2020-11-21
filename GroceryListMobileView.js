@@ -98,18 +98,23 @@ var GroceryListMobileView = function (_React$Component) {
 
             return React.createElement(
                 'div',
-                { className: 'mobileCell' },
+                { className: 'mobile-cell' },
                 arr.map(function (i) {
                     return React.createElement(
                         'span',
-                        { className: _this2.state.checked[i] ? "strikethrough" : "blank", onClick: function onClick(event) {
-                                return _this2.handleToggleCheck(i);
-                            } },
-                        _this2.state.list[i].name,
-                        ':\xA0\xA0',
-                        _this2.state.list[i].quantity,
-                        '\xA0',
-                        _this2.state.list[i].units ? _this2.state.list[i].units : ""
+                        null,
+                        React.createElement(
+                            'span',
+                            { className: _this2.state.checked[i] ? "strikethrough" : "blank", onClick: function onClick(event) {
+                                    return _this2.handleToggleCheck(i);
+                                } },
+                            _this2.state.list[i].name,
+                            ':\xA0\xA0',
+                            _this2.state.list[i].quantity,
+                            '\xA0',
+                            _this2.state.list[i].units ? _this2.state.list[i].units : ""
+                        ),
+                        React.createElement('br', null)
                     );
                 })
             );
