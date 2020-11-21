@@ -66,7 +66,7 @@ class GroceryListMobileView extends React.Component {
         }
 
         return <div className="mobile-cell">
-            {(this.state.done) ? <span>Thank you for using our app!</span> :
+            {(this.state.done) ? <span>Thank you for using our app!<br/><br/></span> :
                 arr.map(i =>
                     <span>
                         <span className={(this.state.checked[i]) ? "strikethrough" : "blank"} onClick={(event) => this.handleToggleCheck(i)}>
