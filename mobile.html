@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Find A Recipe</title>
+        <meta charset="UTF-8">
+        <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-database.js"></script>
+
+        <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+        <script src="./GroceryListMobileView.js"></script>
+
+        <!-- link type="text/css" rel="stylesheet" href="./style/stylesheet.css" / -->
+        <link type="text/css" rel="stylesheet" href="./style/mobile.css" />
+        <script>
+            var firebaseConfig = {
+                apiKey: "AIzaSyCPpZJJ5xm8wevrmdy9zB7k_dc_8wyXww0",
+                authDomain: "authtest-af1e0.firebaseapp.com",
+                databaseURL: "https://authtest-af1e0.firebaseio.com",
+                projectId: "authtest-af1e0",
+                storageBucket: "authtest-af1e0.appspot.com",
+                messagingSenderId: "483513788016",
+                appId: "1:483513788016:web:cf2898648d3b9c15bcb6b5",
+                measurementId: "G-936C46KKLS"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            var database = firebase.database();
+        </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="primary-content" class="mobile-card">
+            </div>
+        </div>
+        <script>
+            let dbRef = firebase.database().ref();
+
+            const query = window.location.search;
+            const params = new URLSearchParams(query);
+            const key = params.get('key');
+
+            renderMobileView(key, dbRef, document.getElementById("primary-content"));
+        </script>
+    </body>
+</html>

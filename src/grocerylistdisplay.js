@@ -33,6 +33,7 @@ class GroceryListDisplay extends React.Component {
         this.recipeRef = props.recipeRef;
         this.userRef = props.userRef;
         this.recipeKeys = props.recipes;
+        this.container = props.container;
 
         this.state = {
             recipes: [],
@@ -44,6 +45,8 @@ class GroceryListDisplay extends React.Component {
         this.addSnapshotToRecipeList = this.addSnapshotToRecipeList.bind(this);
         this.getPantryFromSnapshot = this.getPantryFromSnapshot.bind(this);
         this.pushUpdatedPantry = this.pushUpdatedPantry.bind(this);
+        this.generateMobileList = this.generateMobileList.bind(this);
+        this.pushMobileIngredients = this.pushMobileIngredients.bind(this);
         this.ready = this.ready.bind(this);
         this.convertToOunces = this.convertToOunces.bind(this);
         this.reduceUnits = this.reduceUnits.bind(this);
@@ -83,21 +86,29 @@ class GroceryListDisplay extends React.Component {
     getPantryFromSnapshot(snapshot)
     {
         // Treat userIngredients as kvps for efficiency
+        if (snapshot.val()) {
+            const entries = Object.entries(snapshot.val());
+            let ingredients = { };
 
-        const entries = Object.entries(snapshot.val());
-        let ingredients = { };
+            for (const kvp of entries)
+            {
+                let [key, value] = kvp;
+                // Gotta parse that float
+                ingredients[value.name] = { quantity: parseFloat(value.quantity), units: value.units };
+            }
 
-        for (const kvp of entries)
-        {
-            let [key, value] = kvp;
-            // Gotta parse that float
-            ingredients[value.name] = { quantity: parseFloat(value.quantity), units: value.units };
+            this.setState({
+                pantry: ingredients,
+                ready2: true
+            });
         }
-
-        this.setState({
-            pantry: ingredients,
-            ready2: true
-        });
+        else
+        {
+            this.setState({
+                pantry: [],
+                ready2: true
+            });
+        }
     }
 
     pushUpdatedPantry(pantry)
@@ -115,7 +126,7 @@ class GroceryListDisplay extends React.Component {
                         name: key,
                         quantity: pantry[key].quantity,
                         units: pantry[key].units
-                    }
+                    };
                     _pantry.push(item);
                 }
                 else
@@ -123,13 +134,59 @@ class GroceryListDisplay extends React.Component {
                     const item = {
                         name: key,
                         quantity: pantry[key].quantity
-                    }
+                    };
                     _pantry.push(item);
                 }
             }
         }
 
         this.userRef.child('pantry').set(_pantry);
+    }
+
+    pushMobileIngredients(ingredients)
+    {
+        let mobileRef = this.recipeRef.parent.child('mobile');
+
+        let _ingredients = [];
+        for (const kvp of ingredients)
+        {
+            let [key, value] = kvp;
+            if (value.quantity > 0)
+            {
+                if (value.units)
+                {
+                    const item = {
+                        name: key,
+                        quantity: value.quantity,
+                        units: value.units
+                    };
+                    _ingredients.push(item);
+                }
+                else
+                {
+                    const item = {
+                        name: key,
+                        quantity: value.quantity
+                    };
+                    _ingredients.push(item);
+                }
+            }
+        }
+
+        let mobileKey = mobileRef.push().key;
+
+        mobileRef.child(mobileKey).set(_ingredients);
+        return mobileKey;
+    }
+
+    generateMobileList(pantry, ingredients)
+    {
+        this.pushUpdatedPantry(pantry);
+        const key = this.pushMobileIngredients(ingredients);
+
+        // x
+
+        renderMobileCode(key, this.container);
     }
 
     mergeOunces(amount1, amount2)
@@ -306,7 +363,7 @@ class GroceryListDisplay extends React.Component {
                         <IngredientDisplay name={kvp[0]} ingredient={kvp[1]}/>
                     )
                 }
-                <input type="button" className="dark-button fullest" value="Ready to Purchase" onClick={(event) => this.pushUpdatedPantry(_pantry)}/>
+                <input type="button" className="dark-button fullest" value="Ready to Purchase" onClick={(event) => this.generateMobileList(_pantry, ingredients)}/>
             </div>;
         }
         else return null;
@@ -315,5 +372,5 @@ class GroceryListDisplay extends React.Component {
 
 function renderGroceryListDisplay(userRef, recipeRef, keys, container)
 {
-    ReactDOM.render(<GroceryListDisplay userRef={userRef} recipeRef={recipeRef} recipes={keys}/>, container);
+    ReactDOM.render(<GroceryListDisplay userRef={userRef} recipeRef={recipeRef} container={container} recipes={keys}/>, container);
 }

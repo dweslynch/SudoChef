@@ -77,6 +77,7 @@ var GroceryListDisplay = function (_React$Component) {
         _this.recipeRef = props.recipeRef;
         _this.userRef = props.userRef;
         _this.recipeKeys = props.recipes;
+        _this.container = props.container;
 
         _this.state = {
             recipes: [],
@@ -88,6 +89,8 @@ var GroceryListDisplay = function (_React$Component) {
         _this.addSnapshotToRecipeList = _this.addSnapshotToRecipeList.bind(_this);
         _this.getPantryFromSnapshot = _this.getPantryFromSnapshot.bind(_this);
         _this.pushUpdatedPantry = _this.pushUpdatedPantry.bind(_this);
+        _this.generateMobileList = _this.generateMobileList.bind(_this);
+        _this.pushMobileIngredients = _this.pushMobileIngredients.bind(_this);
         _this.ready = _this.ready.bind(_this);
         _this.convertToOunces = _this.convertToOunces.bind(_this);
         _this.reduceUnits = _this.reduceUnits.bind(_this);
@@ -130,45 +133,51 @@ var GroceryListDisplay = function (_React$Component) {
         key: "getPantryFromSnapshot",
         value: function getPantryFromSnapshot(snapshot) {
             // Treat userIngredients as kvps for efficiency
+            if (snapshot.val()) {
+                var entries = Object.entries(snapshot.val());
+                var ingredients = {};
 
-            var entries = Object.entries(snapshot.val());
-            var ingredients = {};
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
 
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = entries[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var kvp = _step.value;
-
-                    var _kvp = _slicedToArray(kvp, 2),
-                        _key = _kvp[0],
-                        value = _kvp[1];
-                    // Gotta parse that float
-
-
-                    ingredients[value.name] = { quantity: parseFloat(value.quantity), units: value.units };
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
                 try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
+                    for (var _iterator = entries[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var kvp = _step.value;
+
+                        var _kvp = _slicedToArray(kvp, 2),
+                            _key = _kvp[0],
+                            value = _kvp[1];
+                        // Gotta parse that float
+
+
+                        ingredients[value.name] = { quantity: parseFloat(value.quantity), units: value.units };
                     }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
                 } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return) {
+                            _iterator.return();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
                     }
                 }
-            }
 
-            this.setState({
-                pantry: ingredients,
-                ready2: true
-            });
+                this.setState({
+                    pantry: ingredients,
+                    ready2: true
+                });
+            } else {
+                this.setState({
+                    pantry: [],
+                    ready2: true
+                });
+            }
         }
     }, {
         key: "pushUpdatedPantry",
@@ -196,6 +205,71 @@ var GroceryListDisplay = function (_React$Component) {
             }
 
             this.userRef.child('pantry').set(_pantry);
+        }
+    }, {
+        key: "pushMobileIngredients",
+        value: function pushMobileIngredients(ingredients) {
+            var mobileRef = this.recipeRef.parent.child('mobile');
+
+            var _ingredients = [];
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = ingredients[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var kvp = _step2.value;
+
+                    var _kvp2 = _slicedToArray(kvp, 2),
+                        _key2 = _kvp2[0],
+                        value = _kvp2[1];
+
+                    if (value.quantity > 0) {
+                        if (value.units) {
+                            var item = {
+                                name: _key2,
+                                quantity: value.quantity,
+                                units: value.units
+                            };
+                            _ingredients.push(item);
+                        } else {
+                            var _item2 = {
+                                name: _key2,
+                                quantity: value.quantity
+                            };
+                            _ingredients.push(_item2);
+                        }
+                    }
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+
+            var mobileKey = mobileRef.push().key;
+
+            mobileRef.child(mobileKey).set(_ingredients);
+            return mobileKey;
+        }
+    }, {
+        key: "generateMobileList",
+        value: function generateMobileList(pantry, ingredients) {
+            this.pushUpdatedPantry(pantry);
+            var key = this.pushMobileIngredients(ingredients);
+
+            // x
+
+            renderMobileCode(key, this.container);
         }
     }, {
         key: "mergeOunces",
@@ -247,28 +321,28 @@ var GroceryListDisplay = function (_React$Component) {
         value: function combineIngredients(pantry) {
             var ingredients = {};
 
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
+            var _iteratorNormalCompletion3 = true;
+            var _didIteratorError3 = false;
+            var _iteratorError3 = undefined;
 
             try {
-                for (var _iterator2 = this.state.recipes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var recipe = _step2.value;
+                for (var _iterator3 = this.state.recipes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                    var recipe = _step3.value;
 
                     console.log(recipe);
-                    var _iteratorNormalCompletion3 = true;
-                    var _didIteratorError3 = false;
-                    var _iteratorError3 = undefined;
+                    var _iteratorNormalCompletion4 = true;
+                    var _didIteratorError4 = false;
+                    var _iteratorError4 = undefined;
 
                     try {
-                        for (var _iterator3 = Object.entries(recipe.ingredients)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                            var kvp = _step3.value;
+                        for (var _iterator4 = Object.entries(recipe.ingredients)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                            var kvp = _step4.value;
 
                             console.log(kvp);
 
-                            var _kvp2 = _slicedToArray(kvp, 2),
-                                _key2 = _kvp2[0],
-                                value = _kvp2[1];
+                            var _kvp3 = _slicedToArray(kvp, 2),
+                                _key3 = _kvp3[0],
+                                value = _kvp3[1];
                             // Is the ingredient already in our list?
 
 
@@ -340,31 +414,31 @@ var GroceryListDisplay = function (_React$Component) {
                             ingredients[value.name] = this.reduceUnits(ingredients[value.name]);
                         }
                     } catch (err) {
-                        _didIteratorError3 = true;
-                        _iteratorError3 = err;
+                        _didIteratorError4 = true;
+                        _iteratorError4 = err;
                     } finally {
                         try {
-                            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                                _iterator3.return();
+                            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                                _iterator4.return();
                             }
                         } finally {
-                            if (_didIteratorError3) {
-                                throw _iteratorError3;
+                            if (_didIteratorError4) {
+                                throw _iteratorError4;
                             }
                         }
                     }
                 }
             } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
+                _didIteratorError3 = true;
+                _iteratorError3 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
+                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                        _iterator3.return();
                     }
                 } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
+                    if (_didIteratorError3) {
+                        throw _iteratorError3;
                     }
                 }
             }
@@ -387,7 +461,7 @@ var GroceryListDisplay = function (_React$Component) {
                         return React.createElement(IngredientDisplay, { name: kvp[0], ingredient: kvp[1] });
                     }),
                     React.createElement("input", { type: "button", className: "dark-button fullest", value: "Ready to Purchase", onClick: function onClick(event) {
-                            return _this2.pushUpdatedPantry(_pantry);
+                            return _this2.generateMobileList(_pantry, ingredients);
                         } })
                 );
             } else return null;
@@ -398,5 +472,5 @@ var GroceryListDisplay = function (_React$Component) {
 }(React.Component);
 
 function renderGroceryListDisplay(userRef, recipeRef, keys, container) {
-    ReactDOM.render(React.createElement(GroceryListDisplay, { userRef: userRef, recipeRef: recipeRef, recipes: keys }), container);
+    ReactDOM.render(React.createElement(GroceryListDisplay, { userRef: userRef, recipeRef: recipeRef, container: container, recipes: keys }), container);
 }

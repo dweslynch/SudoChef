@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+html {
+  width: 100%;
+  text-align: center;
+  background-color: #EEEEEE;
+  color: #111111;
+  font-family: 'Roboto';
+  margin: 0px;
+  padding-bottom: 5%;
+  padding-top: 5%;
+}
+
+.mobile-card {
+    width: 80%;
+    margin: auto;
+    background-color: #EEEEEE;
+    color: #111111;
+    border-radius: 10px;
+    padding: 3%;
+
+    box-shadow: -6px -6px 16px #FFFFFF80,
+                6px 6px 16px #DDDDDD80;
+}
+
+table, tr {
+    width: 100%;
+}
+
+.left-mobile-cell {
+    text-align: left;
+}
+
+.right-mobile-cell {
+    text-align: right;
+}
