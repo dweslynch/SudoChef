@@ -264,6 +264,10 @@
                         $("#additional-components").html(pantryContainerHTML);
                         renderPantry(userRef, document.getElementById("pantry-container"));
 
+                        $("#additional-components").append(
+                            '<br/><br/><input type="button" id="sign-out-button" class="dark-button" value="Sign Out" />'
+                        );
+
                         $("#viewfindrecipe").css("display", "inline-block");
 
                         $("#picks").css("display", "none");
@@ -271,6 +275,11 @@
                         resetAllMenuButtons();
                         $("#viewsettings").addClass("dark-button-circle");
                         $("#viewsettings").removeClass("light-button-circle");
+
+                        $("#sign-out-button").on("click", function(event) {
+                            firebase.auth().signOut();
+                            window.location.href = './index.html';
+                        });
                     }
 
                     $("#newrecipe").on("click", function(event) {
@@ -309,6 +318,8 @@
                 }
                 else
                 {
+                    // User is signed out, Redirect to index.html
+                    window.location.href = './index.html';
                 }
             });
         </script>
