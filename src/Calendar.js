@@ -127,7 +127,8 @@ class Calendar extends React.Component {
           this.userRef.child('calendar').remove();
 
           this.setState({
-              confirm: false
+              confirm: false,
+              selectedRecipe: ""
           });
       }
       else
