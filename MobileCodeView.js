@@ -23,7 +23,7 @@ var MobileCodeView = function (_React$Component) {
         key: 'generateURL',
         value: function generateURL(key) {
             // Replace this later
-            var mobileURL = 'https://dweslynch.github.io/authtest/mobile.html?key=' + key;
+            var mobileURL = 'https://dweslynch.github.io/SudoChef/mobile.html?key=' + key;
             console.log(mobileURL);
             var formattedMobileURL = encodeURIComponent(mobileURL);
 
