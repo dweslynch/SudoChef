@@ -9,6 +9,7 @@ class Calendar extends React.Component {
       userRecipes: { },
       selectedRecipe: "",
       days: { },
+      confirm: false
     };
 
     this.handleRecipeClick = this.handleRecipeClick.bind(this);
@@ -121,7 +122,20 @@ class Calendar extends React.Component {
 
   clearEntireCalendar()
   {
-      this.userRef.child('calendar').remove();
+      if (this.state.confirm)
+      {
+          this.userRef.child('calendar').remove();
+
+          this.setState({
+              confirm: false
+          });
+      }
+      else
+      {
+          this.setState({
+              confirm: true
+          });
+      }
   }
 
   render() {
@@ -165,7 +179,7 @@ class Calendar extends React.Component {
 
                 <input type="button" className="dark-button fullest" onClick={(event) => this.compileWeeklyList()} value="Preview Weekly List" />
                 <br/><br/>
-                <input type="button" className="dark-button fullest" onClick={(event) => this.clearEntireCalendar()} value="Clear Entire Calendar" />
+                <input type="button" className="dark-button fullest" onClick={(event) => this.clearEntireCalendar()} value={(this.state.confirm) ? "Are you sure?" : "Clear Entire Calendar"} />
                 <br/><br/>
                 <div className = "sun">
                     <div className="card">

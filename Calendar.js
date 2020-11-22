@@ -22,7 +22,8 @@ var Calendar = function (_React$Component) {
         _this.state = {
             userRecipes: {},
             selectedRecipe: "",
-            days: {}
+            days: {},
+            confirm: false
         };
 
         _this.handleRecipeClick = _this.handleRecipeClick.bind(_this);
@@ -128,7 +129,17 @@ var Calendar = function (_React$Component) {
     }, {
         key: 'clearEntireCalendar',
         value: function clearEntireCalendar() {
-            this.userRef.child('calendar').remove();
+            if (this.state.confirm) {
+                this.userRef.child('calendar').remove();
+
+                this.setState({
+                    confirm: false
+                });
+            } else {
+                this.setState({
+                    confirm: true
+                });
+            }
         }
     }, {
         key: 'render',
@@ -205,7 +216,7 @@ var Calendar = function (_React$Component) {
                             React.createElement('br', null),
                             React.createElement('input', { type: 'button', className: 'dark-button fullest', onClick: function onClick(event) {
                                     return _this2.clearEntireCalendar();
-                                }, value: 'Clear Entire Calendar' }),
+                                }, value: this.state.confirm ? "Are you sure?" : "Clear Entire Calendar" }),
                             React.createElement('br', null),
                             React.createElement('br', null),
                             React.createElement(
