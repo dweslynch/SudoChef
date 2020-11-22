@@ -16,6 +16,8 @@ class RecipeSlot extends React.Component {
     };
 
     this.updateRecipeFromSnapshot = this.updateRecipeFromSnapshot.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.translateMeal = this.translateMeal.bind(this);
   }
 
   componentDidMount()
@@ -24,6 +26,22 @@ class RecipeSlot extends React.Component {
 
       // Continuous updates
       this.userRef.child('calendar').child(this.day).child(this.meal).on('value', this.updateRecipeFromSnapshot);
+  }
+
+  translateMeal(m)
+  {
+      if (m == "b")
+      {
+          return "Breakfast";
+      }
+      else if (m == "l")
+      {
+          return "Lunch";
+      }
+      else
+      {
+          return "Dinner";
+      }
   }
 
   updateRecipeFromSnapshot(snapshot)
@@ -41,12 +59,10 @@ class RecipeSlot extends React.Component {
       {
           this.setState({
               recipeKey: "",
+              recipeName: "",
+              recipeAuthorId: ""
           });
       }
-  }
-
-  clear() {
-    this.state.recipeKey = null;
   }
 
   handleClick() {
@@ -60,8 +76,7 @@ class RecipeSlot extends React.Component {
   render() {
     return (
       <div className = "slotWrapper" >
-        <div className="slot" onClick={this.slotClick(this.day, this.meal)}></div>
-        <button className="deleteButton" onClick={this.clear}/>
+        <div className="slot clickable" style={{"fontWeight": (this.state.recipeKey) ? "bold" : "normal"}} onClick={(event) => this.slotClick(this.day, this.meal)}>{this.translateMeal(this.meal)}:&nbsp;&nbsp;{this.state.recipeName}</div>
 
       </div>
     )

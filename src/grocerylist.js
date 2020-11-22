@@ -188,7 +188,18 @@ class GroceryList extends React.Component
 
     renderDisplayFromSnapshot(snapshot)
     {
-        renderGroceryListDisplay(this.userRef, this.recipeRef, snapshot.val(), this.container);
+        let lst = [];
+        if (snapshot.val())
+        {
+            const _snapshot = snapshot.val();
+
+            for (const key of _snapshot)
+            {
+                lst.push([key, _snapshot[key]]);
+            }
+        }
+
+        renderGroceryListDisplay(this.userRef, this.recipeRef, lst, this.container);
     }
 
     renderDisplay()

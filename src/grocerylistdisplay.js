@@ -17,7 +17,7 @@ function IngredientDisplay(props)
         {
             // Recipe fully covered by pantry
             return <span>
-                <p class="strikethrough"><span style={{'fontWeight': 'bold'}}>{name}</span>:&nbsp;&nbsp;0&nbsp;{ingredient.units}</p>
+                <p className="strikethrough"><span style={{'fontWeight': 'bold'}}>{name}</span>:&nbsp;&nbsp;0&nbsp;{ingredient.units}</p>
                 <span style={{"color" : "green"}}>&#x02713; You have enough {name} in your pantry</span>
             </span>;
         }
@@ -60,7 +60,7 @@ class GroceryListDisplay extends React.Component {
 
         if (this.recipeKeys)
         {
-            let recipes = Object.entries(this.recipeKeys);
+            let recipes = this.recipeKeys;
 
             for (let i = 0; i < recipes.length - 1; i++)
             {
@@ -200,36 +200,60 @@ class GroceryListDisplay extends React.Component {
 
     mergeOunces(amount1, amount2)
     {
+        let amt = { };
+
         if (amount1.units == "oz" && amount2.units == "oz")
         {
-            return { quantity: amount1.quantity + amount2.quantity, units: "oz" };
+            amt = { quantity: amount1.quantity + amount2.quantity, units: "oz" };
         }
         else
         {
             amount1 = this.convertToOunces(amount1);
             amount2 = this.convertToOunces(amount2);
-            return { quantity: amount1.quantity + amount2.quantity, units: "oz" };
+            amt = { quantity: amount1.quantity + amount2.quantity, units: "oz" };
         }
+
+        if (amount1.pantry || amount2.pantry)
+        {
+            amt.pantry = true;
+        }
+
+        return amt;
     }
 
     reduceUnits(amount)
     {
         let _amount = {...amount};
 
+        let amt = { };
+
         // Should prob always be the case
         if (_amount.units == "oz")
         {
             if (_amount.quantity > 33)
             {
-                return { quantity: Math.ceil(_amount.quantity / 33.814), units: "L" };
+                amt = { quantity: Math.ceil(_amount.quantity / 33.814), units: "L" };
             }
             else if (_amount.quantity >= 8)
             {
-                return { quantity: Math.ceil(_amount.quantity / 8.0), units: "cups" };
+                amt = { quantity: Math.ceil(_amount.quantity / 8.0), units: "cups" };
             }
-            else return _amount;
+            else
+            {
+                amt = _amount;
+            }
         }
-        else return _amount;
+        else
+        {
+            amt = _amount;
+        }
+
+        if (_amount.pantry)
+        {
+            amt.pantry = true;
+        }
+
+        return amt;
     }
 
     convertToOunces(amount)
@@ -237,30 +261,39 @@ class GroceryListDisplay extends React.Component {
         let quantity = amount.quantity;
         let units = amount.units;
 
+        let amt = { };
+
         if (units == "oz")
         {
-            return { quantity: quantity, units: units };
+            amt = { quantity: quantity, units: units };
         }
         else if (units == "mL")
         {
-            return { quantity: quantity * 0.033814, units: "oz" };
+            amt = { quantity: quantity * 0.033814, units: "oz" };
         }
         else if (units == "tsp")
         {
-            return { quantity: quantity / 6.0, units: "oz" };
+            amt = { quantity: quantity / 6.0, units: "oz" };
         }
         else if (units == "Tbsp")
         {
-            return { quantity: quantity / 2.0, units: "oz" };
+            amt = { quantity: quantity / 2.0, units: "oz" };
         }
         else if (units == "cups")
         {
-            return { quantity: quantity * 8.0, units: "oz" };
+            amt = { quantity: quantity * 8.0, units: "oz" };
         }
         else if (units == "L")
         {
-            return { quantity: quantity * 33.814, units: "oz" };
+            amt = { quantity: quantity * 33.814, units: "oz" };
         }
+
+        if (amount.pantry)
+        {
+            amt.pantry = true;
+        }
+
+        return amt;
     }
 
     combineIngredients(pantry)

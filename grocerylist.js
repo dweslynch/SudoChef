@@ -246,7 +246,37 @@ var GroceryList = function (_React$Component) {
     }, {
         key: "renderDisplayFromSnapshot",
         value: function renderDisplayFromSnapshot(snapshot) {
-            renderGroceryListDisplay(this.userRef, this.recipeRef, snapshot.val(), this.container);
+            var lst = [];
+            if (snapshot.val()) {
+                var _snapshot = snapshot.val();
+
+                var _iteratorNormalCompletion3 = true;
+                var _didIteratorError3 = false;
+                var _iteratorError3 = undefined;
+
+                try {
+                    for (var _iterator3 = _snapshot[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                        var key = _step3.value;
+
+                        lst.push([key, _snapshot[key]]);
+                    }
+                } catch (err) {
+                    _didIteratorError3 = true;
+                    _iteratorError3 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                            _iterator3.return();
+                        }
+                    } finally {
+                        if (_didIteratorError3) {
+                            throw _iteratorError3;
+                        }
+                    }
+                }
+            }
+
+            renderGroceryListDisplay(this.userRef, this.recipeRef, lst, this.container);
         }
     }, {
         key: "renderDisplay",

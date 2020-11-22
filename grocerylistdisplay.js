@@ -45,7 +45,7 @@ function IngredientDisplay(props) {
                 null,
                 React.createElement(
                     'p',
-                    { 'class': 'strikethrough' },
+                    { className: 'strikethrough' },
                     React.createElement(
                         'span',
                         { style: { 'fontWeight': 'bold' } },
@@ -117,7 +117,7 @@ var GroceryListDisplay = function (_React$Component) {
             // Let's eventually refactor to make a list of authors and reduce the number of database calls
 
             if (this.recipeKeys) {
-                var recipes = Object.entries(this.recipeKeys);
+                var recipes = this.recipeKeys;
 
                 for (var i = 0; i < recipes.length - 1; i++) {
                     this.recipeRef.child(recipes[i][1].authorid).child(recipes[i][0]).once('value').then(this.addSnapshotToRecipeList);
@@ -292,27 +292,47 @@ var GroceryListDisplay = function (_React$Component) {
     }, {
         key: 'mergeOunces',
         value: function mergeOunces(amount1, amount2) {
+            var amt = {};
+
             if (amount1.units == "oz" && amount2.units == "oz") {
-                return { quantity: amount1.quantity + amount2.quantity, units: "oz" };
+                amt = { quantity: amount1.quantity + amount2.quantity, units: "oz" };
             } else {
                 amount1 = this.convertToOunces(amount1);
                 amount2 = this.convertToOunces(amount2);
-                return { quantity: amount1.quantity + amount2.quantity, units: "oz" };
+                amt = { quantity: amount1.quantity + amount2.quantity, units: "oz" };
             }
+
+            if (amount1.pantry || amount2.pantry) {
+                amt.pantry = true;
+            }
+
+            return amt;
         }
     }, {
         key: 'reduceUnits',
         value: function reduceUnits(amount) {
             var _amount = Object.assign({}, amount);
 
+            var amt = {};
+
             // Should prob always be the case
             if (_amount.units == "oz") {
                 if (_amount.quantity > 33) {
-                    return { quantity: Math.ceil(_amount.quantity / 33.814), units: "L" };
+                    amt = { quantity: Math.ceil(_amount.quantity / 33.814), units: "L" };
                 } else if (_amount.quantity >= 8) {
-                    return { quantity: Math.ceil(_amount.quantity / 8.0), units: "cups" };
-                } else return _amount;
-            } else return _amount;
+                    amt = { quantity: Math.ceil(_amount.quantity / 8.0), units: "cups" };
+                } else {
+                    amt = _amount;
+                }
+            } else {
+                amt = _amount;
+            }
+
+            if (_amount.pantry) {
+                amt.pantry = true;
+            }
+
+            return amt;
         }
     }, {
         key: 'convertToOunces',
@@ -320,19 +340,27 @@ var GroceryListDisplay = function (_React$Component) {
             var quantity = amount.quantity;
             var units = amount.units;
 
+            var amt = {};
+
             if (units == "oz") {
-                return { quantity: quantity, units: units };
+                amt = { quantity: quantity, units: units };
             } else if (units == "mL") {
-                return { quantity: quantity * 0.033814, units: "oz" };
+                amt = { quantity: quantity * 0.033814, units: "oz" };
             } else if (units == "tsp") {
-                return { quantity: quantity / 6.0, units: "oz" };
+                amt = { quantity: quantity / 6.0, units: "oz" };
             } else if (units == "Tbsp") {
-                return { quantity: quantity / 2.0, units: "oz" };
+                amt = { quantity: quantity / 2.0, units: "oz" };
             } else if (units == "cups") {
-                return { quantity: quantity * 8.0, units: "oz" };
+                amt = { quantity: quantity * 8.0, units: "oz" };
             } else if (units == "L") {
-                return { quantity: quantity * 33.814, units: "oz" };
+                amt = { quantity: quantity * 33.814, units: "oz" };
             }
+
+            if (amount.pantry) {
+                amt.pantry = true;
+            }
+
+            return amt;
         }
     }, {
         key: 'combineIngredients',

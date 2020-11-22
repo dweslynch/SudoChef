@@ -29,6 +29,8 @@ var RecipeSlot = function (_React$Component) {
     };
 
     _this.updateRecipeFromSnapshot = _this.updateRecipeFromSnapshot.bind(_this);
+    _this.handleClick = _this.handleClick.bind(_this);
+    _this.translateMeal = _this.translateMeal.bind(_this);
     return _this;
   }
 
@@ -39,6 +41,17 @@ var RecipeSlot = function (_React$Component) {
 
       // Continuous updates
       this.userRef.child('calendar').child(this.day).child(this.meal).on('value', this.updateRecipeFromSnapshot);
+    }
+  }, {
+    key: "translateMeal",
+    value: function translateMeal(m) {
+      if (m == "b") {
+        return "Breakfast";
+      } else if (m == "l") {
+        return "Lunch";
+      } else {
+        return "Dinner";
+      }
     }
   }, {
     key: "updateRecipeFromSnapshot",
@@ -52,14 +65,11 @@ var RecipeSlot = function (_React$Component) {
         });
       } else {
         this.setState({
-          recipeKey: ""
+          recipeKey: "",
+          recipeName: "",
+          recipeAuthorId: ""
         });
       }
-    }
-  }, {
-    key: "clear",
-    value: function clear() {
-      this.state.recipeKey = null;
     }
   }, {
     key: "handleClick",
@@ -73,11 +83,20 @@ var RecipeSlot = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return React.createElement(
         "div",
         { className: "slotWrapper" },
-        React.createElement("div", { className: "slot", onClick: this.slotClick(this.day, this.meal) }),
-        React.createElement("button", { className: "deleteButton", onClick: this.clear })
+        React.createElement(
+          "div",
+          { className: "slot clickable", style: { "fontWeight": this.state.recipeKey ? "bold" : "normal" }, onClick: function onClick(event) {
+              return _this2.slotClick(_this2.day, _this2.meal);
+            } },
+          this.translateMeal(this.meal),
+          ":\xA0\xA0",
+          this.state.recipeName
+        )
       );
     }
   }]);

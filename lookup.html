@@ -22,6 +22,8 @@
         <script src="./grocerylistdisplay.js"></script>
         <script src="./grocerylist.js"></script>
         <script src="./pantry.js"></script>
+        <script src="./RecipeSlot.js"></script>
+        <script src="./Calendar.js"></script>
 
         <!-- link type="text/css" rel="stylesheet" href="./style/stylesheet.css" / -->
         <link type="text/css" rel="stylesheet" href="./style/neustyle.css" />
@@ -58,6 +60,7 @@
                     -->
                     <span id="newrecipe" class="clickable light-button-circle"><i class="fas fa-plus"></i></span>
                     <span id="viewprofile" class="clickable light-button-circle"><i class="fas fa-list"></i></span>
+                    <span id="viewcalendar" class="clickable light-button-circle"><i class="fas fa-calendar-day"></i></span>
                     <span id="viewsettings" class="clickable light-button-circle"><i class="fas fa-cog"></i></span>
                 </div>
             </div>
@@ -73,6 +76,7 @@
                 </div>
             </div>
             <div id="componentbox" class="primary-content-card"></div>
+            <div id="calendarbox" class="calendar-content-card"></div>
             <div id="additional-components"></div>
             <div id="picks" class="card editor-picks-headline">
                 <h1>Editor's Picks</h1>
@@ -160,6 +164,7 @@
 
                         //ReactDOM.unmountComponentAtNode(document.getElementById("componentbox"));
                         $("#componentbox").css("display", "none");
+                        $("#calendarbox").css("display", "none");
                         $("#search-container").css("display", "block");
                         $("#viewfindrecipe").css("display", "none");
 
@@ -176,6 +181,7 @@
                     function viewNewRecipeForm()
                     {
                         $("#search-container").css("display", "none");
+                        $("#calendarbox").css("display", "none");
                         $("#componentbox").css("display", "block");
                         $("#viewfindrecipe").css("display", "inline-block");
                         renderNewRecipeForm(user, recipeRef, viewRecipeFinder, document.getElementById("componentbox"));
@@ -193,6 +199,7 @@
                     function viewGroceryList()
                     {
                         $("#search-container").css("display", "none");
+                        $("#calendarbox").css("display", "none");
                         $("#componentbox").css("display", "block");
                         $("#viewfindrecipe").css("display", "inline-block");
                         renderList(userRef, recipeRef, document.getElementById("componentbox"));
@@ -207,9 +214,47 @@
                         $("#viewprofile").removeClass("light-button-circle");
                     }
 
+                    function viewGroceryListDisplay(_list)
+                    {
+                        $("#search-container").css("display", "none");
+                        $("#calendarbox").css("display", "none");
+                        $("#componentbox").css("display", "block");
+                        $("#viewfindrecipe").css("display", "inline-block");
+
+                        renderGroceryListDisplay(userRef, recipeRef, _list, document.getElementById("componentbox"));
+
+                        ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
+                        $("#additional-components").css("display", "none");
+
+                        $("#picks").css("display", "none");
+
+                        resetAllMenuButtons();
+                        $("#viewprofile").addClass("dark-button-circle");
+                        $("#viewprofile").removeClass("light-button-circle");
+                    }
+
+                    function viewCalendar()
+                    {
+                        $("#search-container").css("display", "none");
+                        $("#componentbox").css("display", "none");
+                        $("#calendarbox").css("display", "block");
+                        $("#viewfindrecipe").css("display", "inline-block");
+                        renderCalendar(userRef, viewGroceryListDisplay, document.getElementById("calendarbox"));
+
+                        ReactDOM.unmountComponentAtNode(document.getElementById("additional-components"));
+                        $("#additional-components").css("display", "none");
+
+                        $("#picks").css("display", "none");
+
+                        resetAllMenuButtons();
+                        $("#viewcalendar").addClass("dark-button-circle");
+                        $("#viewcalendar").removeClass("light-button-circle");
+                    }
+
                     function viewSettings()
                     {
                         $("#search-container").css("display", "none");
+                        $("#calendarbox").css("display", "none");
                         $("#componentbox").css("display", "block");
                         $("#additional-components").css("display", "block");
 
@@ -243,6 +288,11 @@
                     $("#viewfindrecipe").on("click", function(event)
                     {
                         viewRecipeFinder();
+                    });
+
+                    $("#viewcalendar").on("click", function(event)
+                    {
+                        viewCalendar();
                     });
 
                     $("#img1, #tiramisu-button").on("click", function(event) {
