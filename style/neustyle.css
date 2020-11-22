@@ -70,6 +70,10 @@ h1 {
     display: none;
 }
 
+#sign-out-button {
+    width: 33%;
+}
+
 input[type="text"], textarea {
     font-family: 'Roboto';
     margin-top: 5px;
