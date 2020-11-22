@@ -188,6 +188,10 @@ var NewRecipeForm = function (_React$Component) {
       // Prevent reload
       event.preventDefault();
 
+      var _recipeRef = this.recipeRef;
+      var _uid = this.user.uid;
+      var _backtrack = this.backtrack;
+
       var food = {
         name: this.state.recipeName,
         ingredients: this.state.ingredientlist,
@@ -198,14 +202,33 @@ var NewRecipeForm = function (_React$Component) {
         authorid: this.user.uid
       };
 
-      // Send recipe back up to page to update database
-      //this.flowup(food);
+      var encodedName = encodeURIComponent(food.name);
+      console.log(encodedName);
 
+      var submitRecipe = function submitRecipe(result) {
+        if (result && result.results) {
+          console.log("got result");
+
+          var results = result.results;
+
+          if (results[0] && results[0].nutrition && results[0].nutrition.nutrients && results[0].nutrition.nutrients[0] && results[0].nutrition.nutrients[0].amount && results[0].servings) {
+            food.calories = Math.ceil(results[0].nutrition.nutrients[0].amount);
+            food.servings = Math.ceil(results[0].servings);
+          }
+        }
+
+        var newDishKey = _recipeRef.child(_uid).push().key;
+        _recipeRef.child(_uid).child(newDishKey).set(food).then(_backtrack);
+      };
+
+      $.getJSON("https://api.spoonacular.com/recipes/complexSearch?apiKey=1ae72a2a9e844249aa21d5b8e4724842&query=" + encodedName + "&number=1&addRecipeNutrition=true", submitRecipe);
+
+      /*
       // Get a key from Firebase for a new food
-      var newDishKey = this.recipeRef.child(this.user.uid).push().key;
-
-      // Push new recipe to database and rerender recipe finder
+      let newDishKey = this.recipeRef.child(this.user.uid).push().key;
+        // Push new recipe to database and rerender recipe finder
       this.recipeRef.child(this.user.uid).child(newDishKey).set(food).then(this.backtrack);
+      */
     }
   }, {
     key: "render",

@@ -345,6 +345,15 @@ var GroceryList = function (_React$Component) {
                                     { style: { 'marginLeft': "15px" } },
                                     recipe.description
                                 ),
+                                recipe.calories ? React.createElement(
+                                    "p",
+                                    { style: { 'marginLeft': '15px' } },
+                                    "We estimate this recipe to yield ",
+                                    recipe.servings,
+                                    " servings at ",
+                                    recipe.calories,
+                                    " calories per serving"
+                                ) : null,
                                 _hasRestrictions() ? React.createElement(
                                     "span",
                                     { style: { 'marginLeft': '15px' } },

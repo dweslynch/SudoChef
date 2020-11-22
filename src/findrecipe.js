@@ -21,9 +21,10 @@ function Suggestions(props)
     for (uid in recipes)
     {
         const userRecipes = recipes[uid];
-        for (key in userRecipes)
+
+        for (const _key in userRecipes)
         {
-            const uRecipe = userRecipes[key].name.toUpperCase();
+            const uRecipe = userRecipes[_key].name.toUpperCase();
             const uQuery = query.toUpperCase();
 
             if (uQuery.includes(" "))
@@ -31,7 +32,7 @@ function Suggestions(props)
                 // If the query has multiple words, check if recipe name includes query directly
                 if (uRecipe.includes(uQuery))
                 {
-                    matches.push({ key: key, value: userRecipes[key] });
+                    matches.push({ key: _key, value: userRecipes[_key] });
                     /*
                     matches.push({
                         uid: uid,
@@ -45,7 +46,7 @@ function Suggestions(props)
                 // Otherwise, does a word in the recipe start with the query?
                 if (uRecipe.split(" ").some(x => x.startsWith(uQuery)))
                 {
-                    matches.push({ key: key, value: userRecipes[key] });
+                    matches.push({ key: _key, value: userRecipes[_key] });
                     /*
                     matches.push({
                         uid: uid,
@@ -129,7 +130,7 @@ class RecipeFinder extends React.Component
                 <h1>Find A Recipe<br/><br/></h1>
                 <input className="autocomplete" value={this.state.query} placeholder="Find A Recipe..." onChange={this.handleQueryChange}/>
                 <div className="autocomplete-suggestions-container">
-                    <Suggestions className="autocomplete-suggestions-container" key={this.state.query} query={this.state.query} userRef={this.userRef} recipes={this.state.recipes} flowup={this.submit}/>
+                    <Suggestions className="autocomplete-suggestions-container" query={this.state.query} userRef={this.userRef} recipes={this.state.recipes} flowup={this.submit}/>
                 </div>
             </div>
         </div>;

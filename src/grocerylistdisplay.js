@@ -376,7 +376,13 @@ class GroceryListDisplay extends React.Component {
                 <input type="button" className="dark-button fullest" value="Make a Grocery Run" onClick={(event) => this.generateMobileList(_pantry, ingredients)}/>
             </div>;
         }
-        else return null;
+        else
+        {
+            return <div>
+                <h2>My Grocery List</h2>
+                <h1><br/><i className="fas fa-spinner spin"></i><br/></h1>
+            </div>;
+        }
     }
 }
 

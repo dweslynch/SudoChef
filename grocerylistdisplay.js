@@ -487,7 +487,24 @@ var GroceryListDisplay = function (_React$Component) {
                             return _this2.generateMobileList(_pantry, ingredients);
                         } })
                 );
-            } else return null;
+            } else {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'h2',
+                        null,
+                        'My Grocery List'
+                    ),
+                    React.createElement(
+                        'h1',
+                        null,
+                        React.createElement('br', null),
+                        React.createElement('i', { className: 'fas fa-spinner spin' }),
+                        React.createElement('br', null)
+                    )
+                );
+            }
         }
     }]);
 

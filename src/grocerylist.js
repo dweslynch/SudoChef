@@ -269,6 +269,7 @@ class GroceryList extends React.Component
                                 <input style={{"backgroundColor": "rgba(0,0,0,0)", border: "none"}} className="clickable circle-button" type="button" value="X" onClick={(event) => _removeRecipe(key)}/>
                                 <h2 className="clickable" style={{"display": "inline-block"}} onClick={(event) => _viewRecipe(recipe.authorid, key)}>&nbsp;&nbsp;{recipe.name}&nbsp;&rsaquo;</h2>
                                 <p style={{'marginLeft': "15px"}}>{recipe.description}</p>
+                                {(recipe.calories) ? <p style={{'marginLeft': '15px'}}>We estimate this recipe to yield {recipe.servings} servings at {recipe.calories} calories per serving</p> : null}
                                 {(_hasRestrictions()) ? <span style={{'marginLeft': '15px'}}><RestrictionMatchIndicator restrictions={restrictions} tags={recipe.tags}/></span> : null}
                             </div>;
                         })

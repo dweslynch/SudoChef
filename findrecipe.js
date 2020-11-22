@@ -27,14 +27,14 @@ function Suggestions(props) {
     for (uid in recipes) {
         var userRecipes = recipes[uid];
 
-        var _loop = function _loop() {
-            var uRecipe = userRecipes[key].name.toUpperCase();
+        var _loop = function _loop(_key) {
+            var uRecipe = userRecipes[_key].name.toUpperCase();
             var uQuery = query.toUpperCase();
 
             if (uQuery.includes(" ")) {
                 // If the query has multiple words, check if recipe name includes query directly
                 if (uRecipe.includes(uQuery)) {
-                    matches.push({ key: key, value: userRecipes[key] });
+                    matches.push({ key: _key, value: userRecipes[_key] });
                     /*
                     matches.push({
                         uid: uid,
@@ -47,7 +47,7 @@ function Suggestions(props) {
                 if (uRecipe.split(" ").some(function (x) {
                     return x.startsWith(uQuery);
                 })) {
-                    matches.push({ key: key, value: userRecipes[key] });
+                    matches.push({ key: _key, value: userRecipes[_key] });
                     /*
                     matches.push({
                         uid: uid,
@@ -58,8 +58,8 @@ function Suggestions(props) {
             }
         };
 
-        for (key in userRecipes) {
-            _loop();
+        for (var _key in userRecipes) {
+            _loop(_key);
         }
     }
 
@@ -162,7 +162,7 @@ var RecipeFinder = function (_React$Component) {
                     React.createElement(
                         "div",
                         { className: "autocomplete-suggestions-container" },
-                        React.createElement(Suggestions, { className: "autocomplete-suggestions-container", key: this.state.query, query: this.state.query, userRef: this.userRef, recipes: this.state.recipes, flowup: this.submit })
+                        React.createElement(Suggestions, { className: "autocomplete-suggestions-container", query: this.state.query, userRef: this.userRef, recipes: this.state.recipes, flowup: this.submit })
                     )
                 )
             );
