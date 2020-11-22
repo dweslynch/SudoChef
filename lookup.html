@@ -97,7 +97,10 @@
                         </td>
 
                         <td class="editor-pick">
-                            <img id="img3" class="clickable" src="./images/tiramisu.jpg"/>
+                            <img id="img3" class="clickable" src="./images/kimchi.jpg"/>
+                            <h2 class="clickable" id="kimchi-button">
+                                Kimchi Mac and Cheese by Jacob
+                            </h2>
                         </td>
                     </tr>
                 </table>
@@ -312,6 +315,11 @@
                     $("#img2, #poutine-button").on("click", function(event) {
                         $(window).scrollTop(0);
                         viewRecipe("dDMZeDGwxKR9LQWMJhQzKuzBDU12", "-MMbp2RHC15FZFFuQzRJ");
+                    });
+
+                    $("#img3, #kimchi-button").on("click", function(event) {
+                        $(window).scrollTop(0);
+                        viewRecipe("4YC9OsczODXxQVy7aEqtvEWJMHX2", "-MMkcW0AUVz1KDWUFr8F");
                     });
 
                     //viewRecipeFinder();
