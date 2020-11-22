@@ -10,7 +10,7 @@ class MobileCodeView extends React.Component {
     generateURL(key)
     {
         // Replace this later
-        const mobileURL = `https://dweslynch.github.io/authtest/mobile.html?key=${key}`;
+        const mobileURL = `https://dweslynch.github.io/SudoChef/mobile.html?key=${key}`;
         console.log(mobileURL);
         const formattedMobileURL = encodeURIComponent(mobileURL);
 
