@@ -29,6 +29,10 @@ h1 {
   text-align: center;
 }
 
+p {
+  white-space: pre-wrap;
+}
+
 .card {
     background-color: #EEEEEE;
     color: #111111;
@@ -75,6 +79,7 @@ h1 {
 }
 
 input[type="text"], textarea {
+    white-space: pre-wrap;
     font-family: 'Roboto';
     margin-top: 5px;
     padding: 5px;
