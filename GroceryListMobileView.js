@@ -104,7 +104,7 @@ var GroceryListMobileView = function (_React$Component) {
                 this.state.done ? React.createElement(
                     'span',
                     null,
-                    'Thank you for using our app!',
+                    'Thank you for using SudoChef!',
                     React.createElement('br', null),
                     React.createElement('br', null)
                 ) : arr.map(function (i) {
