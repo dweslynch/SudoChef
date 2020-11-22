@@ -133,7 +133,8 @@ var Calendar = function (_React$Component) {
                 this.userRef.child('calendar').remove();
 
                 this.setState({
-                    confirm: false
+                    confirm: false,
+                    selectedRecipe: ""
                 });
             } else {
                 this.setState({
