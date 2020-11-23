@@ -154,7 +154,7 @@ var RecipeFinder = function (_React$Component) {
                     React.createElement(
                         "h1",
                         null,
-                        "Find A Recipe",
+                        "SudoChef",
                         React.createElement("br", null),
                         React.createElement("br", null)
                     ),
