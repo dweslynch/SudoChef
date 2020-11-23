@@ -193,7 +193,7 @@ class GroceryList extends React.Component
         {
             const _snapshot = snapshot.val();
 
-            for (const key of _snapshot)
+            for (const key in _snapshot)
             {
                 lst.push([key, _snapshot[key]]);
             }
