@@ -63,14 +63,15 @@ var MobileCodeView = function (_React$Component) {
                     null,
                     'Make a Grocery Run'
                 ),
-                React.createElement('br', null),
                 this.state.active ? React.createElement(
                     'p',
                     null,
-                    'Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.'
+                    'Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.',
+                    React.createElement('br', null)
                 ) : React.createElement(
                     'p',
                     { style: { 'color': 'green' } },
+                    React.createElement('br', null),
                     '\u2713 Your pantry has been updated!'
                 ),
                 this.state.active ? React.createElement('img', { className: 'code', src: this.generateURL(this.mobileKey) }) : null

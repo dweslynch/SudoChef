@@ -47,11 +47,10 @@ class MobileCodeView extends React.Component {
     {
         return <div style={{'textAlign': 'center'}}>
             <h2>Make a Grocery Run</h2>
-            <br/>
             {
                 (this.state.active) ?
-                <p>Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.</p>
-                : <p style={{'color' : 'green'}}>&#x02713; Your pantry has been updated!</p>
+                <p>Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.<br/></p>
+                : <p style={{'color' : 'green'}}><br/>&#x02713; Your pantry has been updated!</p>
             }
             {
                 (this.state.active) ?
