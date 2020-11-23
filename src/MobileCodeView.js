@@ -3,8 +3,32 @@ class MobileCodeView extends React.Component {
     {
         super(props);
 
+        this.mobileRef = props.mobileRef;
+
+        this.state = {
+            active: true
+        }
+
         this.mobileKey = props.mobileKey;
         this.generateURL = this.generateURL.bind(this);
+        this.updateStateFromSnapshot = this.updateStateFromSnapshot.bind(this);
+    }
+
+    componentDidMount()
+    {
+        this.mobileRef.child(this.mobileKey).on('value', this.updateStateFromSnapshot);
+    }
+
+    updateStateFromSnapshot(snapshot)
+    {
+        if (snapshot.val())
+        {
+            // Do Nothing
+        }
+        else
+        {
+            this.setState({ active: false });
+        }
     }
 
     generateURL(key)
@@ -23,14 +47,22 @@ class MobileCodeView extends React.Component {
     {
         return <div style={{'textAlign': 'center'}}>
             <h2>Make a Grocery Run</h2>
-            <p>Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.</p>
             <br/>
-            <img className="code" src={this.generateURL(this.mobileKey)}/>
+            {
+                (this.state.active) ?
+                <p>Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.</p>
+                : <p style={{'color' : 'green'}}>&#x02713; Your pantry has been updated!</p>
+            }
+            {
+                (this.state.active) ?
+                <img className="code" src={this.generateURL(this.mobileKey)}/>
+                : null
+            }
         </div>;
     }
 }
 
-function renderMobileCode(key, container)
+function renderMobileCode(key, container, mobileRef)
 {
-    ReactDOM.render(<MobileCodeView mobileKey={key}/>, container);
+    ReactDOM.render(<MobileCodeView mobileKey={key} mobileRef={mobileRef}/>, container);
 }

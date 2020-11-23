@@ -14,12 +14,33 @@ var MobileCodeView = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (MobileCodeView.__proto__ || Object.getPrototypeOf(MobileCodeView)).call(this, props));
 
+        _this.mobileRef = props.mobileRef;
+
+        _this.state = {
+            active: true
+        };
+
         _this.mobileKey = props.mobileKey;
         _this.generateURL = _this.generateURL.bind(_this);
+        _this.updateStateFromSnapshot = _this.updateStateFromSnapshot.bind(_this);
         return _this;
     }
 
     _createClass(MobileCodeView, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.mobileRef.child(this.mobileKey).on('value', this.updateStateFromSnapshot);
+        }
+    }, {
+        key: 'updateStateFromSnapshot',
+        value: function updateStateFromSnapshot(snapshot) {
+            if (snapshot.val()) {
+                // Do Nothing
+            } else {
+                this.setState({ active: false });
+            }
+        }
+    }, {
         key: 'generateURL',
         value: function generateURL(key) {
             // Replace this later
@@ -42,13 +63,17 @@ var MobileCodeView = function (_React$Component) {
                     null,
                     'Make a Grocery Run'
                 ),
-                React.createElement(
+                React.createElement('br', null),
+                this.state.active ? React.createElement(
                     'p',
                     null,
                     'Bring your list with you to the grocery store and cross off items as you go by scanning this code with your mobile device.'
+                ) : React.createElement(
+                    'p',
+                    { style: { 'color': 'green' } },
+                    '\u2713 Your pantry has been updated!'
                 ),
-                React.createElement('br', null),
-                React.createElement('img', { className: 'code', src: this.generateURL(this.mobileKey) })
+                this.state.active ? React.createElement('img', { className: 'code', src: this.generateURL(this.mobileKey) }) : null
             );
         }
     }]);
@@ -56,6 +81,6 @@ var MobileCodeView = function (_React$Component) {
     return MobileCodeView;
 }(React.Component);
 
-function renderMobileCode(key, container) {
-    ReactDOM.render(React.createElement(MobileCodeView, { mobileKey: key }), container);
+function renderMobileCode(key, container, mobileRef) {
+    ReactDOM.render(React.createElement(MobileCodeView, { mobileKey: key, mobileRef: mobileRef }), container);
 }

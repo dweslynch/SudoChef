@@ -195,7 +195,7 @@ class GroceryListDisplay extends React.Component {
 
         // x
 
-        renderMobileCode(key, this.container);
+        renderMobileCode(key, this.container, this.recipeRef.parent.child('mobile'));
     }
 
     mergeOunces(amount1, amount2)

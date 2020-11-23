@@ -287,7 +287,7 @@ var GroceryListDisplay = function (_React$Component) {
 
             // x
 
-            renderMobileCode(key, this.container);
+            renderMobileCode(key, this.container, this.recipeRef.parent.child('mobile'));
         }
     }, {
         key: 'mergeOunces',
