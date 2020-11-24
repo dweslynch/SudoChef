@@ -150,8 +150,8 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 > The server will respond with the following JSON object
 
     {
-        \[UID\]: {
-            \[RECIPE_KEY\]: {
+        [UID]: {
+            [RECIPE_KEY]: {
                 author: [AUTHOR_NAME],
                 authorid: [AUTHOR_ID],
                 calories: [ESTIMATED_CALORIES], // May not exist
@@ -208,7 +208,7 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 
     {
-        \[MOBILE_KEY\]: [
+        [MOBILE_KEY]: [
             {
                 name: [INGREDIENT_NAME],
                 quantity: [INGREDIENT_QUANTITY],
