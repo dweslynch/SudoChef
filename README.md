@@ -246,12 +246,12 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 ## POST
 
-Post requests are used when pushing an object to a list-like node in the database, such as /profiles/[UID]/inventory.json or /recipes/[UID].json
+Post requests are used when pushing an object to a list-like node in the database, such as /`profiles/[UID]/inventory.json` or `/recipes/[UID].json`
 
 They should only be used to create new entries because the server will assign a unique key to the data when appending it to the node and respond accordingly.
 
 ## PUT
 
-Put requests are used when the exact parent node of an object is known, at endpoints such as /recipes/[UID]/[RECIPE_KEY].json or /mobile/[MOBILE_KEY].json
+Put requests are used when the exact parent node of an object is known, at endpoints such as /`recipes/[UID]/[RECIPE_KEY].json` or `/mobile/[MOBILE_KEY].json`
 
-They will directly children of the node that already exist, and create ones that do not.
+They will directly update children of the node that already exist, and create ones that do not.
