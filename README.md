@@ -16,7 +16,7 @@
 
 > This request should be sent with the following JSON body
 
-```json
+```js
 {
     email: [USER_EMAIL],
     password: [USER_PASSWORD],
@@ -28,7 +28,7 @@
 
 > The server will respond with the following JSON object
 
-```json
+```js
 {
     idToken: [UNIQUE_TOKEN],
     email: [USER_EMAIL],
@@ -54,7 +54,7 @@
 
 > This request should be sent with the following JSON body
 
-```json
+```js
 {
     email: [USER_EMAIL],
     password: [USER_PASSWORD],
@@ -66,7 +66,7 @@
 
 > The server will respond with the following JSON object
 
-```json
+```js
 {
     idToken: [UNIQUE_TOKEN],
     email: [USER_EMAIL],
@@ -99,7 +99,7 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with the following JSON object
 
-```json
+```js
 {
     calendar: {                         // The user's scheduled recipes
         mon: {
@@ -159,7 +159,7 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with the following JSON object
 
-```json
+```js
 {
     [UID]: {
         [RECIPE_KEY]: {
@@ -204,7 +204,7 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with the following JSON object
 
-```json
+```js
 {
     name: [KEY]     // Where KEY is the new recipe key
 }
@@ -220,7 +220,7 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > POST requests to this endpoint should consist of the following JSON.  Note that it contains a JSON list denoted by brackets
 
-```json
+```js
 {
     [MOBILE_KEY]: [
         {
@@ -236,7 +236,7 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with the following JSON which is necessary to perform later GET requests
 
-```json
+```js
 {
     name: [MOBILE_KEY]
 }
@@ -250,7 +250,7 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with a list of ingredients just like above, however they are formatted slightly differently
 
-```json
+```js
 {
     0: {
         name: [INGREDIENT_NAME],
