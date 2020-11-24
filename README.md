@@ -16,23 +16,27 @@
 
 > This request should be sent with the following JSON body
 
-    {
-        email: [USER_EMAIL],
-        password: [USER_PASSWORD],
-        returnSecureToken: true
-    }
+```json
+{
+    email: [USER_EMAIL],
+    password: [USER_PASSWORD],
+    returnSecureToken: true
+}
+```
 
 ### Response details
 
 > The server will respond with the following JSON object
 
-    {
-        idToken: [UNIQUE_TOKEN],
-        email: [USER_EMAIL],
-        refreshToken: [UNIQUE_REFRESH_TOKEN],
-        expiresIn: [SECONDS_TILL_EXPIRATION],
-        localId: [USER_UID]        
-    }
+```json
+{
+    idToken: [UNIQUE_TOKEN],
+    email: [USER_EMAIL],
+    refreshToken: [UNIQUE_REFRESH_TOKEN],
+    expiresIn: [SECONDS_TILL_EXPIRATION],
+    localId: [USER_UID]        
+}
+```
 
 ### Possible errors
 
@@ -50,24 +54,28 @@
 
 > This request should be sent with the following JSON body
 
-    {
-        email: [USER_EMAIL],
-        password: [USER_PASSWORD],
-        returnSecureToken: true
-    }
+```json
+{
+    email: [USER_EMAIL],
+    password: [USER_PASSWORD],
+    returnSecureToken: true
+}
+```
 
 ### Response details
 
 > The server will respond with the following JSON object
 
-    {
-        idToken: [UNIQUE_TOKEN],
-        email: [USER_EMAIL],
-        refreshToken: [UNIQUE_REFRESH_TOKEN],
-        expiresIn: [SECONDS_TILL_EXPIRATION],
-        localId: [USER_UID],
-        registered: [ACCOUNT_EXISTS]
-    }
+```json
+{
+    idToken: [UNIQUE_TOKEN],
+    email: [USER_EMAIL],
+    refreshToken: [UNIQUE_REFRESH_TOKEN],
+    expiresIn: [SECONDS_TILL_EXPIRATION],
+    localId: [USER_UID],
+    registered: [ACCOUNT_EXISTS]
+}
+```
 
 ### Possible errors
 
@@ -91,41 +99,43 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with the following JSON object
 
-    {
-        calendar: {                         // The user's scheduled recipes
-            mon: {
-                b: {                        // Breakfast
-                    authorid: [AUTHOR_ID],
-                    key: [RECIPE_KEY],
-                    name: [RECIPE_NAME]
-                }
-                l: { ... },
-                d: { ... },
+```json
+{
+    calendar: {                         // The user's scheduled recipes
+        mon: {
+            b: {                        // Breakfast
+                authorid: [AUTHOR_ID],
+                key: [RECIPE_KEY],
+                name: [RECIPE_NAME]
             }
-            tue: { ... },
-            wed: { ... },
-            thu: { ... },
-            fri: { ... },
-            sat: { ... },
-            sun: { ... }
+            l: { ... },
+            d: { ... },
         }
-        inventory: {                        // All recipes the user has added
-            author: [AUTHOR_NAME],
-            authorid: [AUTHOR_ID],
-            calories: [ESTIMATED_CALORIES], // May not exist
-            description: [DESCRIPTION],
-            name: [RECIPE_NAME],
-            servings: [ESTIMATED_SERVINGS], // May not exist
-            tags: {
-                peanutFree: [true/false],
-                ... :       [true/false]
-            }
-        },
-        restrictions: {
+        tue: { ... },
+        wed: { ... },
+        thu: { ... },
+        fri: { ... },
+        sat: { ... },
+        sun: { ... }
+    }
+    inventory: {                        // All recipes the user has added
+        author: [AUTHOR_NAME],
+        authorid: [AUTHOR_ID],
+        calories: [ESTIMATED_CALORIES], // May not exist
+        description: [DESCRIPTION],
+        name: [RECIPE_NAME],
+        servings: [ESTIMATED_SERVINGS], // May not exist
+        tags: {
             peanutFree: [true/false],
             ... :       [true/false]
         }
+    },
+    restrictions: {
+        peanutFree: [true/false],
+        ... :       [true/false]
     }
+}
+```
 
 > You can also access any of the sub-values of this object by sending a GET request to the corresponding endpoint, with slashes delimiting descents in the heirarchy and .json at the end.
 
@@ -149,30 +159,32 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with the following JSON object
 
-    {
-        [UID]: {
-            [RECIPE_KEY]: {
-                author: [AUTHOR_NAME],
-                authorid: [AUTHOR_ID],
-                calories: [ESTIMATED_CALORIES], // May not exist
-                description: [DESCRIPTION],
-                instructions: [INSTRUCTIONS],
-                name: [RECIPE_NAME],
-                servings: [ESTIMATED_SERVINGS], // May not exist
-                ingredients: {
-                    0: [FIRST_INGREDIENT],
-                    1: [SECOND_INGREDIENT],
-                    ... : [OTHER_INGREDIENTS]
-                },
-                tags: {
-                    peanutFree: [true/false],
-                    ... :       [true/false]
-                }
+```json
+{
+    [UID]: {
+        [RECIPE_KEY]: {
+            author: [AUTHOR_NAME],
+            authorid: [AUTHOR_ID],
+            calories: [ESTIMATED_CALORIES], // May not exist
+            description: [DESCRIPTION],
+            instructions: [INSTRUCTIONS],
+            name: [RECIPE_NAME],
+            servings: [ESTIMATED_SERVINGS], // May not exist
+            ingredients: {
+                0: [FIRST_INGREDIENT],
+                1: [SECOND_INGREDIENT],
+                ... : [OTHER_INGREDIENTS]
             },
-            ... : ...
+            tags: {
+                peanutFree: [true/false],
+                ... :       [true/false]
+            }
         },
         ... : ...
-    }
+    },
+    ... : ...
+}
+```
 
 > As before, requests can be made to sub-nodes
 
@@ -192,9 +204,11 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with the following JSON object
 
-    {
-        name: [KEY]     // Where KEY is the new recipe key
-    }
+```json
+{
+    name: [KEY]     // Where KEY is the new recipe key
+}
+```
 
 # Mobile Codes
 
@@ -206,24 +220,27 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > POST requests to this endpoint should consist of the following JSON.  Note that it contains a JSON list denoted by brackets
 
-
-    {
-        [MOBILE_KEY]: [
-            {
-                name: [INGREDIENT_NAME],
-                quantity: [INGREDIENT_QUANTITY],
-                units: [INGREDIENT_UNITS]           // May not exist
-            },
-            ...
-        ]
-    }
+```json
+{
+    [MOBILE_KEY]: [
+        {
+            name: [INGREDIENT_NAME],
+            quantity: [INGREDIENT_QUANTITY],
+            units: [INGREDIENT_UNITS]           // May not exist
+        },
+        ...
+    ]
+}
+```
 
 
 > The server will respond with the following JSON which is necessary to perform later GET requests
 
-    {
-        name: [MOBILE_KEY]
-    }
+```json
+{
+    name: [MOBILE_KEY]
+}
+```
 
 ### GETting mobile recipe lists
 
@@ -233,14 +250,16 @@ Where `UID` is the ID returned by FireBase when signing in or creating an accoun
 
 > The server will respond with a list of ingredients just like above, however they are formatted slightly differently
 
-    {
-        0: {
-            name: [INGREDIENT_NAME],
-            quantity: [INGREDIENT_QUANTITY],
-            units: [INGREDIENT_UNITS]           // May not exist
-        },
-        ... : ...
-    }
+```json
+{
+    0: {
+        name: [INGREDIENT_NAME],
+        quantity: [INGREDIENT_QUANTITY],
+        units: [INGREDIENT_UNITS]           // May not exist
+    },
+    ... : ...
+}
+```
 
 # Writing Data
 
