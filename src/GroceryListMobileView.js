@@ -46,7 +46,7 @@ class GroceryListMobileView extends React.Component {
     clearList()
     {
         this.dbRef.child('mobile').child(this.listKey).remove();
-        this.setState({ done: true })
+        this.setState({ done: true });
     }
 
     handleToggleCheck(i)

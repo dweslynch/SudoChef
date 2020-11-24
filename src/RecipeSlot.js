@@ -28,22 +28,6 @@ class RecipeSlot extends React.Component {
       this.userRef.child('calendar').child(this.day).child(this.meal).on('value', this.updateRecipeFromSnapshot);
   }
 
-  translateMeal(m)
-  {
-      if (m == "b")
-      {
-          return "Breakfast";
-      }
-      else if (m == "l")
-      {
-          return "Lunch";
-      }
-      else
-      {
-          return "Dinner";
-      }
-  }
-
   updateRecipeFromSnapshot(snapshot)
   {
       if (snapshot.val())
@@ -62,6 +46,22 @@ class RecipeSlot extends React.Component {
               recipeName: "",
               recipeAuthorId: ""
           });
+      }
+  }
+
+  translateMeal(m)
+  {
+      if (m == "b")
+      {
+          return "Breakfast";
+      }
+      else if (m == "l")
+      {
+          return "Lunch";
+      }
+      else
+      {
+          return "Dinner";
       }
   }
 
